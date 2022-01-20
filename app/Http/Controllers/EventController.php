@@ -160,10 +160,10 @@ class EventController extends Controller
             'file' => 'required'
         ]);
         $data = EventSubmit::where('user_id',Auth::user()->id)->where('event_id',$event->id);
-        if($data->count() > 0) {
-            return redirect()->back()->with('error','Anda hanya dapat upload 1x jika ada perubahan maka silahkan hapus data sebelumnya');
-            exit;
-        }
+        // if($data->count() > 0) {
+        //     return redirect()->back()->with('error','Anda hanya dapat upload 1x jika ada perubahan maka silahkan hapus data sebelumnya');
+        //     exit;
+        // }
         $file = $request->file('file');
         $file_name = $event->id.Auth::user()->id.$file->getClientOriginalName();
         EventSubmit::create([
