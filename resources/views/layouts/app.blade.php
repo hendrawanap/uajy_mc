@@ -240,6 +240,12 @@
     ***********************************-->
     <!-- Required vendors -->
 
+    <!-- <div class="overflow-auto" id="modal-overlay" style="background-color: rgba(0,0,0,0.8); inset: 0; position: fixed; z-index: 999; ">
+        <div class="mt-5 container" id="modal-content" style="background-color: white;">
+            @yield('modal-content')
+        </div>
+    </div> -->
+
     <script src="/template/vendor/global/global.min.js"></script>
     <script src="/template/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/template/vendor/chart.js/Chart.bundle.min.js"></script>
