@@ -118,6 +118,7 @@ class EventController extends Controller
             $file_name = time().$file->getClientOriginalName();
             $file->move(public_path('/file/case-soal'),$file_name);
             $newData['soal'] = $file_name;
+            unlink(public_path($event->getSoalURL()));
         }
 
         $event->update($newData);
@@ -133,6 +134,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         if($event->event_submit()->exists()) $event->event_submit()->delete();
+        unlink(public_path($event->getSoalURL()));
         $event->delete();
         return redirect()->route('event.index')->with('success','Berhasil !');
     }

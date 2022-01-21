@@ -85,21 +85,22 @@
                                                 <!-- <textarea name="soal" class="form-control"
 
                                                     placeholder="Pertanyaan Event...">{{$event->soal}}</textarea> -->
-                                                <div id="area" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;">
-                                                    <h1 style="display: none" id="error">An error occurred</h1>
-                                                    <div id="loader">
-                                                        Loading...
+                                                <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;">
+                                                    <div style="width: 100%; height:100%; position: relative;">
+                                                        <div id="pdf-loader">
+                                                            <div class="sk-three-bounce">
+                                                                <div class="sk-child sk-bounce1"></div>
+                                                                <div class="sk-child sk-bounce2"></div>
+                                                                <div class="sk-child sk-bounce3"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                                <!-- <h1 style="display: none" id="error-2">An error occurred</h1>
-                                                <div id="loader-2" class="lds-ring">
-                                                    <div></div>
-                                                    <div></div>
-                                                    <div></div>
-                                                    <div></div>
+                                                
+                                                <div class="mt-2 d-flex justify-content-end">
+                                                    <button type="button" class="btn btn-primary cursor-default" id="btn-open-large" onclick="toggleModal()" disabled>Memuat...</button>
                                                 </div>
-                                                <div id="area-2" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;"></div> -->
+
 
                                                 <div class="input-group mt-3">
 
@@ -171,53 +172,38 @@
 
     </div>
 
-    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
+@endsection
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content bg-transparent border-0">
-        </div>
+@section('modal-content')
+
+<div id="large-view" class="w-100" data-url="{{ $event->getSoalURL() }}">
+    <h1 style="display: none" id="error-2">An error occurred</h1>
+    <div id="loader-2">
+        Loading...
     </div>
 </div>
-<!-- <h1 style="display: none" id="error-2">An error occurred</h1>
-<div id="loader-2" class="lds-ring">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-</div>
-<div id="area-2" class="d-flex flex-column align-items-center bg-white w-100" data-url="{{ $event->getSoalURL() }}"></div> -->
 
-
-
-
-
-
-    @endsection
+@endsection
 
 @section('js')
 
 <style>
-    #area canvas {
+
+    #preview canvas {
         width: 100%;
     }
+
+    #large-view canvas {
+        width: 100%;
+    }
+
+    .cursor-default {
+        cursor: default;
+    }
+
 </style>
 
 <script src="https://unpkg.com/pdfjs-dist@latest/build/pdf.min.js"></script>
-
-<!-- <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.92/dist/epub.min.js"></script>
-
-<script>
-    const url = document.getElementById('area').dataset.url;
-    console.log(url);
-  var book = ePub(url);
-  var rendition = book.renderTo("area", {width: 600, height: 400});
-  var displayed = rendition.display();
-</script> -->
 
 <script>
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -225,89 +211,85 @@ const pdfjsLib = window['pdfjs-dist/build/pdf'];
 let pdfDoc = null;
 let currentRenderingPage = 1;
 const scale = 1;
-// const pagesContainer = document.getElementById('area');
 
-const renderPage = (num, onPdfLoaded, id) => {
-    const pagesContainer = document.getElementById(id);
+const url = document.getElementById('preview').dataset.url;
 
-    currentRenderingPage = num;
-
-    // Using promise to fetch the page
-    pdfDoc.getPage(currentRenderingPage).then(function (page) {
-        
-        let pdfViewport = page.getViewport({ scale });
-
-        const container = document.getElementById(id);
-
-        // Render at the page size scale.
-        pdfViewport = page.getViewport({scale: container.offsetWidth / pdfViewport.width});
-        const canvas = document.createElement('canvas');
-        container.appendChild(canvas);
-        const context = canvas.getContext('2d');
-        canvas.height = pdfViewport.height;
-        canvas.width = pdfViewport.width;
-
-        const renderTask = page.render({
-            canvasContext: context,
-            viewport: pdfViewport,
-        });
-        
-        // Wait for rendering to finish
-        renderTask.promise.then(function () {
-            
-            if (currentRenderingPage < pdfDoc.numPages) {
-                currentRenderingPage++;
-                renderPage(currentRenderingPage, onPdfLoaded, id);
-                onPdfLoaded();
-            }
-
-        });
+const getDoc = (url, containerId, onLoaded) => {
+    pdfjsLib.getDocument(url).promise.then((doc) => {
+        pdfDoc = doc;
+        render(url, containerId, onLoaded);
     });
+};
 
-}
-
-const renderAllPages = (onPdfLoaded, id) => {
-    renderPage(1, onPdfLoaded, id);
-}
-
-const renderPdf = (url, onPdfLoaded, onError, id) => {
-
-    pdfjsLib.getDocument(url).promise
-        .then(function (pdfDoc_) {
-            pdfDoc = pdfDoc_;
-            renderAllPages(onPdfLoaded, id);
+const render = (url, containerId, onLoaded) => {
+    if (!pdfDoc) {
+        getDoc(url, containerId, onLoaded);
+    } else {
+        const checkFinish = (currentPage) => currentPage == pdfDoc.numPages;
+        const renderPromises = [];
+        for (let i = 0; i < pdfDoc.numPages; i++) {
+            renderPromises.push(pdfDoc.getPage(i + 1))
+        }
+        Promise.all(renderPromises).then(pages => {
+            const pagesHTML = `
+            <div style="width: 100%; position: relative;">
+                <div id="pdf-loader">
+                    <div class="sk-three-bounce">
+                        <div class="sk-child sk-bounce1"></div>
+                        <div class="sk-child sk-bounce2"></div>
+                        <div class="sk-child sk-bounce3"></div>
+                    </div>
+                </div>
+                <canvas></canvas>
+            </div>`.repeat(pages.length);
+            const container = document.getElementById(containerId);
+            container.innerHTML = pagesHTML;
+            pages.forEach(page => renderPage(page, container, checkFinish, onLoaded));
         })
-        .catch(error => onError(error));
+    }
+};
 
+const renderPage = (page, _container, check, onLoaded) => {
+    let pdfViewport = page.getViewport({ scale: 1 });
+
+    const container = _container.children[page._pageIndex];
+    pdfViewport = page.getViewport({ scale: container.offsetWidth / pdfViewport.width });
+    const loader = container.children[0];
+    const canvas = container.children[1];
+    const context = canvas.getContext("2d");
+    canvas.height = pdfViewport.height;
+    canvas.width = pdfViewport.width;
+
+    page.render({
+      canvasContext: context,
+      viewport: pdfViewport
+    }).promise
+    .then(() => {
+        loader.style.display = 'none';
+        if (check(page._pageIndex + 1)) {
+            onLoaded ? onLoaded() : null;
+        }
+    })
+    .catch((e) => console.log(e));
+};
+
+let firstTimeOpen = true;
+
+const onPreviewLoaded = () => {
+    const btnOpen = document.getElementById('btn-open-large');
+    btnOpen.innerHTML = 'Perbesar';
+    btnOpen.attributes.removeNamedItem('disabled');
+    btnOpen.classList.remove('cursor-default');
+    btnOpen.addEventListener('click', () => {
+        if (firstTimeOpen) {
+            render(url, 'large-view')
+        }
+        firstTimeOpen = false;
+    });
 }
+
+render(url, 'preview', onPreviewLoaded);
 
 </script>
-
-<script>
-
-      document.addEventListener('DOMContentLoaded', function () {
-          
-        const url = document.getElementById('area').dataset.url;
-
-          const errorContainer = document.getElementById('error');
-          const pdfViewerContainer = document.getElementById('pages-container');
-          const loader = document.getElementById('loader');
-
-          renderPdf(
-              url,
-              onPdfLoaded = () => loader.classList.add('d-none'),
-              onError = error => {
-                  loader.style.display = 'none';
-                  console.error(error);
-                  errorContainer.style.display = 'block';
-                  pdfViewerContainer.style.display = 'none';
-                  errorContainer.innerText = error.message;
-              },
-              'area');
-
-      }, false);
-
-  </script>
-
 
 @endsection
