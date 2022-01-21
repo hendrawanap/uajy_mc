@@ -240,6 +240,23 @@
     ***********************************-->
     <!-- Required vendors -->
 
+    <div class="overflow-auto d-none modal-transition" id="modal-overlay" style="background-color: rgba(0,0,0,0.8); inset: 0; position: fixed; z-index: 999;">
+        <div class="my-5 container" id="modal-content" style="background-color: white; position: relative; z-index: 1000">
+            @yield('modal-content')
+        </div>
+    </div>
+
+    <style>
+        .modal-transition.d-none {
+            background-color: rgba(0,0,0,0);
+        }
+
+        .modal-transition {
+            background-color: rgba(0,0,0,0.8);
+            transition: all;
+        }
+    </style>
+
     <script src="/template/vendor/global/global.min.js"></script>
     <script src="/template/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/template/vendor/chart.js/Chart.bundle.min.js"></script>
@@ -259,6 +276,28 @@
        $('textarea').ckeditor();
     
     });
+
+    let modalIsOpen = false;
+    const modal = document.getElementById('modal-overlay');
+    const modalContainer = document.getElementById('modal-content');
+    console.log(modalContainer.offsetWidth);
+
+    function toggleModal() {
+        if (modalIsOpen) {
+            document.body.classList.remove('overflow-hidden');
+            modal.classList.add('d-none');
+        } else {
+            document.body.classList.add('overflow-hidden');
+            modal.classList.remove('d-none');
+        }
+        modalIsOpen = !modalIsOpen;
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            toggleModal()
+        }
+    } 
     </script>
     @yield('js')
 </body>

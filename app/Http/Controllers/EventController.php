@@ -69,10 +69,18 @@ class EventController extends Controller
             'jam' => 'required',
             'durasi' => 'required'
         ]);
+
+        $file = $request->file('soal');
+        $file_name = "blank";
+        if ($file) {
+            $file_name = time().$file->getClientOriginalName();
+            $file->move(public_path('/file/case-soal'),$file_name);
+        }
+
         Event::create([
             'tanggal_mulai' => $request->tanggal.' '.$request->jam,
             'tanggal_selesai' => Carbon::parse($request->tanggal.' '.$request->jam)->addMinutes($request->durasi)->format('Y-m-d H:i:s'),
-            'soal' => $request->soal,
+            'soal' => $file_name,
             'name' => $request->name
         ]);
         return redirect()->route('event.index')->with('success','Berhasil !');
@@ -99,12 +107,21 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        $event->update([
+        $newData = [
             'tanggal_mulai' => $request->tanggal.' '.$request->jam,
             'tanggal_selesai' => Carbon::parse($request->tanggal.' '.$request->jam)->addMinutes($request->durasi)->format('Y-m-d H:i:s'),
-            'soal' => $request->soal,
             'name' => $request->name
-        ]);
+        ];
+
+        $file = $request->file('soal');
+        if ($file) {
+            $file_name = time().$file->getClientOriginalName();
+            $file->move(public_path('/file/case-soal'),$file_name);
+            $newData['soal'] = $file_name;
+            unlink(public_path($event->getSoalURL()));
+        }
+
+        $event->update($newData);
         return redirect()->route('event.index')->with('success','Berhasil !');
     }
 
@@ -117,6 +134,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         if($event->event_submit()->exists()) $event->event_submit()->delete();
+        unlink(public_path($event->getSoalURL()));
         $event->delete();
         return redirect()->route('event.index')->with('success','Berhasil !');
     }
