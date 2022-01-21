@@ -234,6 +234,8 @@ const renderPage = (page, _container, check, onLoaded) => {
     canvas.height = pdfViewport.height;
     canvas.width = pdfViewport.width;
 
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault(), false);
+
     page.render({
       canvasContext: context,
       viewport: pdfViewport
