@@ -14,7 +14,7 @@ use App\SetKuis;
 
 use App\AksesKuis;
 
-use App\TemporaryFile;
+use App\QuizTemporaryFile;
 
 use App\KuisSubmit;
 
@@ -708,7 +708,7 @@ class KuisController extends Controller
 
         // dd($setk)
 
-        $temporaryFiles = TemporaryFile::where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->get();
+        $temporaryFiles = QuizTemporaryFile::where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->get();
 
         if($temporaryFiles->count() > 0) {
 
@@ -859,7 +859,7 @@ class KuisController extends Controller
 
                 $akseskuis = AksesKuis::findOrFail($id);
 
-                TemporaryFile::create([
+                QuizTemporaryFile::create([
 
                     'user_id' => Auth::user()->id,
 
@@ -893,7 +893,7 @@ class KuisController extends Controller
 
         rmdir(public_path('file/jawaban/temp/' . $foldername));     
         
-        TemporaryFile::where('folder', $foldername)->delete();
+        QuizTemporaryFile::where('folder', $foldername)->delete();
 
         return $foldername;
 
@@ -967,7 +967,7 @@ class KuisController extends Controller
 
                     foreach ($request->fileUploads[$key] as $foldername) {
 
-                        array_push($temporaryFiles, TemporaryFile::where('folder', $foldername)->where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->first());
+                        array_push($temporaryFiles, QuizTemporaryFile::where('folder', $foldername)->where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->first());
 
                     }
 

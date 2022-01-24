@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TemporaryFile extends Model
+class QuizTemporaryFile extends Model
 {
     
     protected $fillable = ['set_kuis_id','kuis_id','user_id','soal_id','folder','filename'];

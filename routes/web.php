@@ -71,6 +71,8 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::get('/event/{event}/submit','EventController@submit')->name('event.submit');
     Route::get('/event/{event}/submit/delete','EventController@submit_delete')->name('event.submit.delete');
     Route::get('/event/{event}/submit/json','EventController@submit_json')->name('event.submit.json');
+    Route::post('/event/{event}/upload', 'KuisController@uploadAksesKuisFile')->name('kuis.jawab.upload');
+    Route::delete('/event/{event}/delete', 'KuisController@deleteAksesKuisFile')->name('kuis.jawab.delete');
     Route::post('/event/{event}/submit/action','EventController@submit_action')->name('event.submit.action');
     
     Route::get('/event/{event}/delete','EventController@destroy')->name('event.delete');

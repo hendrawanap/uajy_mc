@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTemporaryFilesTable extends Migration
+class CreateQuizTemporaryFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTemporaryFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('temporary_files', function (Blueprint $table) {
+        Schema::create('quiz_temporary_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('set_kuis_id');
             $table->foreignId('kuis_id');
@@ -32,6 +32,6 @@ class CreateTemporaryFilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temporary_files');
+        Schema::dropIfExists('quiz_temporary_files');
     }
 }
