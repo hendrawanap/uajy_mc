@@ -22,6 +22,10 @@ class Kuis extends Model
         return $this->hasMany(AksesKuis::class);
     }
 
+    public function temporary_file() {
+        return $this->hasMany(TemporaryFile::class);
+    } 
+
     public function kuis_submit() {
         return $this->hasMany(KuisSubmit::class);
     }

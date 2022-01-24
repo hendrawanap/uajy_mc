@@ -49,6 +49,8 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
 
     Route::get('/kuis/{setkuis}/show','KuisController@showAksesKuis')->name('kuis.jawab.show');
     Route::get('/kuis/ajax/{type}','KuisController@ajaxAksesKuis')->name('kuis.jawab.ajax');
+    Route::post('/kuis/{setkuis}/upload/{id}', 'KuisController@uploadAksesKuisFile')->name('kuis.jawab.upload');
+    Route::delete('/kuis/{setkuis}/delete/{id}', 'KuisController@deleteAksesKuisFile')->name('kuis.jawab.delete');
     Route::post('/kuis/{setkuis}/jawab/action','KuisController@jawabAksesKuis')->name('kuis.jawab.action');
     Route::get('/kuis/{kuis}/set-kuis','KuisController@cek_akses_set_kuis')->name('kuis.akses_set_kuis');
     Route::get('/kuis/{kuis}/set-kuis/json','KuisController@cek_akses_set_kuis_json')->name('kuis.akses_set_kuis_json');

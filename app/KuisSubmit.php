@@ -21,5 +21,9 @@ class KuisSubmit extends Model
     public function akses_kuis() {
         return $this->hasMany(AksesKuis::class);
     }
+
+    public function temporary_file() {
+        return $this->hasMany(TemporaryFile::class);
+    } 
     
 }
