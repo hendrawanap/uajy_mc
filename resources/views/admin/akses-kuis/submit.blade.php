@@ -264,7 +264,7 @@
 
                                                                 <i class="fa fa-paperclip"></i>
 
-                                                                File Peserta({{$loop->iteration}}).zip
+                                                                {{ explode('/', $file->getJawaban())[3] }}
 
                                                             </a>
 

@@ -14,7 +14,7 @@
 
         <!-- Form -->
 
-        <form action="{{route('event.submit.action',$event->id)}}" method="POST" enctype="multipart/form-data" class="col-xl-12">
+        <form action="{{route('event.submit.action',$event->id)}}" method="POST" enctype="multipart/form-data" id="form-submit" class="col-xl-12">
 
         @csrf
 
@@ -86,7 +86,7 @@
 
                                         <div class="fileInputContainer">
                                                                                          
-                                            <input type="file" name="file" class="file" multiple="true" required>
+                                            <input type="file" name="file[]" class="file" multiple="true" required>
 
                                         </div>
 
@@ -156,35 +156,131 @@
     // Create a FilePond instance
     const pond = FilePond.create(inputElement);
 
-    FILEUPLOADS[inputElement.id] = [];
+    let FILEUPLOADS = [];
 
     let foldername;
+
+    let index = 0;
     
     pond.setOptions({
 
         server: {
 
-            process: {
+            process: function(fieldName, file, metadata, load, error, progress, abort, transfer, options) {
 
-                url: '/kuis/{{$setkuis->id}}/upload/'+inputElement.id,
 
-                onload: function(response) {
+                // onload: function(response) {
 
-                    foldername = response;
+                //     FILEUPLOADS.push(response);
                     
-                    FILEUPLOADS[inputElement.id].push(response);
+                //     const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
 
-                }
+                //     for(let i = 0; i < filePondRevertButtons.length; i++) {
+                            
+                //         filePondRevertButtons[i].addEventListener('click', function(e) {
+                            
+                //             FILEUPLOADS.reverse();
+                            
+                //             foldername = FILEUPLOADS[i];
+
+                //             console.log(foldername);
+
+                //             FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                    
+                //                 return folder != foldername; 
+
+                //             });
+
+                //             FILEUPLOADS.reverse();
+
+                //         });
+    
+
+                //     }
+                    
+                //     console.log(FILEUPLOADS);
+
+                // }
+
+                const formData = new FormData();
+
+                formData.append(fieldName, file, file.name);
+
+                const request = new XMLHttpRequest();
+
+                request.open('POST', '/event/{{$event->id}}/upload');
+
+                request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+
+                request.upload.onprogress = (e) => {
+
+                    progress(e.lengthComputable, e.loaded, e.total);
+
+                };
+
+                request.onload = function () {
+
+                    load(request.responseText);
+
+                    FILEUPLOADS.push(request.responseText);
+
+                    // shiftDown(file.name);
+
+                    // const files = pond.getFiles();
+
+                    // const fileIndex = getFileIndex(files, file.name);
+
+                    // const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
+                            
+                    // filePondRevertButtons[fileIndex].addEventListener('click', function(e) {
+
+                    //     FILEUPLOADS.reverse();
+                        
+                    //     foldername = FILEUPLOADS[getFileIndex(files, e.target.parentNode.previousSibling.innerText)];
+
+                    //     console.log(foldername);
+
+                    //     FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                
+                    //         return folder != foldername; 
+
+                    //     });
+
+                    //     FILEUPLOADS.reverse();
+
+                    // });
+
+                    console.log(FILEUPLOADS);
+
+                };
+
+                request.send(formData);
+
+                return {
+
+                    abort: () => {
+
+                        request.abort();
+
+                        abort();
+
+                    },
+                    
+                };
 
             },
         
             // revert: {
 
-            //     url: '/kuis/{{$setkuis->id}}/delete/'+inputElement.id,
+            //     url: '/event/{{$event->id}}/delete',
                 
             //     onload: function(response) {
                     
-            //         delete FILEUPLOADS[response];
+            //         FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                
+            //             return folder != response; 
+
+            //         });
 
             //         console.log(FILEUPLOADS);
 
@@ -196,7 +292,7 @@
 
                 $.ajax({
 
-                    url: '/kuis/{{$setkuis->id}}/delete/'+inputElement.id,
+                    url: '/event/{{$event->id}}/delete',
 
                     headers: {
                         
@@ -206,15 +302,17 @@
 
                     type: 'DELETE',
 
-                    data: {foldername:foldername},
+                    data: {foldername:uniqueFileId},
 
-                        success: function(response){
+                    success: function(response){
             
-                        FILEUPLOADS[inputElement.id] = FILEUPLOADS[inputElement.id].filter(function(folder) {
+                        FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
                                 
                             return folder != response; 
 
                         });
+
+                        load();
                         
                     }
 
@@ -230,6 +328,88 @@
 
         }
     });
+
+    function shiftDown(filename) {
+
+        const files = pond.getFiles();
+
+        const fileIndex = getFileIndex(files, filename);
+
+        pond.moveFile(fileIndex, files.length - 1 - index);
+
+        index++;
+
+        return fileIndex;
+
+    }
+
+
+    function getFileIndex(files, filename) {
+
+        let fileIndex = 0;
+
+        for (let i = 0; i < files.length; i++) {
+
+            if (files[i].filename != filename) {
+
+                fileIndex++;
+
+            } else {
+
+                break;
+
+            }
+
+        }
+
+        return fileIndex;
+
+    }
+
+    $( "#form-submit" ).submit(function( e ) {
+
+        e.preventDefault();
+
+        let inputs = $(this).serializeArray();
+
+        let file = {};
+
+        inputs.forEach( input => {
+
+            if (input.name.includes('file')) {
+
+                file['{{$event->id}}'] = input.value;
+
+            }
+
+        });
+
+        postData = {file: file}
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "{{route('event.submit.action',$event->id)}}",
+            
+            data: {postData:postData, fileUploads: FILEUPLOADS},
+
+            headers: {
+                
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+
+            }, 
+
+            success: function(response){
+                
+                window.location = "{{route('event.submit',$event->id)}}"
+                
+            }
+
+        });
+
+    });
+
 
     $(function () {
 

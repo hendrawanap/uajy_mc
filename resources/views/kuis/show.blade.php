@@ -352,17 +352,57 @@
 
             server: {
 
-                process: {
+                process: function(fieldName, file, metadata, load, error, progress, abort, transfer, options) {
 
-                    url: '/kuis/{{$setkuis->id}}/upload/'+inputElement.id,
+                    // url: '/kuis/{{$setkuis->id}}/upload/'+inputElement.id,
 
-                    onload: function(response) {
+                    // onload: function(response) {
 
-                        foldername = response;
+                    //     foldername = response;
                         
-                        FILEUPLOADS[inputElement.id].push(response);
+                    //     FILEUPLOADS[inputElement.id].push(response);
 
-                    }
+                    // }
+
+                    const formData = new FormData();
+
+                    formData.append(fieldName, file, file.name);
+
+                    const request = new XMLHttpRequest();
+
+                    request.open('POST', '/kuis/{{$setkuis->id}}/upload/'+inputElement.id);
+
+                    request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+
+                    request.upload.onprogress = (e) => {
+
+                        progress(e.lengthComputable, e.loaded, e.total);
+
+                    };
+
+                    request.onload = function () {
+
+                        load(request.responseText);
+
+                        FILEUPLOADS[inputElement.id].push(request.responseText);
+
+                        console.log(FILEUPLOADS);
+
+                    };
+
+                    request.send(formData);
+
+                    return {
+
+                        abort: () => {
+
+                            request.abort();
+
+                            abort();
+
+                        },
+                        
+                    };
 
                 },
             
@@ -394,7 +434,7 @@
 
                         type: 'DELETE',
 
-                        data: {foldername:foldername},
+                        data: {foldername:uniqueFileId},
 
                          success: function(response){
                 
@@ -430,8 +470,6 @@
         e.preventDefault();
 
         let inputs = $(this).serializeArray();
-
-        console.log(inputs);
 
         let isian = {}
 

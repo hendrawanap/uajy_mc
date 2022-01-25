@@ -19,20 +19,26 @@ class EventSubmit extends Model
     }
 
     public function getFile() {
+
         return '/file/event/'.$this->file;
 
-        // $files = array();
-        // $files_location = array();
+    }
 
-        // foreach ($this->user->event_submit as $event) {
-        //     array_push($files, $event->file);
-        // }
 
-        // foreach ($files as $file) {
-        //     array_push($files_location, '/file/event/' . $file);
-        // }
+    public function getFiles() {
 
-        // return $files_location;
+        $files = array();
+        $files_location = array();
+
+        foreach ($this->user->event_submit as $event) {
+            array_push($files, $event->file);
+        }
+
+        foreach ($files as $file) {
+            array_push($files_location, '/file/event/' . $file);
+        }
+
+        return $files_location;
 
     }
 
