@@ -60,7 +60,23 @@
 
                                     <div class="pt-0">
 
-                                        <div>{!! $event->soal !!}</div>
+                                        <!-- <div>{!! $event->soal !!}</div> -->
+
+                                        <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;">
+                                            <div style="width: 100%; height:100%; position: relative;">
+                                                <div id="pdf-loader">
+                                                    <div class="sk-three-bounce">
+                                                        <div class="sk-child sk-bounce1"></div>
+                                                        <div class="sk-child sk-bounce2"></div>
+                                                        <div class="sk-child sk-bounce3"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-2 d-flex justify-content-end">
+                                            <button type="button" class="btn btn-primary cursor-default" id="btn-open-large" onclick="toggleModal()" disabled>Memuat...</button>
+                                        </div>
 
                                         <p class="mb-3">
 
@@ -73,6 +89,7 @@
                                         <p>Upload hanya dapat dilakukan selama waktu uploader tersedia</p>
 
                                         {{-- <div class="input-group">
+
 
                                             <div class="custom-file">
 
@@ -482,6 +499,114 @@
 
     });
 
+<style>
+
+    #preview canvas {
+        width: 100%;
+    }
+
+    #large-view canvas {
+        width: 100%;
+    }
+
+    .cursor-default {
+        cursor: default;
+    }
+
+</style>
+
+<script src="https://unpkg.com/pdfjs-dist@latest/build/pdf.min.js"></script>
+
+<script>
+const pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+let pdfDoc = null;
+let currentRenderingPage = 1;
+const scale = 1;
+
+const url = document.getElementById('preview').dataset.url;
+
+const getDoc = (url, containerId, onLoaded) => {
+    pdfjsLib.getDocument(url).promise.then((doc) => {
+        pdfDoc = doc;
+        render(url, containerId, onLoaded);
+    });
+};
+
+const render = (url, containerId, onLoaded) => {
+    if (!pdfDoc) {
+        getDoc(url, containerId, onLoaded);
+    } else {
+        const checkFinish = (currentPage) => currentPage == pdfDoc.numPages;
+        const renderPromises = [];
+        for (let i = 0; i < pdfDoc.numPages; i++) {
+            renderPromises.push(pdfDoc.getPage(i + 1))
+        }
+        Promise.all(renderPromises).then(pages => {
+            const pagesHTML = `
+            <div style="width: 100%; position: relative;">
+                <div id="pdf-loader">
+                    <div class="sk-three-bounce">
+                        <div class="sk-child sk-bounce1"></div>
+                        <div class="sk-child sk-bounce2"></div>
+                        <div class="sk-child sk-bounce3"></div>
+                    </div>
+                </div>
+                <canvas></canvas>
+            </div>`.repeat(pages.length);
+            const container = document.getElementById(containerId);
+            container.innerHTML = pagesHTML;
+            pages.forEach(page => renderPage(page, container, checkFinish, onLoaded));
+        })
+    }
+};
+
+const renderPage = (page, _container, check, onLoaded) => {
+    let pdfViewport = page.getViewport({ scale: 1 });
+
+    const container = _container.children[page._pageIndex];
+    pdfViewport = page.getViewport({ scale: container.offsetWidth / pdfViewport.width });
+    const loader = container.children[0];
+    const canvas = container.children[1];
+    const context = canvas.getContext("2d");
+    canvas.height = pdfViewport.height;
+    canvas.width = pdfViewport.width;
+
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault(), false);
+
+    page.render({
+      canvasContext: context,
+      viewport: pdfViewport
+    }).promise
+    .then(() => {
+        loader.style.display = 'none';
+        if (check(page._pageIndex + 1)) {
+            onLoaded ? onLoaded() : null;
+        }
+    })
+    .catch((e) => console.log(e));
+};
+
+let firstTimeOpen = true;
+
+const onPreviewLoaded = () => {
+    const btnOpen = document.getElementById('btn-open-large');
+    btnOpen.innerHTML = 'Perbesar';
+    btnOpen.attributes.removeNamedItem('disabled');
+    btnOpen.classList.remove('cursor-default');
+    btnOpen.addEventListener('click', () => {
+        if (firstTimeOpen) {
+            render(url, 'large-view')
+        }
+        firstTimeOpen = false;
+    });
+}
+
+render(url, 'preview', onPreviewLoaded);
+
+</script>
+
+<script>
 
     $(function () {
 
@@ -528,5 +653,16 @@
     });
 
 </script>
+
+@endsection
+
+@section('modal-content')
+
+<div id="large-view" class="w-100" data-url="{{ $event->getSoalURL() }}">
+    <h1 style="display: none" id="error-2">An error occurred</h1>
+    <div id="loader-2">
+        Loading...
+    </div>
+</div>
 
 @endsection
