@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use App\EventSubmit;
+use App\CaseTemporaryFile;
 use Illuminate\Http\Request;
 use DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Auth;
+use DirectoryIterator;
+use Session;
+
 class EventController extends Controller
 {
     /**
@@ -145,7 +149,8 @@ class EventController extends Controller
     }
 
     public function event_peserta_json(Event $event) {
-        $data = $event->event_submit()->with('user')->get();
+        $data = $event->event_submit()->with('user')->orderByDesc('created_at')->get()->unique('user_id');
+
         return DataTables::of($data)
         ->addColumn('tanggal', function ($data) {
             return $data->created_at->format('Y-m-d H:i:s');
@@ -170,27 +175,85 @@ class EventController extends Controller
             return redirect()->back()->with('error','Waktu sudah habis !');
             exit;
         }
+
+        $temporaryFiles = CaseTemporaryFile::where('event_id', $event->id)->where('user_id', Auth::user()->id)->get();
+
+        if ($temporaryFiles->count() > 0) {
+
+            foreach ($temporaryFiles as $temporaryFile) {
+
+                $temporaryFile->delete();
+
+                array_map('unlink', glob(public_path('file/event/temp/' . $temporaryFile->folder . '/*.*')));
+
+                rmdir(public_path('file/event/temp/' . $temporaryFile->folder));
+
+            }
+
+        }
+
         return view('event.submit',compact('event'));
     }
 
     public function submit_action(Request $request,Event $event) {
-        $request->validate([
-            'file' => 'required'
-        ]);
-        $data = EventSubmit::where('user_id',Auth::user()->id)->where('event_id',$event->id);
-        if($data->count() > 0) {
-            return redirect()->back()->with('error','Anda hanya dapat upload 1x jika ada perubahan maka silahkan hapus data sebelumnya');
-            exit;
+        // $request->validate([
+        //     'file' => 'required'
+        // ]);
+        // $data = EventSubmit::where('user_id',Auth::user()->id)->where('event_id',$event->id);
+        // if($data->count() > 0) {
+        //     return redirect()->back()->with('error','Anda hanya dapat upload 1x jika ada perubahan maka silahkan hapus data sebelumnya');
+        //     exit;
+        // }
+
+        // $file = $request->file('file');
+        // $file_name = $event->id . Auth::user()->id . $file->getClientOriginalName();
+        // EventSubmit::create([
+        //     'event_id' => $event->id,
+        //     'file' => $file_name,
+        //     'user_id' => Auth::user()->id,
+        // ]);
+        // $file->move('file/event', $file_name);
+
+
+        $temporaryFiles = array();
+
+        foreach ($request->fileUploads as $foldername) {
+
+            array_push($temporaryFiles, CaseTemporaryFile::where('folder', $foldername)->where('event_id', $event->id)->where('user_id', Auth::user()->id)->first());
+
         }
-        $file = $request->file('file');
-        $file_name = $event->id.Auth::user()->id.$file->getClientOriginalName();
-        EventSubmit::create([
-            'event_id' => $event->id,
-            'file' => $file_name,
-            'user_id' => Auth::user()->id
-        ]);
-        $file->move('file/event',$file_name);
-        return redirect()->back()->with('success','Berhasil !');
+
+        if (count($temporaryFiles) > 0) {
+
+            foreach ($temporaryFiles as $index => $temporaryFile) {
+
+                EventSubmit::create([
+
+                    'event_id' => $event->id,
+
+                    'file' => $temporaryFile->filename,
+
+                    'user_id' => Auth::user()->id,
+
+                ]);
+
+
+                File::move(public_path('file\\event\\temp\\' . $temporaryFile->folder . '\\' . $temporaryFile->filename), public_path('file\\event\\' . $temporaryFile->filename));
+
+                $temporaryFile->delete();
+
+                rmdir(public_path('file\\event\\temp\\' . $temporaryFile->folder));
+
+            }
+
+        }
+        
+        // return redirect()->back()->with('success','Berhasil !');
+
+        Session::flash('success', 'Berhasil !');
+
+        return 'Berhasil !';
+
     }
 
     public function submit_json(Event $event)
@@ -215,5 +278,120 @@ class EventController extends Controller
         unlink(public_path($event->getFile()));
         $event->delete();
         return redirect()->back()->with('success','Berhasil !');
+    }
+
+    public function uploadEventFile(Request $request, Event $event) {
+
+        if ($request->input('useChunk')) {
+
+            $folder = $event->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
+
+            return $folder;
+
+        } else {
+
+            if ($request->hasFile('file')) {
+                
+                $files = $request->file('file');
+    
+                foreach ($files as $file) {
+    
+                    // Baps-Case Susah-uniqid
+                
+                    $filename = Auth::user()->name.'-'.$event->name.'-'.uniqid().'.'.$file->extension();
+    
+                    $folder = $event->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
+    
+                    $file->move('file/event/temp/' . $folder, $filename);
+    
+                    CaseTemporaryFile::create([
+    
+                        'user_id' => Auth::user()->id,
+    
+                        'event_id' => $event->id,
+    
+                        'folder' => $folder,
+    
+                        'filename' => $filename
+    
+                    ]);
+    
+                    return $folder;
+                    
+                }
+    
+            }
+
+        }
+
+        return '';
+
+    }
+
+    public function patchEventFile(Request $request, Event $event) {
+        $loaded = $request->input('loaded');
+        $chunkSize = $request->input('chunkSize');
+        $fileSize = $request->input('fileSize');
+        
+        $chunk = $request->file('filedata');
+
+        $chunkName = $chunk->getClientOriginalName().'.'.$chunk->extension();
+        
+        $folder = $request->input('folder');
+        
+        $chunk->move('file/event/temp/' . $folder, $chunkName);
+        
+        if ($loaded + $chunkSize > $fileSize) {
+            $dir = new DirectoryIterator(public_path('file/event/temp/'.$folder));
+            $filename = '';
+            $extension = '';
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+                    if (pathinfo($fileinfo, PATHINFO_EXTENSION) != 'bin') {
+                        $extension = pathinfo($fileinfo, PATHINFO_EXTENSION);
+                    }
+                    $chunkPath = public_path('file/event/temp/'.$folder.'/'.$fileinfo->getFileName());
+                    $file = fopen($chunkPath, 'rb');
+                    $buff = fread($file, $chunkSize);
+                    fclose($file);
+                    
+                    $filename = Auth::user()->name.'-'.$event->name.'-'.explode('-', $folder)[1].'.'.$extension;
+                    $filePath = public_path('file/event/temp/'.$folder.'/'.$filename);
+                    $final = fopen($filePath,'ab');
+                    $write = fwrite($final, $buff);
+                    fclose($final);
+
+                    unlink($chunkPath);
+                }
+            }
+
+            CaseTemporaryFile::create([
+    
+                'user_id' => Auth::user()->id,
+
+                'event_id' => $event->id,
+
+                'folder' => $folder,
+
+                'filename' => $filename
+
+            ]);
+        }
+
+        return $folder;
+    }
+
+    public function deleteEventFile(Request $request, Event $event) {
+
+        $foldername = $request->foldername;
+
+        array_map('unlink', glob(public_path('file/event/temp/' . $foldername . '/*.*')));
+
+        rmdir(public_path('file/event/temp/' . $foldername));     
+        
+        CaseTemporaryFile::where('folder', $foldername)->delete();
+
+        return $foldername;
+
     }
 }

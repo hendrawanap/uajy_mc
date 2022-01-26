@@ -21,6 +21,9 @@ class Event extends Model
     public function getTanggalSelesai() {
         return str_replace('T',' ',$this->tanggal_selesai);
     }
+  
+    public function submitCounts() {
+        return $this->event_submit->unique('user_id')->count();
 
     public function getSoalURL() {
         return '/file/case-soal/'.$this->soal;

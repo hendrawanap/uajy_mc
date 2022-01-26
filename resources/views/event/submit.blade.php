@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('link')
+
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />    
+
+@endsection
+
 @section('content')
 
 <div class="container-fluid">
@@ -8,7 +14,7 @@
 
         <!-- Form -->
 
-        <form action="{{route('event.submit.action',$event->id)}}" method="POST" enctype="multipart/form-data" class="col-xl-12">
+        <form action="{{route('event.submit.action',$event->id)}}" method="POST" enctype="multipart/form-data" id="form-submit" class="col-xl-12">
 
         @csrf
 
@@ -82,7 +88,8 @@
 
                                         <p>Upload hanya dapat dilakukan selama waktu uploader tersedia</p>
 
-                                        <div class="input-group">
+                                        {{-- <div class="input-group">
+
 
                                             <div class="custom-file">
 
@@ -91,6 +98,12 @@
                                                 <label class="custom-file-label">Pilih file</label>
 
                                             </div>
+
+                                        </div> --}}
+
+                                        <div class="fileInputContainer">
+                                                                                         
+                                            <input type="file" name="file[]" class="file" multiple="true" required>
 
                                         </div>
 
@@ -148,18 +161,343 @@
 
 @endsection
 
-@section('modal-content')
-
-<div id="large-view" class="w-100" data-url="{{ $event->getSoalURL() }}">
-    <h1 style="display: none" id="error-2">An error occurred</h1>
-    <div id="loader-2">
-        Loading...
-    </div>
-</div>
-
-@endsection
-
 @section('js')
+
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+<script>
+
+    // Get a reference to the file input element
+    const inputElement = document.querySelector('input[class="file"]');
+
+    // Create a FilePond instance
+    const pond = FilePond.create(inputElement);
+
+    let FILEUPLOADS = [];
+
+    let foldername;
+
+    let index = 0;
+    
+    pond.setOptions({
+
+        chunkUploads: true,
+
+        chunkSize: 10_000_000,
+
+        chunkForce: true,
+
+        server: {
+
+            process: function(fieldName, file, metadata, load, error, progress, abort, transfer, options) {
+
+
+                // onload: function(response) {
+
+                //     FILEUPLOADS.push(response);
+                    
+                //     const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
+
+                //     for(let i = 0; i < filePondRevertButtons.length; i++) {
+                            
+                //         filePondRevertButtons[i].addEventListener('click', function(e) {
+                            
+                //             FILEUPLOADS.reverse();
+                            
+                //             foldername = FILEUPLOADS[i];
+
+                //             console.log(foldername);
+
+                //             FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                    
+                //                 return folder != foldername; 
+
+                //             });
+
+                //             FILEUPLOADS.reverse();
+
+                //         });
+    
+
+                //     }
+                    
+                //     console.log(FILEUPLOADS);
+
+                // }
+
+                const postUrl = '/event/{{$event->id}}/upload/'+inputElement.id;
+                const patchUrl = '/event/{{$event->id}}/patch/'+inputElement.id;
+
+                const useChunk = file.size > options.chunkSize;
+
+                const startChunk = function(folderName) {
+                    const max_chunk_size = options.chunkSize;
+                    let loaded = 0;
+                    let part = 1;
+                    let reader = new FileReader();
+                    let blob = file.slice(loaded, max_chunk_size);
+                    reader.readAsArrayBuffer(blob);
+                    reader.onload = function(e) {
+                        let fd = new FormData();
+                        fd.append('filedata', new File([reader.result], 'part-'+part));
+                        fd.append('loaded', loaded);
+                        fd.append('folder', folderName);
+                        fd.append('fileSize', file.size);
+                        fd.append('chunkSize', max_chunk_size);
+                        $.ajax(patchUrl, {
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            type: "POST",
+                            contentType: false,
+                            data: fd,
+                            processData: false,
+                            success: function(r) {
+                                loaded += max_chunk_size;
+                                part++;
+                                if (loaded < file.size) {
+                                    blob = file.slice(loaded, loaded + max_chunk_size);
+                                    reader.readAsArrayBuffer(blob);
+                                    progress(true, loaded, file.size);
+                                } else {
+                                    loaded = file.size;
+                                    FILEUPLOADS.push(r);
+                                    load(r);
+                                }
+                            },
+                            error: function(e) {
+                                const errorMessage = `Oh no ${e.statusText} (${e.status})`
+                                error(errorMessage);
+                                console.log(errorMessage);
+                            }
+                        });
+                    };
+                }
+
+                if (useChunk) {
+                    $.ajax(postUrl, {
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        type: "POST",
+                        data: { useChunk: true },
+                        success: function(r) {
+                            startChunk(r);
+                        }
+                    });
+                } else {
+                    const formData = new FormData();
+    
+                    formData.append(fieldName, file, file.name);
+    
+                    const request = new XMLHttpRequest();
+    
+                    request.open('POST', postUrl);
+    
+                    request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    
+                    request.upload.onprogress = (e) => {
+    
+                        progress(e.lengthComputable, e.loaded, e.total);
+    
+                    };
+    
+                    request.onload = function () {
+
+                        if (request.status >= 200 && request.status < 300) {
+
+                            FILEUPLOADS.push(request.responseText);
+    
+                            load(request.responseText);
+
+                        } else {
+                            const errorMessage = `Oh no ${e.statusText} (${e.status})`
+                            error(errorMessage);
+                            console.log(errorMessage);
+                        }
+    
+                        
+                        // shiftDown(file.name);
+    
+                        // const files = pond.getFiles();
+    
+                        // const fileIndex = getFileIndex(files, file.name);
+    
+                        // const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
+                                
+                        // filePondRevertButtons[fileIndex].addEventListener('click', function(e) {
+    
+                        //     FILEUPLOADS.reverse();
+                            
+                        //     foldername = FILEUPLOADS[getFileIndex(files, e.target.parentNode.previousSibling.innerText)];
+    
+                        //     console.log(foldername);
+    
+                        //     FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                    
+                        //         return folder != foldername; 
+    
+                        //     });
+    
+                        //     FILEUPLOADS.reverse();
+    
+                        // });
+    
+                    };
+    
+                    request.send(formData);
+    
+                    return {
+    
+                        abort: () => {
+    
+                            request.abort();
+    
+                            abort();
+    
+                        },
+                        
+                    };
+                    
+                }
+
+            },
+        
+            // revert: {
+
+            //     url: '/event/{{$event->id}}/delete',
+                
+            //     onload: function(response) {
+                    
+            //         FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                
+            //             return folder != response; 
+
+            //         });
+
+            //         console.log(FILEUPLOADS);
+
+            //     }
+
+            // },
+
+            revert: (uniqueFileId, load, error) => {
+
+                $.ajax({
+
+                    url: '/event/{{$event->id}}/delete',
+
+                    headers: {
+                        
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+
+                    },
+
+                    type: 'DELETE',
+
+                    data: {foldername:uniqueFileId},
+
+                    success: function(response){
+            
+                        FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                
+                            return folder != response; 
+
+                        });
+
+                        load();
+                        
+                    }
+
+                })
+
+            },
+
+            headers: {
+                
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+
+            }
+
+        }
+    });
+
+    function shiftDown(filename) {
+
+        const files = pond.getFiles();
+
+        const fileIndex = getFileIndex(files, filename);
+
+        pond.moveFile(fileIndex, files.length - 1 - index);
+
+        index++;
+
+        return fileIndex;
+
+    }
+
+
+    function getFileIndex(files, filename) {
+
+        let fileIndex = 0;
+
+        for (let i = 0; i < files.length; i++) {
+
+            if (files[i].filename != filename) {
+
+                fileIndex++;
+
+            } else {
+
+                break;
+
+            }
+
+        }
+
+        return fileIndex;
+
+    }
+
+    $( "#form-submit" ).submit(function( e ) {
+
+        e.preventDefault();
+
+        let inputs = $(this).serializeArray();
+
+        let file = {};
+
+        inputs.forEach( input => {
+
+            if (input.name.includes('file')) {
+
+                file['{{$event->id}}'] = input.value;
+
+            }
+
+        });
+
+        postData = {file: file}
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "{{route('event.submit.action',$event->id)}}",
+            
+            data: {postData:postData, fileUploads: FILEUPLOADS},
+
+            headers: {
+                
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+
+            }, 
+
+            success: function(response){
+                
+                window.location = "{{route('event.submit',$event->id)}}"
+                
+            }
+
+        });
+
+    });
 
 <style>
 
@@ -315,5 +653,16 @@ render(url, 'preview', onPreviewLoaded);
     });
 
 </script>
+
+@endsection
+
+@section('modal-content')
+
+<div id="large-view" class="w-100" data-url="{{ $event->getSoalURL() }}">
+    <h1 style="display: none" id="error-2">An error occurred</h1>
+    <div id="loader-2">
+        Loading...
+    </div>
+</div>
 
 @endsection

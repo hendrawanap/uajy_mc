@@ -49,6 +49,9 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
 
     Route::get('/kuis/{setkuis}/show','KuisController@showAksesKuis')->name('kuis.jawab.show');
     Route::get('/kuis/ajax/{type}','KuisController@ajaxAksesKuis')->name('kuis.jawab.ajax');
+    Route::post('/kuis/{setkuis}/upload/{id}', 'KuisController@uploadAksesKuisFile')->name('kuis.jawab.upload');
+    Route::post('/kuis/{setkuis}/patch/{id}', 'KuisController@patchAksesKuisFile')->name('kuis.jawab.patch');
+    Route::delete('/kuis/{setkuis}/delete/{id}', 'KuisController@deleteAksesKuisFile')->name('kuis.jawab.delete');
     Route::post('/kuis/{setkuis}/jawab/action','KuisController@jawabAksesKuis')->name('kuis.jawab.action');
     Route::get('/kuis/{kuis}/set-kuis','KuisController@cek_akses_set_kuis')->name('kuis.akses_set_kuis');
     Route::get('/kuis/{kuis}/set-kuis/json','KuisController@cek_akses_set_kuis_json')->name('kuis.akses_set_kuis_json');
@@ -69,6 +72,9 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::get('/event/{event}/submit','EventController@submit')->name('event.submit');
     Route::get('/event/{event}/submit/delete','EventController@submit_delete')->name('event.submit.delete');
     Route::get('/event/{event}/submit/json','EventController@submit_json')->name('event.submit.json');
+    Route::post('/event/{event}/upload', 'EventController@uploadEventFile')->name('event.upload');
+    Route::post('/event/{event}/patch', 'EventController@patchEventFile')->name('event.patch');
+    Route::delete('/event/{event}/delete', 'EventController@deleteEventFile')->name('event.delete');
     Route::post('/event/{event}/submit/action','EventController@submit_action')->name('event.submit.action');
     
     Route::get('/event/{event}/delete','EventController@destroy')->name('event.delete');
