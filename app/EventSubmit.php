@@ -31,7 +31,9 @@ class EventSubmit extends Model
         $files_location = array();
 
         foreach ($this->user->event_submit as $event) {
-            array_push($files, $event->file);
+            if ($event->event_id == $this->event->id) {
+                array_push($files, $event->file);
+            }
         }
 
         foreach ($files as $file) {
