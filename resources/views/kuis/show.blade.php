@@ -350,6 +350,12 @@
         
         pond.setOptions({
 
+            chunkUploads: true,
+
+            chunkSize: 10_000_000,
+
+            chunkForce: true,
+
             server: {
 
                 process: function(fieldName, file, metadata, load, error, progress, abort, transfer, options) {
@@ -364,46 +370,115 @@
 
                     // }
 
-                    const formData = new FormData();
+                    const postUrl = '/kuis/{{$setkuis->id}}/upload/'+inputElement.id;
+                    const patchUrl = '/kuis/{{$setkuis->id}}/patch/'+inputElement.id;
 
-                    formData.append(fieldName, file, file.name);
+                    const useChunk = file.size > options.chunkSize;
 
-                    const request = new XMLHttpRequest();
+                    const startChunk = function(folderName) {
+                        const max_chunk_size = options.chunkSize;
+                        let loaded = 0;
+                        let part = 1;
+                        let reader = new FileReader();
+                        let blob = file.slice(loaded, max_chunk_size);
+                        reader.readAsArrayBuffer(blob);
+                        reader.onload = function(e) {
+                            let fd = new FormData();
+                            fd.append('filedata', new File([reader.result], 'part-'+part));
+                            fd.append('loaded', loaded);
+                            fd.append('folder', folderName);
+                            fd.append('fileSize', file.size);
+                            fd.append('chunkSize', max_chunk_size);
+                            $.ajax(patchUrl, {
+                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                                type: "POST",
+                                contentType: false,
+                                data: fd,
+                                processData: false,
+                                success: function(r) {
+                                    loaded += max_chunk_size;
+                                    part++;
+                                    if (loaded < file.size) {
+                                        blob = file.slice(loaded, loaded + max_chunk_size);
+                                        reader.readAsArrayBuffer(blob);
+                                        progress(true, loaded, file.size);
+                                    } else {
+                                        loaded = file.size;
+                                        FILEUPLOADS[inputElement.id].push(r);
+                                        load(r);
+                                    }
+                                },
+                                error: function(e) {
+                                    const errorMessage = `Oh no ${e.statusText} (${e.status})`
+                                    error(errorMessage);
+                                    console.log(errorMessage);
+                                }
+                            });
+                        };
+                    }
 
-                    request.open('POST', '/kuis/{{$setkuis->id}}/upload/'+inputElement.id);
+                    if (useChunk) {
+                        $.ajax(postUrl, {
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            type: "POST",
+                            data: { useChunk: true },
+                            success: function(r) {
+                                startChunk(r);
+                            }
+                        });
+                    } else {
 
-                    request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                        const formData = new FormData();
+    
+                        formData.append(fieldName, file, file.name);
+    
+                        const request = new XMLHttpRequest();
+    
+                        request.open('POST', postUrl);
+    
+                        request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    
+                        request.upload.onprogress = (e) => {
+    
+                            progress(e.lengthComputable, e.loaded, e.total);
+    
+                        };
+    
+                        request.onload = function () {
+    
+                            if (request.status >= 200 && request.status < 300) {
+                                // the load method accepts either a string (id) or an object
+                                load(request.responseText);
+        
+                                FILEUPLOADS[inputElement.id].push(request.responseText);
+        
+                                console.log(FILEUPLOADS);
+    
+                            } else {
+                                // Can call the error method if something is wrong, should exit after
+                                const errorMessage = `Oh no ${e.statusText} (${e.status})`
+                                error(errorMessage);
+                                console.log(errorMessage);
+                            }
+    
+    
+                        };
+    
+                        request.send(formData);
+    
+                        return {
+    
+                            abort: () => {
+    
+                                request.abort();
+    
+                                abort();
+    
+                            },
+                            
+                        };
 
-                    request.upload.onprogress = (e) => {
-
-                        progress(e.lengthComputable, e.loaded, e.total);
-
-                    };
-
-                    request.onload = function () {
-
-                        load(request.responseText);
-
-                        FILEUPLOADS[inputElement.id].push(request.responseText);
-
-                        console.log(FILEUPLOADS);
-
-                    };
-
-                    request.send(formData);
-
-                    return {
-
-                        abort: () => {
-
-                            request.abort();
-
-                            abort();
-
-                        },
-                        
-                    };
-
+                    }
                 },
             
                 // revert: {

@@ -33,6 +33,7 @@ use Session;
 use DB;
 
 use Carbon\Carbon;
+use DirectoryIterator;
 
 class KuisController extends Controller
 
@@ -844,45 +845,114 @@ class KuisController extends Controller
     }
 
     public function uploadAksesKuisFile(Request $request, SetKuis $setkuis, $id) {
-        
-        if ($request->hasFile('jawaban')) {
-            
-            $files = $request->file('jawaban');
-            
-            foreach ($files as $file) {
+
+        if ($request->input('useChunk')) {
+
+            $folder = $id.$setkuis->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
+
+            return $folder;
+
+        } else {
+
+            if ($request->hasFile('jawaban')) {
                 
-                $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.uniqid().'.'.$file->extension();
-
-                $folder = $id.$setkuis->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
-
-                $file->move('file/jawaban/temp/' . $folder, $filename);
-
-                $akseskuis = AksesKuis::findOrFail($id);
-
-                QuizTemporaryFile::create([
-
-                    'user_id' => Auth::user()->id,
-
-                    'kuis_id' => $akseskuis->soal->kuis_id,
-
-                    'set_kuis_id' => $setkuis->id,
-
-                    'soal_id' => $akseskuis->soal->id,
-
-                    'folder' => $folder,
-
-                    'filename' => $filename
-
-                ]);
-
-                return $folder;
-
+                $files = $request->file('jawaban');
+                
+                foreach ($files as $file) {
+                    
+                    $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.uniqid().'.'.$file->extension();
+    
+                    $folder = $id.$setkuis->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
+    
+                    $file->move('file/jawaban/temp/' . $folder, $filename);
+    
+                    $akseskuis = AksesKuis::findOrFail($id);
+    
+                    QuizTemporaryFile::create([
+    
+                        'user_id' => Auth::user()->id,
+    
+                        'kuis_id' => $akseskuis->soal->kuis_id,
+    
+                        'set_kuis_id' => $setkuis->id,
+    
+                        'soal_id' => $akseskuis->soal->id,
+    
+                        'folder' => $folder,
+    
+                        'filename' => $filename
+    
+                    ]);
+    
+                    return $folder;
+    
+                }
+    
             }
 
         }
 
         return '';
 
+    }
+
+    public function patchAksesKuisFile(Request $request, SetKuis $setkuis, $id) {
+        $loaded = $request->input('loaded');
+        $chunkSize = $request->input('chunkSize');
+        $fileSize = $request->input('fileSize');
+        
+        $chunk = $request->file('filedata');
+
+        $chunkName = $chunk->getClientOriginalName().'.'.$chunk->extension();
+        
+        $folder = $request->input('folder');
+        
+        $chunk->move('file/jawaban/temp/' . $folder, $chunkName);
+        
+        if ($loaded + $chunkSize > $fileSize) {
+            $dir = new DirectoryIterator(public_path('file/jawaban/temp/'.$folder));
+            $filename = '';
+            $extension = '';
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+                    if (pathinfo($fileinfo, PATHINFO_EXTENSION) != 'bin') {
+                        $extension = pathinfo($fileinfo, PATHINFO_EXTENSION);
+                    }
+                    $chunkPath = public_path('file/jawaban/temp/'.$folder.'/'.$fileinfo->getFileName());
+                    $file = fopen($chunkPath, 'rb');
+                    $buff = fread($file, $chunkSize);
+                    fclose($file);
+                    
+                    $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.explode('-', $folder)[1].'.'.$extension;
+                    $filePath = public_path('file/jawaban/temp/'.$folder.'/'.$filename);
+                    $final = fopen($filePath,'ab');
+                    $write = fwrite($final, $buff);
+                    fclose($final);
+
+                    unlink($chunkPath);
+                }
+            }
+
+            $akseskuis = AksesKuis::findOrFail($id);
+    
+            QuizTemporaryFile::create([
+
+                'user_id' => Auth::user()->id,
+
+                'kuis_id' => $akseskuis->soal->kuis_id,
+
+                'set_kuis_id' => $setkuis->id,
+
+                'soal_id' => $akseskuis->soal->id,
+
+                'folder' => $folder,
+
+                'filename' => $filename
+
+            ]);
+        }
+
+        return $folder;
     }
 
     public function deleteAksesKuisFile(Request $request, SetKuis $setkuis, $id) {
