@@ -10,6 +10,7 @@ use DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Auth;
+use DirectoryIterator;
 use Session;
 
 class EventController extends Controller
@@ -262,41 +263,104 @@ class EventController extends Controller
     }
 
     public function uploadEventFile(Request $request, Event $event) {
-        
-        if ($request->hasFile('file')) {
-            
-            $files = $request->file('file');
 
-            foreach ($files as $file) {
+        if ($request->input('useChunk')) {
 
-                // Baps-Case Susah-uniqid
-            
-                $filename = Auth::user()->name.'-'.$event->name.'-'.uniqid().'.'.$file->extension();
+            $folder = $event->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
 
-                $folder = $event->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
+            return $folder;
 
-                $file->move('file/event/temp/' . $folder, $filename);
+        } else {
 
-                CaseTemporaryFile::create([
-
-                    'user_id' => Auth::user()->id,
-
-                    'event_id' => $event->id,
-
-                    'folder' => $folder,
-
-                    'filename' => $filename
-
-                ]);
-
-                return $folder;
+            if ($request->hasFile('file')) {
                 
+                $files = $request->file('file');
+    
+                foreach ($files as $file) {
+    
+                    // Baps-Case Susah-uniqid
+                
+                    $filename = Auth::user()->name.'-'.$event->name.'-'.uniqid().'.'.$file->extension();
+    
+                    $folder = $event->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
+    
+                    $file->move('file/event/temp/' . $folder, $filename);
+    
+                    CaseTemporaryFile::create([
+    
+                        'user_id' => Auth::user()->id,
+    
+                        'event_id' => $event->id,
+    
+                        'folder' => $folder,
+    
+                        'filename' => $filename
+    
+                    ]);
+    
+                    return $folder;
+                    
+                }
+    
             }
 
         }
 
         return '';
 
+    }
+
+    public function patchEventFile(Request $request, Event $event) {
+        $loaded = $request->input('loaded');
+        $chunkSize = $request->input('chunkSize');
+        $fileSize = $request->input('fileSize');
+        
+        $chunk = $request->file('filedata');
+
+        $chunkName = $chunk->getClientOriginalName().'.'.$chunk->extension();
+        
+        $folder = $request->input('folder');
+        
+        $chunk->move('file/event/temp/' . $folder, $chunkName);
+        
+        if ($loaded + $chunkSize > $fileSize) {
+            $dir = new DirectoryIterator(public_path('file/event/temp/'.$folder));
+            $filename = '';
+            $extension = '';
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+                    if (pathinfo($fileinfo, PATHINFO_EXTENSION) != 'bin') {
+                        $extension = pathinfo($fileinfo, PATHINFO_EXTENSION);
+                    }
+                    $chunkPath = public_path('file/event/temp/'.$folder.'/'.$fileinfo->getFileName());
+                    $file = fopen($chunkPath, 'rb');
+                    $buff = fread($file, $chunkSize);
+                    fclose($file);
+                    
+                    $filename = Auth::user()->name.'-'.$event->name.'-'.explode('-', $folder)[1].'.'.$extension;
+                    $filePath = public_path('file/event/temp/'.$folder.'/'.$filename);
+                    $final = fopen($filePath,'ab');
+                    $write = fwrite($final, $buff);
+                    fclose($final);
+
+                    unlink($chunkPath);
+                }
+            }
+
+            CaseTemporaryFile::create([
+    
+                'user_id' => Auth::user()->id,
+
+                'event_id' => $event->id,
+
+                'folder' => $folder,
+
+                'filename' => $filename
+
+            ]);
+        }
+
+        return $folder;
     }
 
     public function deleteEventFile(Request $request, Event $event) {

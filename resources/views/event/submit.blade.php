@@ -164,6 +164,12 @@
     
     pond.setOptions({
 
+        chunkUploads: true,
+
+        chunkSize: 10_000_000,
+
+        chunkForce: true,
+
         server: {
 
             process: function(fieldName, file, metadata, load, error, progress, abort, transfer, options) {
@@ -202,71 +208,137 @@
 
                 // }
 
-                const formData = new FormData();
+                const postUrl = '/event/{{$event->id}}/upload/'+inputElement.id;
+                const patchUrl = '/event/{{$event->id}}/patch/'+inputElement.id;
 
-                formData.append(fieldName, file, file.name);
+                const useChunk = file.size > options.chunkSize;
 
-                const request = new XMLHttpRequest();
+                const startChunk = function(folderName) {
+                    const max_chunk_size = options.chunkSize;
+                    let loaded = 0;
+                    let part = 1;
+                    let reader = new FileReader();
+                    let blob = file.slice(loaded, max_chunk_size);
+                    reader.readAsArrayBuffer(blob);
+                    reader.onload = function(e) {
+                        let fd = new FormData();
+                        fd.append('filedata', new File([reader.result], 'part-'+part));
+                        fd.append('loaded', loaded);
+                        fd.append('folder', folderName);
+                        fd.append('fileSize', file.size);
+                        fd.append('chunkSize', max_chunk_size);
+                        $.ajax(patchUrl, {
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            type: "POST",
+                            contentType: false,
+                            data: fd,
+                            processData: false,
+                            success: function(r) {
+                                loaded += max_chunk_size;
+                                part++;
+                                if (loaded < file.size) {
+                                    blob = file.slice(loaded, loaded + max_chunk_size);
+                                    reader.readAsArrayBuffer(blob);
+                                    progress(true, loaded, file.size);
+                                } else {
+                                    loaded = file.size;
+                                    FILEUPLOADS.push(r);
+                                    load(r);
+                                }
+                            },
+                            error: function(e) {
+                                const errorMessage = `Oh no ${e.statusText} (${e.status})`
+                                error(errorMessage);
+                                console.log(errorMessage);
+                            }
+                        });
+                    };
+                }
 
-                request.open('POST', '/event/{{$event->id}}/upload');
+                if (useChunk) {
+                    $.ajax(postUrl, {
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        type: "POST",
+                        data: { useChunk: true },
+                        success: function(r) {
+                            startChunk(r);
+                        }
+                    });
+                } else {
+                    const formData = new FormData();
+    
+                    formData.append(fieldName, file, file.name);
+    
+                    const request = new XMLHttpRequest();
+    
+                    request.open('POST', postUrl);
+    
+                    request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    
+                    request.upload.onprogress = (e) => {
+    
+                        progress(e.lengthComputable, e.loaded, e.total);
+    
+                    };
+    
+                    request.onload = function () {
 
-                request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                        if (request.status >= 200 && request.status < 300) {
 
-                request.upload.onprogress = (e) => {
+                            FILEUPLOADS.push(request.responseText);
+    
+                            load(request.responseText);
 
-                    progress(e.lengthComputable, e.loaded, e.total);
-
-                };
-
-                request.onload = function () {
-
-                    load(request.responseText);
-
-                    FILEUPLOADS.push(request.responseText);
-
-                    // shiftDown(file.name);
-
-                    // const files = pond.getFiles();
-
-                    // const fileIndex = getFileIndex(files, file.name);
-
-                    // const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
-                            
-                    // filePondRevertButtons[fileIndex].addEventListener('click', function(e) {
-
-                    //     FILEUPLOADS.reverse();
+                        } else {
+                            const errorMessage = `Oh no ${e.statusText} (${e.status})`
+                            error(errorMessage);
+                            console.log(errorMessage);
+                        }
+    
                         
-                    //     foldername = FILEUPLOADS[getFileIndex(files, e.target.parentNode.previousSibling.innerText)];
-
-                    //     console.log(foldername);
-
-                    //     FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                        // shiftDown(file.name);
+    
+                        // const files = pond.getFiles();
+    
+                        // const fileIndex = getFileIndex(files, file.name);
+    
+                        // const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
                                 
-                    //         return folder != foldername; 
-
-                    //     });
-
-                    //     FILEUPLOADS.reverse();
-
-                    // });
-
-                    console.log(FILEUPLOADS);
-
-                };
-
-                request.send(formData);
-
-                return {
-
-                    abort: () => {
-
-                        request.abort();
-
-                        abort();
-
-                    },
+                        // filePondRevertButtons[fileIndex].addEventListener('click', function(e) {
+    
+                        //     FILEUPLOADS.reverse();
+                            
+                        //     foldername = FILEUPLOADS[getFileIndex(files, e.target.parentNode.previousSibling.innerText)];
+    
+                        //     console.log(foldername);
+    
+                        //     FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
+                                    
+                        //         return folder != foldername; 
+    
+                        //     });
+    
+                        //     FILEUPLOADS.reverse();
+    
+                        // });
+    
+                    };
+    
+                    request.send(formData);
+    
+                    return {
+    
+                        abort: () => {
+    
+                            request.abort();
+    
+                            abort();
+    
+                        },
+                        
+                    };
                     
-                };
+                }
 
             },
         

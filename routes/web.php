@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::get('/event/{event}/submit/delete','EventController@submit_delete')->name('event.submit.delete');
     Route::get('/event/{event}/submit/json','EventController@submit_json')->name('event.submit.json');
     Route::post('/event/{event}/upload', 'EventController@uploadEventFile')->name('event.upload');
+    Route::post('/event/{event}/patch', 'EventController@patchEventFile')->name('event.patch');
     Route::delete('/event/{event}/delete', 'EventController@deleteEventFile')->name('event.delete');
     Route::post('/event/{event}/submit/action','EventController@submit_action')->name('event.submit.action');
     
