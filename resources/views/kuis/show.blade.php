@@ -2,7 +2,22 @@
 
 @section('link')
 
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />    
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+
+    <style>
+
+        .event-sidebar {
+            right: -400px;
+            width: 320px;
+        }
+
+        @media only screen and (min-width: 992px) {
+            .event-sidebar {
+                right: 0;
+            }
+        }
+
+    </style>
 
 @endsection
 
@@ -22,299 +37,299 @@
 
 
 
-<!--**********************************
+    <!--**********************************
 
-            EventList
+                EventList
 
-        ***********************************-->
+            ***********************************-->
 
 
 
-<div class="event-sidebar dz-scroll" id="eventSidebar">
+    <div class="event-sidebar dz-scroll" id="eventSidebar">
 
-    <div class="card shadow-none rounded-0 bg-transparent h-auto mb-0">
+        <div class="card shadow-none rounded-0 bg-transparent h-auto mb-0">
 
-        <div class="card-body text-center event-calender pb-2">
+            <div class="card-body text-center event-calender pb-2">
 
-            <!-- Waktu Quiz -->
+                <!-- Waktu Quiz  -->
 
-            <p style="text-align: left; margin-bottom: 0;">Waktu : </p>
+                <p style="text-align: left; margin-bottom: 0;">Waktu : </p>
 
-            <h3 style="text-align: left;" id="time-kuis"></h3>
+                <h3 style="text-align: left;" id="time-kuis"></h3>
 
-            <!-- Nomor Soal -->
+                <!-- Nomor Soal  -->
 
-            <p style="text-align: left; margin-bottom: 0; margin-top: 25px;">Nomor Soal : </p>
+                <p style="text-align: left; margin-bottom: 0; margin-top: 25px;">Nomor Soal : </p>
 
-            <div class="nomor-soal"></div>
+                <div class="nomor-soal"></div>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
 
 
 
 
-
-    <div class="container-fluid">
+    <div class="container">
 
         <div class="row">
 
-            <!-- Form -->
+                <!-- Form -->
 
-            <form action="{{route('kuis.jawab.action',$setkuis->id)}}" id="form-submit" method="POST" class="col-xl-12" enctype="multipart/form-data">
-
-            @csrf
-
-                <div class="col-xl-12">
-
-                    <!-- Title -->
-
-                    <div class="d-flex justify-content-start align-items-center mb-4">
-
-                        <svg id="icon-orders" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-
-                            viewBox="0 0 24 24" fill="none" stroke="#222fb9" stroke-width="2" stroke-linecap="round"
-
-                            stroke-linejoin="round" class="feather feather-file-text">
-
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-
-                            <polyline points="14 2 14 8 20 8"></polyline>
-
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-
-                            <polyline points="10 9 9 9 8 9"></polyline>
-
-                        </svg>
-
-                        <h4 class="text-primary ml-2 mt-2">Take Kuis</h4>
-
-                    </div>
-
-                    <!-- Repeat Soal -->
-
-                    @forelse(\App\AksesKuis::where('set_kuis_id',$setkuis->id)->where('user_id',Auth::user()->id)->get() as $key => $value)
-
-                    <section id="{{$value->soal->no}}">
-
-                    @if($value->type == 1)
-
-                        <div class="card">
-
-                            <div class="card-body">
-
-                                <div class="profile-tab">
-
-                                    <div class="custom-tab-1">
-
-                                        <div id="profile-settings">
-
-                                            <div class="pt-0">
-
-                                            @if($value->soal->getfotoKuis() == TRUE)
-
-                                            <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4"
-
-                                                    style="height: auto; width: 100%; border-radius: 15px;">
-
-                                            @endif
-
-                                                <div class="d-flex align-items-start justify-content-start">
-
-                                                    <div>
-
-                                                        <label class="oval">{{$value->soal->no}}</label>
-
+                <form action="{{route('kuis.jawab.action',$setkuis->id)}}" id="form-submit" method="POST" class="col-lg-8" enctype="multipart/form-data">
+    
+                @csrf
+    
+                    <div class="col-xl-12">
+    
+                        <!-- Title -->
+    
+                        <div class="d-flex justify-content-start align-items-center mb-4">
+    
+                            <svg id="icon-orders" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+    
+                                viewBox="0 0 24 24" fill="none" stroke="#222fb9" stroke-width="2" stroke-linecap="round"
+    
+                                stroke-linejoin="round" class="feather feather-file-text">
+    
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    
+                                <polyline points="14 2 14 8 20 8"></polyline>
+    
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+    
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+    
+                                <polyline points="10 9 9 9 8 9"></polyline>
+    
+                            </svg>
+    
+                            <h4 class="text-primary ml-2 mt-2">Take Kuis</h4>
+    
+                        </div>
+    
+                        <!-- Repeat Soal -->
+    
+                        @forelse(\App\AksesKuis::where('set_kuis_id',$setkuis->id)->where('user_id',Auth::user()->id)->get() as $key => $value)
+    
+                        <section id="{{$value->soal->no}}">
+    
+                        @if($value->type == 1)
+    
+                            <div class="card">
+    
+                                <div class="card-body">
+    
+                                    <div class="profile-tab">
+    
+                                        <div class="custom-tab-1">
+    
+                                            <div id="profile-settings">
+    
+                                                <div class="pt-0">
+    
+                                                @if($value->soal->getfotoKuis() == TRUE)
+    
+                                                <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4"
+    
+                                                        style="height: auto; width: 100%; border-radius: 15px;">
+    
+                                                @endif
+    
+                                                    <div class="d-flex align-items-start justify-content-start">
+    
+                                                        <div>
+    
+                                                            <label class="oval">{{$value->soal->no}}</label>
+    
+                                                        </div>
+    
+                                                        <div class="w-cont">
+    
+                                                            <h3 class="judul">{!! $value->soal->name !!}</h3>
+    
+                                                            <div class="settings-form">
+    
+                                                                <div class="radio d-flex align-items-center wans">
+    
+                                                                    <label class="form-control d-flex align-items-center"
+    
+                                                                        style="cursor: pointer;">
+    
+                                                                        <input type="radio" name="jawaban[{{$value->id}}]"
+    
+                                                                            class="mr-3 ml-2 ans" value="a" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'a','id' => $value->id])}}');" @if($value->jawaban == "a") checked @endif>
+    
+                                                                    <b>A .</b>&nbsp;{{$value->soal->a}}
+    
+                                                                    </label>
+    
+                                                                </div>
+    
+                                                                <div class="radio d-flex align-items-center wans">
+    
+                                                                    <label class="form-control d-flex align-items-center"
+    
+                                                                        style="cursor: pointer;">
+    
+                                                                        <input type="radio"  name="jawaban[{{$value->id}}]"
+    
+                                                                            class="mr-3 ml-2 ans" value="b" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'b','id' => $value->id])}}');" @if($value->jawaban == "b") checked @endif>
+    
+                                                                        <b>B .</b>&nbsp; {{$value->soal->b}}
+    
+                                                                    </label>
+    
+                                                                </div>
+    
+                                                                <div class="radio d-flex align-items-center wans">
+    
+                                                                    <label class="form-control d-flex align-items-center"
+    
+                                                                        style="cursor: pointer;">
+    
+                                                                        <input type="radio" name="jawaban[{{$value->id}}]"
+    
+                                                                        value="c"class="mr-3 ml-2 ans" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'c','id' => $value->id])}}');" @if($value->jawaban == "c") checked @endif>
+    
+                                                                        <b>C .</b>&nbsp; {{$value->soal->c}}
+    
+                                                                    </label>
+    
+                                                                </div>
+    
+                                                                <div class="radio d-flex align-items-center wans">
+    
+                                                                    <label class="form-control d-flex align-items-center"
+    
+                                                                        style="cursor: pointer;">
+    
+                                                                        <input type="radio" name="jawaban[{{$value->id}}]"
+    
+                                                                            class="mr-3 ml-2 ans" value="d" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'d','id' => $value->id])}}')" @if($value->jawaban == "d") checked @endif>
+    
+                                                                        <b>D .</b>&nbsp; {{$value->soal->d}}
+    
+                                                                    </label>
+    
+                                                                </div>
+    
+                                                                <input type="hidden" name="isian[{{$value->id}}]" value="0">
+    
+                                                                {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
+    
+                                                            </div>
+    
+                                                        </div>
+    
                                                     </div>
-
-                                                    <div class="w-cont">
-
-                                                        <h3 class="judul">{!! $value->soal->name !!}</h3>
-
-                                                        <div class="settings-form">
-
-                                                            <div class="radio d-flex align-items-center wans">
-
-                                                                <label class="form-control d-flex align-items-center"
-
-                                                                    style="cursor: pointer;">
-
-                                                                    <input type="radio" name="jawaban[{{$value->id}}]"
-
-                                                                        class="mr-3 ml-2 ans" value="a" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'a','id' => $value->id])}}');" @if($value->jawaban == "a") checked @endif>
-
-                                                                <b>A .</b>&nbsp;{{$value->soal->a}}
-
-                                                                </label>
-
+    
+                                                </div>
+    
+                                            </div>
+    
+                                        </div>
+    
+                                    </div>
+    
+                                </div>
+    
+                            </div>
+    
+                        <!-- Repeat Soal -->
+    
+                        @else
+    
+                            <div class="card">
+    
+                                <div class="card-body">
+    
+                                    <div class="profile-tab">
+    
+                                        <div class="custom-tab-1">
+    
+                                            <div id="profile-settings">
+    
+                                                <div class="pt-0">
+    
+                                                @if($value->soal->getfotoKuis() == TRUE)
+    
+                                                <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4"
+    
+                                                        style="height: auto; width: 100%; border-radius: 15px;">
+    
+                                                @endif
+    
+                                                 <div class="d-flex align-items-start justify-content-start">
+    
+                                                        <div>
+    
+                                                            <label class="oval">{{$value->soal->no}}</label>
+    
+                                                        </div>
+    
+                                                        <div class="w-cont">
+    
+                                                            {!! $value->soal->name !!}
+                                                            
+                                                            {{-- <div class="input-group">
+    
+                                                                <div class="custom-file">
+    
+                                                                <input type="hidden" name="isian[{{$value->id}}]" value="1">
+    
+                                                                    <input type="file" name="jawaban[{{$value->id}}]" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'1','id' => $value->id])}}');" class="custom-file-input" required>
+    
+                                                                    <label class="custom-file-label">Pilih file</label>
+    
+                                                                </div>
+    
+                                                            </div> --}}
+    
+                                                            <div class="fileInputContainer">
+                                                                
+                                                                <input type="hidden" name="isian[{{$value->id}}]" value="1">    
+                                                                
+                                                                <input type="file" name="jawaban[{{$value->id}}]" id="{{$value->id}}" class="file" multiple="true" required>
+    
                                                             </div>
-
-                                                            <div class="radio d-flex align-items-center wans">
-
-                                                                <label class="form-control d-flex align-items-center"
-
-                                                                    style="cursor: pointer;">
-
-                                                                    <input type="radio"  name="jawaban[{{$value->id}}]"
-
-                                                                        class="mr-3 ml-2 ans" value="b" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'b','id' => $value->id])}}');" @if($value->jawaban == "b") checked @endif>
-
-                                                                    <b>B .</b>&nbsp; {{$value->soal->b}}
-
-                                                                </label>
-
-                                                            </div>
-
-                                                            <div class="radio d-flex align-items-center wans">
-
-                                                                <label class="form-control d-flex align-items-center"
-
-                                                                    style="cursor: pointer;">
-
-                                                                    <input type="radio" name="jawaban[{{$value->id}}]"
-
-                                                                    value="c"class="mr-3 ml-2 ans" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'c','id' => $value->id])}}');" @if($value->jawaban == "c") checked @endif>
-
-                                                                    <b>C .</b>&nbsp; {{$value->soal->c}}
-
-                                                                </label>
-
-                                                            </div>
-
-                                                            <div class="radio d-flex align-items-center wans">
-
-                                                                <label class="form-control d-flex align-items-center"
-
-                                                                    style="cursor: pointer;">
-
-                                                                    <input type="radio" name="jawaban[{{$value->id}}]"
-
-                                                                        class="mr-3 ml-2 ans" value="d" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'d','id' => $value->id])}}')" @if($value->jawaban == "d") checked @endif>
-
-                                                                    <b>D .</b>&nbsp; {{$value->soal->d}}
-
-                                                                </label>
-
-                                                            </div>
-
-                                                            <input type="hidden" name="isian[{{$value->id}}]" value="0">
-
+    
                                                             {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
-
+    
                                                         </div>
-
+    
                                                     </div>
-
+    
                                                 </div>
-
+    
                                             </div>
-
+    
                                         </div>
-
+    
                                     </div>
-
+    
                                 </div>
-
+    
                             </div>
-
-                        </div>
-
-                    <!-- Repeat Soal -->
-
-                    @else
-
-                        <div class="card">
-
-                            <div class="card-body">
-
-                                <div class="profile-tab">
-
-                                    <div class="custom-tab-1">
-
-                                        <div id="profile-settings">
-
-                                            <div class="pt-0">
-
-                                            @if($value->soal->getfotoKuis() == TRUE)
-
-                                            <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4"
-
-                                                    style="height: auto; width: 100%; border-radius: 15px;">
-
-                                            @endif
-
-                                             <div class="d-flex align-items-start justify-content-start">
-
-                                                    <div>
-
-                                                        <label class="oval">{{$value->soal->no}}</label>
-
-                                                    </div>
-
-                                                    <div class="w-cont">
-
-                                                        {!! $value->soal->name !!}
-                                                        
-                                                        {{-- <div class="input-group">
-
-                                                            <div class="custom-file">
-
-                                                            <input type="hidden" name="isian[{{$value->id}}]" value="1">
-
-                                                                <input type="file" name="jawaban[{{$value->id}}]" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'1','id' => $value->id])}}');" class="custom-file-input" required>
-
-                                                                <label class="custom-file-label">Pilih file</label>
-
-                                                            </div>
-
-                                                        </div> --}}
-
-                                                        <div class="fileInputContainer">
-                                                            
-                                                            <input type="hidden" name="isian[{{$value->id}}]" value="1">    
-                                                            
-                                                            <input type="file" name="jawaban[{{$value->id}}]" id="{{$value->id}}" class="file" multiple="true" required>
-
-                                                        </div>
-
-                                                        {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    @endif
-
-                    @empty 
-
-                    @endforelse
-
-                    </section>
-
-              
-
-                    <button class="btn btn-success" type="submit">Kuis Selesai</button>
-
-                </div>
-
-            </form>
+    
+                        @endif
+    
+                        @empty 
+    
+                        @endforelse
+    
+                        </section>
+    
+                  
+    
+                        <button class="btn btn-success" type="submit">Kuis Selesai</button>
+    
+                    </div>
+    
+                </form>
 
         </div>
 
@@ -659,13 +674,17 @@
 
     function makeTimer() {
 
-		    var endTime = new Date("{{\Carbon\Carbon::parse($setkuis->tanggal_mulai)->addMinutes($setkuis->durasi)->format('M d, Y H:i:s')}} UTC+07:00");			
+		    var endTime = new Date("{{\Carbon\Carbon::parse($setkuis->tanggal_mulai)->addMinutes($setkuis->durasi)->format('M d, Y H:i:s')}} UTC+07:00");
+            
+            endTime = endTime.toLocaleString('en-US', {timeZone: 'Asia/Bangkok'});
 
 // 			alert(new Date('August 19, 1975 23:15:30 GMT+07:00'));
 
 			endTime = (Date.parse(endTime) / 1000);
 
 			var now = new Date();
+
+            now = now.toLocaleString('en-US', {timeZone: 'Asia/Bangkok'});
 
 // 			alert(now);
 
@@ -707,7 +726,7 @@
 
 			$("#time-kuis").html("<span><b>"+hours+"</b>:<b>"+minutes+"</b>:<b>"+seconds+"</b></span>");
 
-
+            $("#time-kuis-mobile").html("<span><b>"+hours+"</b>:<b>"+minutes+"</b>:<b>"+seconds+"</b></span>");
 
 	}
 
@@ -716,6 +735,31 @@
 // 	setInterval(function() { makeTimer(); }, 1000);
 
 	setInterval(makeTimer, 1000);
+
+    function myFunction(x) {
+        if (x.matches) {
+            const timeTemplate = `<div class="timer-mobile col-12">
+
+                    <div class="mb-2 w-100 d-flex flex-column align-items-end justify-content-center col-12">
+
+                        <p style="text-align: left; margin-bottom: 5px;">Waktu : </p>
+        
+                        <h3 style="text-align: left;" id="time-kuis-mobile"></h3>
+
+                    </div>
+                    
+                </div>`;
+
+            $('#form-submit').before(timeTemplate);
+
+        } else {
+            $('.timer-mobile').remove();
+        }
+    }
+
+    let x = window.matchMedia("(max-width: 991px)");
+    myFunction(x);
+    x.addListener(myFunction);
 
     </script>
 

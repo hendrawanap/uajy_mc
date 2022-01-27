@@ -12,6 +12,18 @@
 
     <div class="row">
 
+        <div class="timer-mobile col-12">
+
+            <div class="mb-2 w-100 d-flex flex-column align-items-end justify-content-center col-12">
+
+                <p style="text-align: left; margin-bottom: 5px;">Waktu : </p>
+
+                <h3 style="text-align: left;" id="time-kuis"></h3>
+
+            </div>
+            
+        </div>
+
         <!-- Form -->
 
         <form action="{{route('event.submit.action',$event->id)}}" method="POST" enctype="multipart/form-data" id="form-submit" class="col-xl-12">
@@ -652,6 +664,64 @@ render(url, 'preview', onPreviewLoaded);
         });
 
     });
+
+    function makeTimer() {
+
+        var endTime = new Date("{{\Carbon\Carbon::parse($event->tanggal_selesai)->format('M d, Y H:i:s')}} UTC+07:00");
+
+        endTime = endTime.toLocaleString('en-US', {timeZone: 'Asia/Bangkok'});
+
+        // 			alert(new Date('August 19, 1975 23:15:30 GMT+07:00'));
+
+        endTime = (Date.parse(endTime) / 1000);
+
+        var now = new Date();
+
+        now = now.toLocaleString('en-US', {timeZone: 'Asia/Bangkok'});
+
+        // 			alert(now);
+
+        now = (Date.parse(now) / 1000);
+
+        var timeLeft = endTime - now;
+
+        var days = Math.floor(timeLeft / 86400); 
+
+        var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+
+        var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600 )) / 60);
+
+        var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+        if(hours == 0 && minutes == 5) {
+
+        $('.peringatan-notif').fadeIn();
+
+            return false;
+
+        }
+
+        if( hours == 0 && minutes == 0 && seconds == 0){
+
+            $("#form-submit").submit();
+
+            return false;
+
+        }
+
+        if (hours < "10") { hours = "0" + hours; }
+
+        if (minutes < "10") { minutes = "0" + minutes; }
+
+        if (seconds < "10") { seconds = "0" + seconds; }
+
+
+
+        $("#time-kuis").html("<span><b>"+hours+"</b>:<b>"+minutes+"</b>:<b>"+seconds+"</b></span>");
+
+    }
+
+    setInterval(makeTimer, 1000);
 
 </script>
 
