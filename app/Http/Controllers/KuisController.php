@@ -367,6 +367,8 @@ class KuisController extends Controller
 
         ->rawColumns(['action','soal'])
 
+        ->addIndexColumn()
+        
         ->make(true); 
 
     }
@@ -585,7 +587,11 @@ class KuisController extends Controller
 
         <a href="'.route('kuis.akses_peserta_kuis',$data->id).'"  class="btn btn-sm btn-success"><i class="fa fa-fw mr-2 fa-sign-in"></i>Akses ( '.$data->kuis_submit()->count().' )</a>';
 
-        })->make(true); 
+        })
+
+        ->addIndexColumn()
+
+        ->make(true); 
 
     }
 
@@ -620,6 +626,8 @@ class KuisController extends Controller
             return '<img class="rounded-circle" alt="image" width="50" src="/template/images/avatar/1.png">';
 
         })
+
+        ->addIndexColumn()
 
         ->rawColumns(['users','action'])
 
