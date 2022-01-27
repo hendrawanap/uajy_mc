@@ -30,7 +30,7 @@ class UserController extends Controller
         <a href="'.route('user.elimination',$data->id).'" class="btn btn-sm btn-primary"><i class="fa fa-times"></i> Eliminasi Peserta</a>
         
         ';
-        })->make(true); 
+        })->addIndexColumn()->make(true);
     }
 
     /**
