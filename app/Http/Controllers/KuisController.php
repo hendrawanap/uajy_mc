@@ -987,17 +987,17 @@ class KuisController extends Controller
 
         // cek jawaban ragu ragu
 
-        if(AksesKuis::where('set_kuis_id',$setkuis->id)->where('isRagu',1)->where('user_id',Auth::user()->id)->count() > 0) {
+        // if(AksesKuis::where('set_kuis_id',$setkuis->id)->where('isRagu',1)->where('user_id',Auth::user()->id)->count() > 0) {
 
-            if(Carbon::parse($setkuis->tanggal_mulai)->addMinutes($setkuis->durasi)->format('Y-m-d H:i:s') > date('Y-m-d H:i:s')) {
+        //     if(Carbon::parse($setkuis->tanggal_mulai)->addMinutes($setkuis->durasi)->format('Y-m-d H:i:s') > date('Y-m-d H:i:s')) {
 
-                return redirect()->back()->with('error','Masih ada yang ragu ragu !');
+        //         return redirect()->back()->with('error','Masih ada yang ragu ragu !');
 
-                exit;
+        //         exit;
 
-            }
+        //     }
 
-        }
+        // }
 
         // cek file essay
 

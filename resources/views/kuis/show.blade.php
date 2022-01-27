@@ -204,7 +204,7 @@
 
                                                             <input type="hidden" name="isian[{{$value->id}}]" value="0">
 
-                                                            <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ?
+                                                            {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
 
                                                         </div>
 
@@ -282,7 +282,7 @@
 
                                                         </div>
 
-                                                        <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ?
+                                                        {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
 
                                                     </div>
 
