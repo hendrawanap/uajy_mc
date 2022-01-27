@@ -7,7 +7,7 @@
     <style>
 
         .event-sidebar {
-            right: -400px;
+            right: -110vw;
             width: 320px;
         }
 
@@ -16,6 +16,8 @@
                 right: 0;
             }
         }
+
+
 
     </style>
 
@@ -31,7 +33,7 @@
 
 <!-- Btn Soal -->
 
-<a class="schedule-event-inner d-flex justify-content-center align-items-center btn-soal"><i class="fa fa-eye fs-24"
+<a class="schedule-event-inner d-flex justify-content-center align-items-center btn-soal d-lg-none"><i class="fa fa-eye fs-24"
 
         style="color: #fff;"></i></a>
 
@@ -79,7 +81,7 @@
 
             <!-- Form -->
 
-            <form action="{{route('kuis.jawab.action',$setkuis->id)}}" id="form-submit" method="POST" class="col-xl-12" enctype="multipart/form-data">
+            <form action="{{route('kuis.jawab.action',$setkuis->id)}}" id="form-submit" method="POST" class="col-lg-8" enctype="multipart/form-data">
 
             @csrf
 
@@ -115,7 +117,7 @@
 
                     @forelse(\App\AksesKuis::where('set_kuis_id',$setkuis->id)->where('user_id',Auth::user()->id)->get() as $key => $value)
 
-                    <section id="{{$value->soal->no}}">
+                    <section id="{{$loop->iteration}}">
 
                     @if($value->type == 1)
 
