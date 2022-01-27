@@ -2,7 +2,22 @@
 
 @section('link')
 
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />    
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+
+    <style>
+
+        .event-sidebar {
+            right: -400px;
+            width: 320px;
+        }
+
+        @media only screen and (min-width: 992px) {
+            .event-sidebar {
+                right: 0;
+            }
+        }
+
+    </style>
 
 @endsection
 
@@ -22,43 +37,43 @@
 
 
 
-<!--**********************************
+    <!--**********************************
 
-            EventList
+                EventList
 
-        ***********************************-->
+            ***********************************-->
 
 
 
-<div class="event-sidebar dz-scroll" id="eventSidebar">
+    <div class="event-sidebar dz-scroll" id="eventSidebar">
 
-    <div class="card shadow-none rounded-0 bg-transparent h-auto mb-0">
+        <div class="card shadow-none rounded-0 bg-transparent h-auto mb-0">
 
-        <div class="card-body text-center event-calender pb-2">
+            <div class="card-body text-center event-calender pb-2">
 
-            <!-- Waktu Quiz -->
+                <!-- Waktu Quiz  -->
 
-            <p style="text-align: left; margin-bottom: 0;">Waktu : </p>
+                <p style="text-align: left; margin-bottom: 0;">Waktu : </p>
 
-            <h3 style="text-align: left;" id="time-kuis"></h3>
+                <h3 style="text-align: left;" id="time-kuis"></h3>
 
-            <!-- Nomor Soal -->
+                <!-- Nomor Soal  -->
 
-            <p style="text-align: left; margin-bottom: 0; margin-top: 25px;">Nomor Soal : </p>
+                <p style="text-align: left; margin-bottom: 0; margin-top: 25px;">Nomor Soal : </p>
 
-            <div class="nomor-soal"></div>
+                <div class="nomor-soal"></div>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
 
 
 
 
-
-    <div class="container-fluid">
+    <div class="container">
 
         <div class="row">
 
@@ -199,27 +214,29 @@
                                                                     <b>D .</b>&nbsp; {{$value->soal->d}}
 
                                                                 </label>
-
+    
+                                                                </div>
+    
+                                                                <input type="hidden" name="isian[{{$value->id}}]" value="0">
+    
+                                                                {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
+    
                                                             </div>
-
-                                                            <input type="hidden" name="isian[{{$value->id}}]" value="0">
-
-                                                            {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
-
+    
                                                         </div>
-
+    
                                                     </div>
-
+    
                                                 </div>
-
+    
                                             </div>
-
+    
                                         </div>
-
+    
                                     </div>
-
+    
                                 </div>
-
+    
                             </div>
 
                         </div>
@@ -276,45 +293,45 @@
 
                                                         <div class="fileInputContainer">
                                                             
-                                                            <input type="hidden" name="isian[{{$value->id}}]" value="1">    
-                                                            
-                                                            <input type="file" name="jawaban[{{$value->id}}]" id="{{$value->id}}" class="file" multiple="true" required>
-
+                                                            <input type="hidden" name="isian[{{$value->id}}]" value="1">      
+                                                                
+                                                                <input type="file" name="jawaban[{{$value->id}}]" id="{{$value->id}}" class="file" multiple="true" required>
+    
+                                                            </div>
+    
+                                                            {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
+    
                                                         </div>
-
-                                                        {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
-
+    
                                                     </div>
-
+    
                                                 </div>
-
+    
                                             </div>
-
+    
                                         </div>
-
+    
                                     </div>
-
+    
                                 </div>
-
+    
                             </div>
-
-                        </div>
-
-                    @endif
-
-                    @empty 
-
-                    @endforelse
-
-                    </section>
-
-              
-
-                    <button class="btn btn-success" type="submit">Kuis Selesai</button>
-
-                </div>
-
-            </form>
+    
+                        @endif
+    
+                        @empty 
+    
+                        @endforelse
+    
+                        </section>
+    
+                  
+    
+                        <button class="btn btn-success" type="submit">Kuis Selesai</button>
+    
+                    </div>
+    
+                </form>
 
         </div>
 
@@ -659,13 +676,17 @@
 
     function makeTimer() {
 
-		    var endTime = new Date("{{\Carbon\Carbon::parse($setkuis->tanggal_mulai)->addMinutes($setkuis->durasi)->format('M d, Y H:i:s')}} UTC+07:00");			
+		    var endTime = new Date("{{\Carbon\Carbon::parse($setkuis->tanggal_mulai)->addMinutes($setkuis->durasi)->format('M d, Y H:i:s')}} UTC+07:00");
+            
+            endTime = endTime.toLocaleString('en-US', {timeZone: 'Asia/Bangkok'});
 
 // 			alert(new Date('August 19, 1975 23:15:30 GMT+07:00'));
 
 			endTime = (Date.parse(endTime) / 1000);
 
 			var now = new Date();
+
+            now = now.toLocaleString('en-US', {timeZone: 'Asia/Bangkok'});
 
 // 			alert(now);
 
@@ -707,7 +728,7 @@
 
 			$("#time-kuis").html("<span><b>"+hours+"</b>:<b>"+minutes+"</b>:<b>"+seconds+"</b></span>");
 
-
+            $("#time-kuis-mobile").html("<span><b>"+hours+"</b>:<b>"+minutes+"</b>:<b>"+seconds+"</b></span>");
 
 	}
 
@@ -716,6 +737,31 @@
 // 	setInterval(function() { makeTimer(); }, 1000);
 
 	setInterval(makeTimer, 1000);
+
+    function myFunction(x) {
+        if (x.matches) {
+            const timeTemplate = `<div class="timer-mobile col-12">
+
+                    <div class="mb-2 w-100 d-flex flex-column align-items-end justify-content-center col-12">
+
+                        <p style="text-align: left; margin-bottom: 5px;">Waktu : </p>
+        
+                        <h3 style="text-align: left;" id="time-kuis-mobile"></h3>
+
+                    </div>
+                    
+                </div>`;
+
+            $('#form-submit').before(timeTemplate);
+
+        } else {
+            $('.timer-mobile').remove();
+        }
+    }
+
+    let x = window.matchMedia("(max-width: 991px)");
+    myFunction(x);
+    x.addListener(myFunction);
 
     </script>
 
