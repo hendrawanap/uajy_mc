@@ -539,7 +539,7 @@ class KuisController extends Controller
 
         $data = $kuis->set_kuis()->with('kuis')->get();
 
-        return DataTables::of($data)->addColumn('action', function ($data) {
+        return DataTables::of($data)->addIndexColumn()->addColumn('action', function ($data) {
 
         return '
 
@@ -735,9 +735,11 @@ class KuisController extends Controller
 
         $aksesKuises = AksesKuis::where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->where('type', 0)->get();
 
-        foreach ($aksesKuises as $aksesKuis) {
-            $aksesKuis->jawaban = null;
-            $aksesKuis->save();
+        if($aksesKuises->count() > 0) {
+            foreach ($aksesKuises as $aksesKuis) {
+                $aksesKuis->jawaban = null;
+                $aksesKuis->save();
+            }
         }
 
         if(Carbon::parse($setkuis->getTanggalMulai())->addMinutes($setkuis->durasi)->format('Y-m-d H:i:s') < date('Y-m-d H:i:s')) {
