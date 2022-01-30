@@ -90,7 +90,7 @@
 
                                         <div class="w-cont">
 
-                                            <h3 class="judul">{!! $event->event->soal !!}</h3>
+                                            <h3 class="judul">Submission {!! $event->event->name !!}</h3>
 
                                             <div class="file-peserta">
 
