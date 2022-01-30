@@ -2,7 +2,32 @@
 
 @section('link')
 
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />    
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />  
+
+    <style>
+        #btn-open-large {
+            width: fit-content;
+            background-color: rgba(255, 255, 255, .15);
+            backdrop-filter: blur(5px);
+            bottom: 6px;
+            right: 24px;
+            transition: all 0.3s ease-out;
+            color: #222;
+            font-weight: bold;
+        }
+
+        #btn-open-large:hover {
+            box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+        }
+
+        #btn-open-large.btn-loaded {
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            border-radius: 50%;
+        }
+        
+    </style>  
 
 @endsection
 
@@ -74,20 +99,19 @@
 
                                         <!-- <div>{!! $event->soal !!}</div> -->
 
-                                        <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;">
-                                            <div style="width: 100%; height:100%; position: relative;">
-                                                <div id="pdf-loader">
-                                                    <div class="sk-three-bounce">
-                                                        <div class="sk-child sk-bounce1"></div>
-                                                        <div class="sk-child sk-bounce2"></div>
-                                                        <div class="sk-child sk-bounce3"></div>
+                                        <div class="position-relative">
+                                            <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;">
+                                                <div style="width: 100%; height:100%; position: relative;">
+                                                    <div id="pdf-loader">
+                                                        <div class="sk-three-bounce">
+                                                            <div class="sk-child sk-bounce1"></div>
+                                                            <div class="sk-child sk-bounce2"></div>
+                                                            <div class="sk-child sk-bounce3"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
-                                        <div class="mt-2 d-flex justify-content-end">
-                                            <button type="button" class="btn btn-primary cursor-default" id="btn-open-large" onclick="toggleModal()" disabled>Memuat...</button>
+                                            <button type="button" class="btn cursor-default position-absolute" id="btn-open-large" onclick="toggleModal()" disabled>Memuat...</button>
                                         </div>
 
                                         <p class="mb-3">
@@ -557,7 +581,7 @@ const render = (url, containerId, onLoaded) => {
         }
         Promise.all(renderPromises).then(pages => {
             const pagesHTML = `
-            <div style="width: 100%; position: relative;">
+            <div style="width: 100%; position: relative; margin-bottom: 0.75rem;">
                 <div id="pdf-loader">
                     <div class="sk-three-bounce">
                         <div class="sk-child sk-bounce1"></div>
@@ -565,7 +589,7 @@ const render = (url, containerId, onLoaded) => {
                         <div class="sk-child sk-bounce3"></div>
                     </div>
                 </div>
-                <canvas></canvas>
+                <canvas style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;"></canvas>
             </div>`.repeat(pages.length);
             const container = document.getElementById(containerId);
             container.innerHTML = pagesHTML;
@@ -604,9 +628,10 @@ let firstTimeOpen = true;
 
 const onPreviewLoaded = () => {
     const btnOpen = document.getElementById('btn-open-large');
-    btnOpen.innerHTML = 'Perbesar';
+    btnOpen.innerHTML = '<i class="fa fa-search-plus fs-24"></i>';
     btnOpen.attributes.removeNamedItem('disabled');
     btnOpen.classList.remove('cursor-default');
+    btnOpen.classList.add('btn-loaded');
     btnOpen.addEventListener('click', () => {
         if (firstTimeOpen) {
             render(url, 'large-view')

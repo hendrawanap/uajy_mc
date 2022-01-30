@@ -21,6 +21,11 @@
         .dataTables_wrapper .dataTables_paginate {
             padding:0 !important
         }
+
+        .glassy-container {
+            background-color: rgba(0, 0, 0, .25) !important;
+            backdrop-filter: blur(5px) !important;
+        }
     </style>
 </head>
 
@@ -241,8 +246,8 @@
     ***********************************-->
     <!-- Required vendors -->
 
-    <div class="overflow-auto d-none modal-transition" id="modal-overlay" style="background-color: rgba(0,0,0,0.8); inset: 0; position: fixed; z-index: 999;">
-        <div class="my-5 container" id="modal-content" style="background-color: white; position: relative; z-index: 1000">
+    <div class="overflow-auto d-none modal-transition glassy-container" id="modal-overlay" style="inset: 0; position: fixed; z-index: 999;">
+        <div class="my-5 container" id="modal-content" style="background-color: transparent; position: relative; z-index: 1000">
             @yield('modal-content')
         </div>
     </div>
