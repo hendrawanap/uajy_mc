@@ -931,7 +931,7 @@ class KuisController extends Controller
         
         $chunk = $request->file('filedata');
 
-        $chunkName = $chunk->getClientOriginalName().'.'.$chunk->extension();
+        $chunkName = $chunk->getClientOriginalName();
         
         $folder = $request->input('folder');
 
