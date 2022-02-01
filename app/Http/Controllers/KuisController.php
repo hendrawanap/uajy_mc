@@ -1027,7 +1027,13 @@ class KuisController extends Controller
 
         // ]);
 
-        $jawaban = $request->postData['jawaban'];
+        $jawaban = array();
+
+        if (array_key_exists('jawaban', $request->postData)) {
+
+            $jawaban = $request->postData['jawaban'];
+
+        }
 
         $total_nilai_pilgan = 0;
 
