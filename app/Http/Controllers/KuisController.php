@@ -34,6 +34,7 @@ use DB;
 
 use Carbon\Carbon;
 use DirectoryIterator;
+use Exception;
 
 class KuisController extends Controller
 
@@ -921,8 +922,11 @@ class KuisController extends Controller
     }
 
     public function patchAksesKuisFile(Request $request, SetKuis $setkuis, $id) {
+
         $loaded = $request->input('loaded');
+
         $chunkSize = $request->input('chunkSize');
+
         $fileSize = $request->input('fileSize');
         
         $chunk = $request->file('filedata');
@@ -930,34 +934,59 @@ class KuisController extends Controller
         $chunkName = $chunk->getClientOriginalName().'.'.$chunk->extension();
         
         $folder = $request->input('folder');
-        
-        $chunk->move('file/jawaban/temp/' . $folder, $chunkName);
-        
-        if ($loaded + $chunkSize > $fileSize) {
-            $dir = new DirectoryIterator(public_path('file/jawaban/temp/'.$folder));
-            $filename = '';
-            $extension = '';
-            foreach ($dir as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-                    if (pathinfo($fileinfo, PATHINFO_EXTENSION) != 'bin') {
-                        $extension = pathinfo($fileinfo, PATHINFO_EXTENSION);
-                    }
-                    $chunkPath = public_path('file/jawaban/temp/'.$folder.'/'.$fileinfo->getFileName());
-                    $file = fopen($chunkPath, 'rb');
-                    $buff = fread($file, $chunkSize);
-                    fclose($file);
-                    
-                    $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.explode('-', $folder)[1].'.'.$extension;
-                    $filePath = public_path('file/jawaban/temp/'.$folder.'/'.$filename);
-                    $final = fopen($filePath,'ab');
-                    $write = fwrite($final, $buff);
-                    fclose($final);
 
-                    unlink($chunkPath);
+        try {
+
+            $chunk->move('file/jawaban/temp/' . $folder, $chunkName);
+
+            $complete = $loaded + $chunkSize > $fileSize;
+        
+            if ($complete) {
+
+                $dir = new DirectoryIterator(public_path('file/jawaban/temp/'.$folder));
+
+                $extension = $request->input('fileExtension');
+
+                $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.explode('-', $folder)[1].'.'.$extension;
+
+                foreach ($dir as $fileinfo) {
+
+                    if (!$fileinfo->isDot()) {
+
+                        $chunkPath = public_path('file/jawaban/temp/'.$folder.'/'.$fileinfo->getFileName());
+
+                        $file = fopen($chunkPath, 'rb');
+
+                        $buff = fread($file, $chunkSize);
+
+                        fclose($file);
+
+                        $filePath = public_path('file/jawaban/temp/'.$folder.'/'.$filename);
+
+                        $final = fopen($filePath,'ab');
+
+                        $write = fwrite($final, $buff);
+
+                        fclose($final);
+
+                        unlink($chunkPath);
+
+                    }
+
                 }
+
+                $this->isiJawabanSoalFile($setkuis, $folder, $filename, $id);
+
             }
 
-           $this->isiJawabanSoalFile($setkuis, $folder, $filename, $id);
+        } catch (Exception $error) {
+
+            array_map('unlink', glob(public_path('file/jawaban/temp/' . $folder . '/*.*')));
+
+            rmdir(public_path('file/jawaban/temp/' . $folder));
+
+            return response($error, 500);
+
         }
 
         return $folder;

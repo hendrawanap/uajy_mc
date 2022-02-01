@@ -268,6 +268,7 @@
 
                 const startChunk = function(folderName) {
                     const max_chunk_size = options.chunkSize;
+                    const fileExtension = file.name.split('.').pop();
                     let loaded = 0;
                     let part = 1;
                     let reader = new FileReader();
@@ -280,6 +281,7 @@
                         fd.append('folder', folderName);
                         fd.append('fileSize', file.size);
                         fd.append('chunkSize', max_chunk_size);
+                        fd.append('fileExtension', fileExtension);
                         $.ajax(patchUrl, {
                             headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                             type: "POST",
