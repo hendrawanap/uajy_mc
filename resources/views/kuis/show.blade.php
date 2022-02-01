@@ -560,11 +560,9 @@
     });
 
 
-    $( "#form-submit" ).submit(function( e ) {
+    const submitJawaban = function(instantSubmit = false) {
 
-        e.preventDefault();
-
-        let inputs = $(this).serializeArray();
+        let inputs = $('#form-submit').serializeArray();
 
         let isian = {};
 
@@ -600,34 +598,66 @@
 
         const message = Object.keys(isian).length == Object.keys(jawaban).length ? 'Apakah Anda yakin untuk mengumpulkan jawaban Anda?' : 'Apakah Anda yakin untuk mengumpulkan jawaban Anda? Masih terdapat soal yang belum Anda jawab.';
         
-        const confirm = window.confirm(message);
+        if (instantSubmit) {
 
-        if (confirm) {
-            
             $.ajax({
-    
+        
                 type: "POST",
-    
+
                 url: "{{route('kuis.jawab.action',$setkuis->id)}}",
                 
                 data: {postData:postData, fileUploads: FILEUPLOADS},
-    
+
                 headers: {
                     
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    
+
                 }, 
-    
+
                 success: function(response){
                     
                     window.location = "{{route('kuis.jawab.list')}}"
                     
                 },
-    
+
             });
 
-        }
+        } else {
+            const confirm = window.confirm(message);
 
+            if (confirm) {
+                
+                $.ajax({
+        
+                    type: "POST",
+        
+                    url: "{{route('kuis.jawab.action',$setkuis->id)}}",
+                    
+                    data: {postData:postData, fileUploads: FILEUPLOADS},
+        
+                    headers: {
+                        
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        
+                    }, 
+        
+                    success: function(response){
+                        
+                        window.location = "{{route('kuis.jawab.list')}}"
+                        
+                    },
+        
+                });
+
+            }
+        }
+    };
+
+    $( "#form-submit" ).submit(function( e ) {
+
+        e.preventDefault();
+
+        submitJawaban();
 
     });
 
@@ -724,9 +754,9 @@
 
             if( hours == 0 && minutes == 0 && seconds == 0){
 
-                $("#form-submit").submit();
+                submitJawaban(true);
 
-                return false;
+                clearInterval(timer);
 
             }
 
@@ -748,7 +778,7 @@
 
 // 	setInterval(function() { makeTimer(); }, 1000);
 
-	setInterval(makeTimer, 1000);
+	const timer = setInterval(makeTimer, 1000);
 
     function myFunction(x) {
         if (x.matches) {

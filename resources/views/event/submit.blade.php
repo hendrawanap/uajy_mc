@@ -493,11 +493,9 @@
 
     }
 
-    $( "#form-submit" ).submit(function( e ) {
+    const submitJawaban = function(isTimeup = false) {
 
-        e.preventDefault();
-
-        let inputs = $(this).serializeArray();
+        let inputs = $("#form-submit").serializeArray();
 
         let file = {};
 
@@ -511,29 +509,53 @@
 
         });
 
-        postData = {file: file}
+        postData = {file: file};
 
-        $.ajax({
+        if (FILEUPLOADS.length > 0) {
 
-            type: "POST",
-
-            url: "{{route('event.submit.action',$event->id)}}",
-            
-            data: {postData:postData, fileUploads: FILEUPLOADS},
-
-            headers: {
+            $.ajax({
+    
+                type: "POST",
+    
+                url: "{{route('event.submit.action',$event->id)}}",
                 
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                data: {postData:postData, fileUploads: FILEUPLOADS},
+    
+                headers: {
+                    
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    
+                }, 
+    
+                success: function(response){
 
-            }, 
+                    if (isTimeup) {
 
-            success: function(response){
-                
-                window.location = "{{route('event.submit',$event->id)}}"
-                
-            }
+                        window.location = "{{route('event.list')}}";
 
-        });
+                    } else {
+
+                        window.location = "{{route('event.submit',$event->id)}}"
+
+                    }
+                    
+                }
+    
+            });
+
+        } else {
+
+            window.location = "{{route('event.list')}}";
+
+        }
+
+    }
+
+    $( "#form-submit" ).submit(function( e ) {
+
+        e.preventDefault();
+
+        submitJawaban();
 
     });
 </script>
@@ -730,9 +752,9 @@ render(url, 'preview', onPreviewLoaded);
 
         if( hours == 0 && minutes == 0 && seconds == 0){
 
-            $("#form-submit").submit();
+            submitJawaban(true);
 
-            return false;
+            clearInterval(timer);
 
         }
 
@@ -748,7 +770,7 @@ render(url, 'preview', onPreviewLoaded);
 
     }
 
-    setInterval(makeTimer, 1000);
+    const timer = setInterval(makeTimer, 1000);
 
 </script>
 
