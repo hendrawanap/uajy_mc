@@ -11,7 +11,8 @@ Auth::routes(['register' => false]);
 
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::group(['middleware' => ['auth','check_peserta']], function () {
+
+Route::group(['middleware' => ['auth', 'check_admin']], function() {
     Route::get('/setting', 'HomeController@setting')->name('setting');
 
     Route::get('/user-json','UserController@json')->name('user.json');
@@ -43,6 +44,26 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::get('/kuis/{setkuis}/jadwal/edit','KuisController@setKuisEdit')->name('jadwal.edit');
     Route::get('/kuis/{kuis}/jadwal/json','KuisController@setKuisJson')->name('jadwal.json');
 
+    Route::get('/kuis/{setkuis}/peserta-kuis','KuisController@cek_akses_peserta_kuis')->name('kuis.akses_peserta_kuis');
+    Route::get('/kuis/{setkuis}/peserta-kuis/json','KuisController@cek_akses_peserta_kuis_json')->name('kuis.akses_peserta_kuis_json');
+    Route::get('/kuis/{kuis_submit}/jawaban-kuis','KuisController@cek_akses_jawaban_kuis')->name('kuis.cek_akses_jawaban_kuis');
+    Route::post('/kuis/{kuis_submit}/update/nilai/kuis','KuisController@update_nilai_kuis')->name('kuis.update_nilai_kuis');
+
+    // Route::resource('event','EventController');
+    Route::get('/event','EventController@index')->name('event.index');
+    Route::get('/event/create','EventController@create')->name('event.create');
+    Route::post('/event','EventController@store')->name('event.store');
+    Route::get('/event/{event}/edit','EventController@edit')->name('event.edit');
+    Route::put('/event/{event}','EventController@update')->name('event.update');
+    Route::get('/event/{event}/delete','EventController@destroy')->name('event.delete');
+
+    Route::get('/event/{event}/peserta','EventController@event_peserta')->name('event.peserta');
+    Route::get('/event/{event}/peserta/json','EventController@event_peserta_json')->name('event.peserta.json');
+    Route::get('/event/{event}/peserta/show','EventController@event_peserta_show')->name('event.peserta.show');
+});
+
+Route::group(['middleware' => ['auth','check_peserta']], function () {
+
     Route::get('/kuis/list','KuisController@aksesKuis')->name('kuis.jawab.list');
     Route::get('/kuis/list/nilai','KuisController@history_nilai')->name('kuis.jawab.list.nilai');
     Route::get('/kuis/list/nilai/json','KuisController@history_nilai_json')->name('kuis.jawab.list.nilai_json');
@@ -56,18 +77,6 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::get('/kuis/{kuis}/set-kuis','KuisController@cek_akses_set_kuis')->name('kuis.akses_set_kuis');
     Route::get('/kuis/{kuis}/set-kuis/json','KuisController@cek_akses_set_kuis_json')->name('kuis.akses_set_kuis_json');
 
-    Route::get('/kuis/{setkuis}/peserta-kuis','KuisController@cek_akses_peserta_kuis')->name('kuis.akses_peserta_kuis');
-    Route::get('/kuis/{setkuis}/peserta-kuis/json','KuisController@cek_akses_peserta_kuis_json')->name('kuis.akses_peserta_kuis_json');
-    Route::get('/kuis/{kuis_submit}/jawaban-kuis','KuisController@cek_akses_jawaban_kuis')->name('kuis.cek_akses_jawaban_kuis');
-    Route::post('/kuis/{kuis_submit}/update/nilai/kuis','KuisController@update_nilai_kuis')->name('kuis.update_nilai_kuis');
-
-    Route::get('/event/json','EventController@json')->name('event.json');
-    Route::get('/event/{event}/delete','EventController@destroy')->name('event.delete');
-
-    Route::get('/event/{event}/peserta','EventController@event_peserta')->name('event.peserta');
-    Route::get('/event/{event}/peserta/json','EventController@event_peserta_json')->name('event.peserta.json');
-    Route::get('/event/{event}/peserta/show','EventController@event_peserta_show')->name('event.peserta.show');
-
     Route::get('/event/list','EventController@list')->name('event.list');
     Route::get('/event/{event}/submit','EventController@submit')->name('event.submit');
     Route::get('/event/{event}/submit/delete','EventController@submit_delete')->name('event.submit.delete');
@@ -76,10 +85,6 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::post('/event/{event}/patch', 'EventController@patchEventFile')->name('event.patch');
     Route::delete('/event/{event}/delete', 'EventController@deleteEventFile')->name('event.delete');
     Route::post('/event/{event}/submit/action','EventController@submit_action')->name('event.submit.action');
-    
-    Route::get('/event/{event}/delete','EventController@destroy')->name('event.delete');
-    
-    Route::resource('event','EventController');
 });
 Route::get('logout',function() {
     Auth::logout();
