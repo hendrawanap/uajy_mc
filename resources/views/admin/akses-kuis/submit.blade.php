@@ -260,6 +260,8 @@
 
                                                             @foreach ($value as $file)
 
+                                                            @if ($file->jawaban)
+
                                                             <a href="{{$file->getJawaban()}}" download>
 
                                                                 <i class="fa fa-paperclip"></i>
@@ -269,6 +271,12 @@
                                                             </a>
 
                                                             <hr>
+
+                                                            @else
+
+                                                            <p>Peserta tidak mengumpulkan jawaban</p>
+
+                                                            @endif
                                                                 
                                                             @endforeach
 

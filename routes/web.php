@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::get('/kuis/{kuis}/jadwal','KuisController@setKuis')->name('jadwal.index');
     Route::post('/kuis/{kuis}/jadwal/action','KuisController@setKuisAction')->name('jadwal.action');
     Route::put('/kuis/{setkuis}/jadwal/update','KuisController@setKuisUpdate')->name('jadwal.update');
-    Route::get('/kuis/{kuis}/jadwal/delete','KuisController@setKuisDelete')->name('jadwal.delete');
+    Route::get('/kuis/{setkuis}/jadwal/delete','KuisController@setKuisDelete')->name('jadwal.delete');
     Route::get('/kuis/{setkuis}/jadwal/edit','KuisController@setKuisEdit')->name('jadwal.edit');
     Route::get('/kuis/{kuis}/jadwal/json','KuisController@setKuisJson')->name('jadwal.json');
 

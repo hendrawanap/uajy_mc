@@ -83,7 +83,7 @@
 
             <form action="{{route('kuis.jawab.action',$setkuis->id)}}" id="form-submit" method="POST" class="col-lg-8" enctype="multipart/form-data">
 
-            @csrf
+                @csrf
 
                 <div class="col-xl-12">
 
@@ -115,11 +115,11 @@
 
                     <!-- Repeat Soal -->
 
-                    @forelse(\App\AksesKuis::where('set_kuis_id',$setkuis->id)->where('user_id',Auth::user()->id)->get() as $key => $value)
+                    @foreach(\App\AksesKuis::where('set_kuis_id',$setkuis->id)->where('user_id',Auth::user()->id)->get() as $key => $value)
 
                     <section id="{{$loop->iteration}}">
 
-                    @if($value->type == 1)
+                        @if($value->type == 1)
 
                         <div class="card">
 
@@ -133,13 +133,11 @@
 
                                             <div class="pt-0">
 
-                                            @if($value->soal->getfotoKuis() == TRUE)
+                                                @if($value->soal->getfotoKuis() == TRUE)
 
-                                            <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4"
+                                                <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4" style="height: auto; width: 100%; border-radius: 15px;">
 
-                                                    style="height: auto; width: 100%; border-radius: 15px;">
-
-                                            @endif
+                                                @endif
 
                                                 <div class="d-flex align-items-start justify-content-start">
 
@@ -217,11 +215,9 @@
 
                                                                 </label>
     
-                                                                </div>
-    
                                                                 <input type="hidden" name="isian[{{$value->id}}]" value="0">
     
-                                                                {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
+                                                                <!-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ?  -->
     
                                                             </div>
     
@@ -230,22 +226,23 @@
                                                     </div>
     
                                                 </div>
-    
+
                                             </div>
     
                                         </div>
-    
+
                                     </div>
-    
+
                                 </div>
-    
+
                             </div>
 
                         </div>
 
-                    <!-- Repeat Soal -->
 
-                    @else
+                        <!-- Repeat Soal -->
+
+                        @else
 
                         <div class="card">
 
@@ -259,15 +256,13 @@
 
                                             <div class="pt-0">
 
-                                            @if($value->soal->getfotoKuis() == TRUE)
+                                                @if($value->soal->getfotoKuis() == TRUE)
 
-                                            <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4"
+                                                <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4" style="height: auto; width: 100%; border-radius: 15px;">
 
-                                                    style="height: auto; width: 100%; border-radius: 15px;">
+                                                @endif
 
-                                            @endif
-
-                                             <div class="d-flex align-items-start justify-content-start">
+                                                <div class="d-flex align-items-start justify-content-start">
 
                                                     <div>
 
@@ -279,7 +274,7 @@
 
                                                         {!! $value->soal->name !!}
                                                         
-                                                        {{-- <div class="input-group">
+                                                        <!-- <div class="input-group">
 
                                                             <div class="custom-file">
 
@@ -291,26 +286,24 @@
 
                                                             </div>
 
-                                                        </div> --}}
+                                                        </div>  -->
 
                                                         <div class="fileInputContainer">
                                                             
-                                                            <input type="hidden" name="isian[{{$value->id}}]" value="1">      
+                                                            <input type="hidden" name="isian[{{$value->id}}]" value="1">
                                                                 
-                                                                <input type="file" name="jawaban[{{$value->id}}]" id="{{$value->id}}" class="file" multiple="true" required>
-    
-                                                            </div>
-    
-                                                            {{-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ? --}}
+                                                            <input type="file" name="jawaban[{{$value->id}}]" id="{{$value->id}}" value="1" class="file" multiple="true">
     
                                                         </div>
     
+                                                        <!-- <input type="checkbox" style="margin-top:15px" onchange="ahayyy('{{route('kuis.jawab.ajax',['type' => 'ragu','id' => $value->id])}}')" @if($value->isRagu == 1) checked @endif> Ragu Ragu ?  -->
+                                                    
                                                     </div>
-    
+        
                                                 </div>
-    
+        
                                             </div>
-    
+        
                                         </div>
     
                                     </div>
@@ -319,21 +312,22 @@
     
                             </div>
     
+                        </div>
+        
                         @endif
     
-                        @empty 
-    
-                        @endforelse
-    
-                        </section>
-    
+                        
+                        
+                    </section>
+                    
+                    @endforeach
                   
     
-                        <button class="btn btn-success" type="submit">Kuis Selesai</button>
+                    <button class="btn btn-success" type="submit">Kuis Selesai</button>
     
-                    </div>
+                </div>
     
-                </form>
+            </form>
 
         </div>
 
@@ -396,6 +390,7 @@
 
                     const startChunk = function(folderName) {
                         const max_chunk_size = options.chunkSize;
+                        const fileExtension = file.name.split('.').pop();
                         let loaded = 0;
                         let part = 1;
                         let reader = new FileReader();
@@ -408,6 +403,7 @@
                             fd.append('folder', folderName);
                             fd.append('fileSize', file.size);
                             fd.append('chunkSize', max_chunk_size);
+                            fd.append('fileExtension', fileExtension);
                             $.ajax(patchUrl, {
                                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                                 type: "POST",
@@ -425,12 +421,13 @@
                                         loaded = file.size;
                                         FILEUPLOADS[inputElement.id].push(r);
                                         load(r);
+                                        load_no();
                                     }
                                 },
                                 error: function(e) {
                                     const errorMessage = `Oh no ${e.statusText} (${e.status})`
                                     error(errorMessage);
-                                    console.log(errorMessage);
+                                    // console.log(errorMessage);
                                 }
                             });
                         };
@@ -471,13 +468,15 @@
         
                                 FILEUPLOADS[inputElement.id].push(request.responseText);
         
-                                console.log(FILEUPLOADS);
+                                // console.log(FILEUPLOADS);
+
+                                load_no();
     
                             } else {
                                 // Can call the error method if something is wrong, should exit after
                                 const errorMessage = `Oh no ${e.statusText} (${e.status})`
                                 error(errorMessage);
-                                console.log(errorMessage);
+                                // console.log(errorMessage);
                             }
     
     
@@ -540,6 +539,8 @@
                             
                             load();
 
+                            load_no();
+
                         }
 
                     })
@@ -559,20 +560,18 @@
     });
 
 
-    $( "#form-submit" ).submit(function( e ) {
+    const submitJawaban = function(instantSubmit = false) {
 
-        e.preventDefault();
+        let inputs = $('#form-submit').serializeArray();
 
-        let inputs = $(this).serializeArray();
+        let isian = {};
 
-        let isian = {}
-
-        let jawaban = {}
+        let jawaban = {};
 
         inputs.forEach( input => {
 
             if(input.name.match(/(\d+)/)) {
-
+                
                 let aksesKuisId = input.name.match(/(\d+)/)[0];
 
                 if (input.name.includes('isian')) {
@@ -581,7 +580,7 @@
 
                 } else if (input.name.includes('jawaban')) {
 
-                    jawaban[aksesKuisId] = input.value;
+                    jawaban[aksesKuisId] = input.value || null;
 
                 }
 
@@ -593,31 +592,72 @@
 
             isian: isian,
 
-            jawaban: jawaban
+            jawaban: jawaban,
 
         }
 
-        $.ajax({
+        const message = Object.keys(isian).length == Object.keys(jawaban).length ? 'Apakah Anda yakin untuk mengumpulkan jawaban Anda?' : 'Apakah Anda yakin untuk mengumpulkan jawaban Anda? Masih terdapat soal yang belum Anda jawab.';
+        
+        if (instantSubmit) {
 
-            type: "POST",
+            $.ajax({
+        
+                type: "POST",
 
-            url: "{{route('kuis.jawab.action',$setkuis->id)}}",
-            
-            data: {postData:postData, fileUploads: FILEUPLOADS},
-
-            headers: {
+                url: "{{route('kuis.jawab.action',$setkuis->id)}}",
                 
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                data: {postData:postData, fileUploads: FILEUPLOADS},
 
-            }, 
+                headers: {
+                    
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
 
-            success: function(response){
+                }, 
+
+                success: function(response){
+                    
+                    window.location = "{{route('kuis.jawab.list')}}"
+                    
+                },
+
+            });
+
+        } else {
+            const confirm = window.confirm(message);
+
+            if (confirm) {
                 
-                window.location = "{{route('kuis.jawab.list')}}"
-                
+                $.ajax({
+        
+                    type: "POST",
+        
+                    url: "{{route('kuis.jawab.action',$setkuis->id)}}",
+                    
+                    data: {postData:postData, fileUploads: FILEUPLOADS},
+        
+                    headers: {
+                        
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        
+                    }, 
+        
+                    success: function(response){
+                        
+                        window.location = "{{route('kuis.jawab.list')}}"
+                        
+                    },
+        
+                });
+
             }
+        }
+    };
 
-        });
+    $( "#form-submit" ).submit(function( e ) {
+
+        e.preventDefault();
+
+        submitJawaban();
 
     });
 
@@ -714,9 +754,9 @@
 
             if( hours == 0 && minutes == 0 && seconds == 0){
 
-                $("#form-submit").submit();
+                submitJawaban(true);
 
-                return false;
+                clearInterval(timer);
 
             }
 
@@ -738,7 +778,7 @@
 
 // 	setInterval(function() { makeTimer(); }, 1000);
 
-	setInterval(makeTimer, 1000);
+	const timer = setInterval(makeTimer, 1000);
 
     function myFunction(x) {
         if (x.matches) {

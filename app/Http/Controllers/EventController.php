@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Auth;
 use DirectoryIterator;
+use Exception;
 use Session;
 
 class EventController extends Controller
@@ -329,56 +330,83 @@ class EventController extends Controller
     }
 
     public function patchEventFile(Request $request, Event $event) {
+        
         $loaded = $request->input('loaded');
+
         $chunkSize = $request->input('chunkSize');
+        
         $fileSize = $request->input('fileSize');
         
         $chunk = $request->file('filedata');
 
-        $chunkName = $chunk->getClientOriginalName().'.'.$chunk->extension();
+        $chunkName = $chunk->getClientOriginalName();
         
         $folder = $request->input('folder');
-        
-        $chunk->move('file/event/temp/' . $folder, $chunkName);
-        
-        if ($loaded + $chunkSize > $fileSize) {
-            $dir = new DirectoryIterator(public_path('file/event/temp/'.$folder));
-            $filename = '';
-            $extension = '';
-            foreach ($dir as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-                    if (pathinfo($fileinfo, PATHINFO_EXTENSION) != 'bin') {
-                        $extension = pathinfo($fileinfo, PATHINFO_EXTENSION);
-                    }
-                    $chunkPath = public_path('file/event/temp/'.$folder.'/'.$fileinfo->getFileName());
-                    $file = fopen($chunkPath, 'rb');
-                    $buff = fread($file, $chunkSize);
-                    fclose($file);
-                    
-                    $filename = Auth::user()->name.'-'.$event->name.'-'.explode('-', $folder)[1].'.'.$extension;
-                    $filePath = public_path('file/event/temp/'.$folder.'/'.$filename);
-                    $final = fopen($filePath,'ab');
-                    $write = fwrite($final, $buff);
-                    fclose($final);
 
-                    unlink($chunkPath);
+        try {
+
+            $chunk->move('file/event/temp/' . $folder, $chunkName);
+
+            if ($loaded + $chunkSize > $fileSize) {
+
+                $dir = new DirectoryIterator(public_path('file/event/temp/'.$folder));
+
+                $extension = $request->input('fileExtension');
+
+                $filename = Auth::user()->name.'-'.$event->name.'-'.explode('-', $folder)[1].'.'.$extension;
+
+                foreach ($dir as $fileinfo) {
+
+                    if (!$fileinfo->isDot()) {
+
+                        $chunkPath = public_path('file/event/temp/'.$folder.'/'.$fileinfo->getFileName());
+
+                        $file = fopen($chunkPath, 'rb');
+
+                        $buff = fread($file, $chunkSize);
+
+                        fclose($file);
+                        
+                        $filePath = public_path('file/event/temp/'.$folder.'/'.$filename);
+
+                        $final = fopen($filePath,'ab');
+
+                        $write = fwrite($final, $buff);
+
+                        fclose($final);
+    
+                        unlink($chunkPath);
+
+                    }
+
                 }
+    
+                CaseTemporaryFile::create([
+        
+                    'user_id' => Auth::user()->id,
+    
+                    'event_id' => $event->id,
+    
+                    'folder' => $folder,
+    
+                    'filename' => $filename
+    
+                ]);
+
             }
 
-            CaseTemporaryFile::create([
-    
-                'user_id' => Auth::user()->id,
+        } catch (Exception $error) {
 
-                'event_id' => $event->id,
+            array_map('unlink', glob(public_path('file/event/temp/' . $folder . '/*.*')));
 
-                'folder' => $folder,
+            rmdir(public_path('file/event/temp/' . $folder));
 
-                'filename' => $filename
+            return response($error, 500);
 
-            ]);
         }
 
         return $folder;
+
     }
 
     public function deleteEventFile(Request $request, Event $event) {

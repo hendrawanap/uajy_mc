@@ -34,6 +34,7 @@ use DB;
 
 use Carbon\Carbon;
 use DirectoryIterator;
+use Exception;
 
 class KuisController extends Controller
 
@@ -539,7 +540,7 @@ class KuisController extends Controller
 
         $data = $kuis->set_kuis()->with('kuis')->get();
 
-        return DataTables::of($data)->addColumn('action', function ($data) {
+        return DataTables::of($data)->addIndexColumn()->addColumn('action', function ($data) {
 
         return '
 
@@ -733,6 +734,14 @@ class KuisController extends Controller
 
         }
 
+        $aksesKuises = AksesKuis::where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->where('type', 0)->get();
+
+        if($aksesKuises->count() > 0) {
+            foreach ($aksesKuises as $aksesKuis) {
+                $aksesKuis->jawaban = null;
+                $aksesKuis->save();
+            }
+        }
 
         if(Carbon::parse($setkuis->getTanggalMulai())->addMinutes($setkuis->durasi)->format('Y-m-d H:i:s') < date('Y-m-d H:i:s')) {
 
@@ -852,6 +861,30 @@ class KuisController extends Controller
 
     }
 
+    public function isiJawabanSoalFile($setkuis, $folder, $filename, $id) {
+        $akseskuis = AksesKuis::findOrFail($id);
+    
+        QuizTemporaryFile::create([
+
+            'user_id' => Auth::user()->id,
+
+            'kuis_id' => $akseskuis->soal->kuis_id,
+
+            'set_kuis_id' => $setkuis->id,
+
+            'soal_id' => $akseskuis->soal->id,
+
+            'folder' => $folder,
+
+            'filename' => $filename
+
+        ]);
+
+        $akseskuis->jawaban = '1';
+
+        $akseskuis->save();
+    }
+
     public function uploadAksesKuisFile(Request $request, SetKuis $setkuis, $id) {
 
         if ($request->input('useChunk')) {
@@ -873,24 +906,8 @@ class KuisController extends Controller
                     $folder = $id.$setkuis->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
     
                     $file->move('file/jawaban/temp/' . $folder, $filename);
-    
-                    $akseskuis = AksesKuis::findOrFail($id);
-    
-                    QuizTemporaryFile::create([
-    
-                        'user_id' => Auth::user()->id,
-    
-                        'kuis_id' => $akseskuis->soal->kuis_id,
-    
-                        'set_kuis_id' => $setkuis->id,
-    
-                        'soal_id' => $akseskuis->soal->id,
-    
-                        'folder' => $folder,
-    
-                        'filename' => $filename
-    
-                    ]);
+
+                    $this->isiJawabanSoalFile($setkuis, $folder, $filename, $id);
     
                     return $folder;
     
@@ -905,59 +922,71 @@ class KuisController extends Controller
     }
 
     public function patchAksesKuisFile(Request $request, SetKuis $setkuis, $id) {
+
         $loaded = $request->input('loaded');
+
         $chunkSize = $request->input('chunkSize');
+
         $fileSize = $request->input('fileSize');
         
         $chunk = $request->file('filedata');
 
-        $chunkName = $chunk->getClientOriginalName().'.'.$chunk->extension();
+        $chunkName = $chunk->getClientOriginalName();
         
         $folder = $request->input('folder');
-        
-        $chunk->move('file/jawaban/temp/' . $folder, $chunkName);
-        
-        if ($loaded + $chunkSize > $fileSize) {
-            $dir = new DirectoryIterator(public_path('file/jawaban/temp/'.$folder));
-            $filename = '';
-            $extension = '';
-            foreach ($dir as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-                    if (pathinfo($fileinfo, PATHINFO_EXTENSION) != 'bin') {
-                        $extension = pathinfo($fileinfo, PATHINFO_EXTENSION);
-                    }
-                    $chunkPath = public_path('file/jawaban/temp/'.$folder.'/'.$fileinfo->getFileName());
-                    $file = fopen($chunkPath, 'rb');
-                    $buff = fread($file, $chunkSize);
-                    fclose($file);
-                    
-                    $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.explode('-', $folder)[1].'.'.$extension;
-                    $filePath = public_path('file/jawaban/temp/'.$folder.'/'.$filename);
-                    $final = fopen($filePath,'ab');
-                    $write = fwrite($final, $buff);
-                    fclose($final);
 
-                    unlink($chunkPath);
+        try {
+
+            $chunk->move('file/jawaban/temp/' . $folder, $chunkName);
+
+            $complete = $loaded + $chunkSize > $fileSize;
+        
+            if ($complete) {
+
+                $dir = new DirectoryIterator(public_path('file/jawaban/temp/'.$folder));
+
+                $extension = $request->input('fileExtension');
+
+                $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.explode('-', $folder)[1].'.'.$extension;
+
+                foreach ($dir as $fileinfo) {
+
+                    if (!$fileinfo->isDot()) {
+
+                        $chunkPath = public_path('file/jawaban/temp/'.$folder.'/'.$fileinfo->getFileName());
+
+                        $file = fopen($chunkPath, 'rb');
+
+                        $buff = fread($file, $chunkSize);
+
+                        fclose($file);
+
+                        $filePath = public_path('file/jawaban/temp/'.$folder.'/'.$filename);
+
+                        $final = fopen($filePath,'ab');
+
+                        $write = fwrite($final, $buff);
+
+                        fclose($final);
+
+                        unlink($chunkPath);
+
+                    }
+
                 }
+
+                $this->isiJawabanSoalFile($setkuis, $folder, $filename, $id);
+
             }
 
-            $akseskuis = AksesKuis::findOrFail($id);
-    
-            QuizTemporaryFile::create([
+        } catch (Exception $error) {
 
-                'user_id' => Auth::user()->id,
+            array_map('unlink', glob(public_path('file/jawaban/temp/' . $folder . '/*.*')));
 
-                'kuis_id' => $akseskuis->soal->kuis_id,
+            rmdir(public_path('file/jawaban/temp/' . $folder));
 
-                'set_kuis_id' => $setkuis->id,
+            return response($error, 500);
 
-                'soal_id' => $akseskuis->soal->id,
-
-                'folder' => $folder,
-
-                'filename' => $filename
-
-            ]);
         }
 
         return $folder;
@@ -973,6 +1002,19 @@ class KuisController extends Controller
         
         QuizTemporaryFile::where('folder', $foldername)->delete();
 
+        $aksesKuis = AksesKuis::findOrFail($id);
+
+        $quizTemporary = QuizTemporaryFile::where('set_kuis_id', $setkuis->id)
+                            ->where('kuis_id', $aksesKuis->kuis_id)
+                            ->where('soal_id', $aksesKuis->soal_id)
+                            ->where('user_id', Auth::user()->id)
+                            ->first();
+
+        if (!$quizTemporary) {
+            $aksesKuis->jawaban = null;
+            $aksesKuis->save();
+        }
+
         return $foldername;
 
     }
@@ -985,7 +1027,13 @@ class KuisController extends Controller
 
         // ]);
 
-        $jawaban = $request->postData['jawaban'];
+        $jawaban = array();
+
+        if (array_key_exists('jawaban', $request->postData)) {
+
+            $jawaban = $request->postData['jawaban'];
+
+        }
 
         $total_nilai_pilgan = 0;
 
@@ -1021,122 +1069,129 @@ class KuisController extends Controller
 
         try {
 
-            foreach($jawaban as $key => $value) {
+                foreach($jawaban as $key => $value) {
 
-                $data = AksesKuis::where('id',$key)->where('user_id',Auth::user()->id)->first();
-                
-                if($request->postData['isian'][$key] == 1) {
+                    if ($value) {
 
-                    // $file_name = $key.$value->getClientOriginalName();
-
-                    // $data->update([
-
-                    //     'jawaban' => $file_name,
-
-                    //     'isRagu' => 0,
-
-                    //     'isCheck' => 1
-
-                    // ]);
-
-                    // $value->move('file/jawaban',$file_name);
-
-                    $temporaryFiles = array();
-
-                    foreach ($request->fileUploads[$key] as $foldername) {
-
-                        array_push($temporaryFiles, QuizTemporaryFile::where('folder', $foldername)->where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->first());
-
-                    }
-
-                    if (count($temporaryFiles) > 0) {
-
-                        foreach ($temporaryFiles as $index => $temporaryFile) {
-                            
-                            if ($index == 0) {
-
-                                $data->update([
-
-                                    'jawaban' => $temporaryFile->filename,
-
-                                    'isRagu' => 0,
-
-                                    'isCheck' => 1,
-
-                                ]);
-
-                            } else {
-
-                                $aksesKuis = AksesKuis::create([
-
-                                    'user_id' => Auth::user()->id,
-
-                                    'kuis_id' => $temporaryFile->kuis_id,
-
-                                    'set_kuis_id' => $temporaryFile->set_kuis_id,
-
-                                    'soal_id' => $temporaryFile->soal_id,
-
-                                    'type' => 0, // 0 = essai , 1 = pilihan ganda
-
-                                    'jawaban' => $temporaryFile->filename,
-
-                                    'isRagu' => 0,
-
-                                    'isCheck' => 1,
-
-                                ]);
-
+                        $data = AksesKuis::where('id',$key)->where('user_id',Auth::user()->id)->first();
+                        
+                        if($request->postData['isian'][$key] == 1) {
+        
+                            // $file_name = $key.$value->getClientOriginalName();
+        
+                                // $data->update([
+            
+                                //     'jawaban' => $file_name,
+            
+                                //     'isRagu' => 0,
+            
+                                //     'isCheck' => 1
+            
+                                // ]);
+        
+                            // $value->move('file/jawaban',$file_name);
+        
+                            $temporaryFiles = array();
+        
+                            foreach ($request->fileUploads[$key] as $foldername) {
+        
+                                array_push($temporaryFiles, QuizTemporaryFile::where('folder', $foldername)->where('set_kuis_id', $setkuis->id)->where('user_id', Auth::user()->id)->first());
+        
                             }
-
-                            
-
-
-                            File::move(public_path('file\\jawaban\\temp\\' . $temporaryFile->folder . '\\' . $temporaryFile->filename) , public_path('file\\jawaban\\' . $temporaryFile->filename));
-                            
-                            $temporaryFile->delete();
-                            
-                            rmdir(public_path('file\\jawaban\\temp\\' . $temporaryFile->folder));
-
+        
+                            if (count($temporaryFiles) > 0) {
+        
+                                foreach ($temporaryFiles as $index => $temporaryFile) {
+                                    
+                                    if ($index == 0) {
+        
+                                        $data->update([
+        
+                                            'jawaban' => $temporaryFile->filename,
+        
+                                            'isRagu' => 0,
+        
+                                            'isCheck' => 1,
+        
+                                        ]);
+        
+                                    } else {
+        
+                                        $aksesKuis = AksesKuis::create([
+        
+                                            'user_id' => Auth::user()->id,
+        
+                                            'kuis_id' => $temporaryFile->kuis_id,
+        
+                                            'set_kuis_id' => $temporaryFile->set_kuis_id,
+        
+                                            'soal_id' => $temporaryFile->soal_id,
+        
+                                            'type' => 0, // 0 = essai , 1 = pilihan ganda
+        
+                                            'jawaban' => $temporaryFile->filename,
+        
+                                            'isRagu' => 0,
+        
+                                            'isCheck' => 1,
+        
+                                        ]);
+        
+                                    }
+        
+                                    
+        
+        
+                                    File::move(public_path('file\\jawaban\\temp\\' . $temporaryFile->folder . '\\' . $temporaryFile->filename) , public_path('file\\jawaban\\' . $temporaryFile->filename));
+                                    
+                                    $temporaryFile->delete();
+                                    
+                                    rmdir(public_path('file\\jawaban\\temp\\' . $temporaryFile->folder));
+        
+                                }
+        
+                            }
+        
+                        } else {
+        
+                            // cek otomatis jawaban pilgan
+        
+                            $update_data = 
+                    $update_data = 
+                            $update_data = 
+        
+                            [
+        
+                                'jawaban' => $value,
+        
+                                'isRagu' => 0,
+        
+                                'isCheck' => 1
+        
+                            ];
+        
+                            if($value == $data->soal->jawaban) {
+        
+                                $total_nilai_pilgan+=$nilai_per_soal;
+        
+                                $update_data['isTrue'] = 1;
+        
+                            } else {
+        
+                                $update_data['isFalse'] = 1;
+        
+                            }
+        
+                            $data->update($update_data);
+        
                         }
 
                     }
-
-                } else {
-
-                    // cek otomatis jawaban pilgan
-
-                    $update_data = 
-
-                    [
-
-                        'jawaban' => $value,
-
-                        'isRagu' => 0,
-
-                        'isCheck' => 1
-
-                    ];
-
-                    if($value == $data->soal->jawaban) {
-
-                        $total_nilai_pilgan+=$nilai_per_soal;
-
-                        $update_data['isTrue'] = 1;
-
-                    } else {
-
-                        $update_data['isFalse'] = 1;
-
-                    }
-
-                    $data->update($update_data);
-
+    
                 }
 
-               
+       
 
-            }
 
             KuisSubmit::where('set_kuis_id',$setkuis->id)->where('user_id',Auth::user()->id)->where('status',0)->update([
 
