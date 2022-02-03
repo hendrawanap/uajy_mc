@@ -126,7 +126,7 @@
 
                                                     <div>
 
-                                                        <label class="oval">{{$value[0]->soal->no}}</label>
+                                                        <label class="oval">{{$loop->iteration}}</label>
 
                                                     </div>
 
@@ -248,7 +248,7 @@
 
                                                     <div>
 
-                                                        <label class="oval">{{$value[0]->soal->no}}</label>
+                                                        <label class="oval">{{$loop->iteration}}</label>
 
                                                     </div>
 
