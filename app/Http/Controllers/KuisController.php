@@ -39,6 +39,7 @@ use Exception;
 class KuisController extends Controller
 
 {
+    static $KUIS_ATTACHMENTS_FOLDER = '/file/kuis-attachments';
 
     /**
 
@@ -126,7 +127,43 @@ class KuisController extends Controller
 
         ]);
 
-        Kuis::create($request->all());
+        $attachments = '';
+
+        $fileName = '';
+
+        if ($request->hasFile('attachments')) {
+
+            foreach ($request->file('attachments') as $file) {
+
+                $fileName = time().'-'.$file->getClientOriginalName();
+
+                $fileName = str_replace(',', '_', $fileName);
+
+                $file->move(public_path(KuisController::$KUIS_ATTACHMENTS_FOLDER), $fileName);
+
+                if (empty($attachments)) {
+
+                    $attachments = $fileName;
+
+                } else {
+
+                    $attachments = $attachments.','.$fileName;
+
+                }
+
+            }
+
+        }
+
+        $kuis = new Kuis;
+
+        $kuis->name = $request->input('name');
+
+        $kuis->soal_value = $request->input('soal_value');
+
+        $kuis->attachments = $attachments;
+
+        $kuis->save();
 
         return redirect()->route('kuis.index')->with('success','Berhasil Tambah Data');
 
@@ -200,7 +237,55 @@ class KuisController extends Controller
 
     {
 
-        $kuis->update($request->all());
+        if ($request->has('replace_attachments') || empty($kuis->attachments)) {
+
+            $attachments = '';
+
+            $fileName = '';
+
+            if ($request->hasFile('attachments')) {
+
+                foreach ($request->file('attachments') as $file) {
+
+                    $fileName = time().'-'.$file->getClientOriginalName();
+
+                    $fileName = str_replace(',', '_', $fileName);
+
+                    $file->move(public_path(KuisController::$KUIS_ATTACHMENTS_FOLDER), $fileName);
+
+                    if (empty($attachments)) {
+
+                        $attachments = $fileName;
+
+                    } else {
+
+                        $attachments = $attachments.','.$fileName;
+
+                    }
+
+                }
+
+            }
+
+            if (!empty($kuis->attachments)) {
+
+                foreach (explode(',',$kuis->attachments) as $attachment) {
+
+                    unlink(public_path(KuisController::$KUIS_ATTACHMENTS_FOLDER.'/'.$attachment));
+
+                }
+
+            }
+
+            $kuis->attachments = $attachments;
+
+        }
+
+        $kuis->name = $request->input('name');
+
+        $kuis->soal_value = $request->input('soal_value');
+
+        $kuis->save();
 
         return redirect()->route('kuis.index')->with('success','Berhasil Update Data');
 
@@ -241,8 +326,17 @@ class KuisController extends Controller
             }
 
             
-
             $kuis->delete();
+
+            if (!empty($kuis->attachments)) {
+
+                foreach (explode(',',$kuis->attachments) as $attachment) {
+
+                    unlink(public_path(KuisController::$KUIS_ATTACHMENTS_FOLDER.'/'.$attachment));
+
+                }
+
+            }
 
             DB::commit();
 
