@@ -368,7 +368,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
 
             <h4>Berikut lampiran yang perlu Anda unduh: </h4>
 
-            <button class="btn" style="font-size: larger;"><i class="fa fa-close"></i></button>
+            <button class="btn" onclick="toggleModal()" style="font-size: larger;"><i class="fa fa-close"></i></button>
 
         </div>
 
