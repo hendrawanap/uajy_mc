@@ -17,6 +17,7 @@ class CreateKuisTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('soal_value');
+            $table->string('attachments');
             $table->timestamps();
         });
     }

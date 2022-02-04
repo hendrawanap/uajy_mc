@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kuis extends Model
 {
     protected $fillable = [
-        'name','soal_value'
+        'name','soal_value','attachments'
     ];
 
     public function soal() {
