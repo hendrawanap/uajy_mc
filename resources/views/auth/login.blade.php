@@ -23,8 +23,8 @@
                                 <div class="auth-form">
                                     <div class="d-flex align-items-center justify-content-center">
                                         <img src="/logo/LOGO UAJY FBE.png" width="75" style="margin: 0px 5px"/>
-                                        <img src="/logo/LOGO HMPSM FBE.png" width="75" style="margin: 0px 5px"/>
-                                        <img src="/logo/LOGO MC.png" width="75" style="margin: 0px 5px"/>
+                                        <img src="/logo/LOGO MC.png" width="95" style="margin: 0px 5px"/>
+                                        <img src="/logo/LOGO HMPSM FBE.png" width="60" style="margin: 0px 5px"/>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center" style="margin: 10px 0;">
                                         <img src="/logo/cross.png" width="35" style="margin: 0px 5px"/>
