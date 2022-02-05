@@ -39,12 +39,12 @@
                                         <div class="form-group">
                                             <label class="mb-1" style="color: #3d4465;">Username</label>
                                             <input type="text" name="username" class="form-control form-control-sm  @error('username') is-invalid @enderror" placeholder="Masukan Username..." required>
-                                            @error('username') <span class="text-danger">{{$message}}</span> @enderror
+                                            @error('username') <span class="text-danger fs-12">{{$message}}</span> @enderror
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1" style="color: #3d4465;">Password</label>
                                             <input type="password" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror "   placeholder="Masukan Password..." required>
-                                            @error('password') <span class="text-danger">{{$message}}</span> @enderror
+                                            @error('password') <span class="text-danger fs-12">{{$message}}</span> @enderror
                                         </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>
