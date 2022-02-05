@@ -296,10 +296,8 @@ class EventController extends Controller
                 $files = $request->file('file');
     
                 foreach ($files as $file) {
-    
-                    // Baps-Case Susah-uniqid
                 
-                    $filename = Auth::user()->name.'-'.$event->name.'-'.uniqid().'.'.$file->extension();
+                    $filename = strtoupper($event->name).'_'.strtoupper(Auth::user()->name).'_'.uniqid().'.'.$file->extension();
     
                     $folder = $event->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
     
@@ -353,7 +351,7 @@ class EventController extends Controller
 
                 $extension = $request->input('fileExtension');
 
-                $filename = Auth::user()->name.'-'.$event->name.'-'.explode('-', $folder)[1].'.'.$extension;
+                $filename = strtoupper($event->name).'_'.strtoupper(Auth::user()->name).'_'.explode('-', $folder)[1].'.'.$extension;
 
                 foreach ($dir as $fileinfo) {
 
