@@ -1236,11 +1236,11 @@ class KuisController extends Controller
                                     
         
         
-                                    File::move(public_path('file\\jawaban\\temp\\' . $temporaryFile->folder . '\\' . $temporaryFile->filename) , public_path('file\\jawaban\\' . $temporaryFile->filename));
+                                    File::move(public_path('file/jawaban/temp/' . $temporaryFile->folder . '/' . $temporaryFile->filename) , public_path('file/jawaban/' . $temporaryFile->filename));
                                     
                                     $temporaryFile->delete();
                                     
-                                    rmdir(public_path('file\\jawaban\\temp\\' . $temporaryFile->folder));
+                                    rmdir(public_path('file/jawaban/temp/' . $temporaryFile->folder));
         
                                 }
         
@@ -1309,7 +1309,7 @@ class KuisController extends Controller
 
             DB::rollback();
 
-            dd($e);
+            Session::flash('error', 'Ada kesalahan sistem');
 
             // return redirect()->back()->with('error', 'Gagal memproses data, kesalahan tidak terduga.');
 

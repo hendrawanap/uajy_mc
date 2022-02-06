@@ -239,11 +239,11 @@ class EventController extends Controller
                 ]);
 
 
-                File::move(public_path('file\\event\\temp\\' . $temporaryFile->folder . '\\' . $temporaryFile->filename), public_path('file\\event\\' . $temporaryFile->filename));
+                File::move(public_path('file/event/temp/' . $temporaryFile->folder . '/' . $temporaryFile->filename), public_path('file/event/' . $temporaryFile->filename));
 
                 $temporaryFile->delete();
 
-                rmdir(public_path('file\\event\\temp\\' . $temporaryFile->folder));
+                rmdir(public_path('file/event/temp/' . $temporaryFile->folder));
 
             }
 
