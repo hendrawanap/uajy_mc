@@ -408,9 +408,13 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   --gray-dark: #343a40;
 
-  --primary: #222fb9;
+  /* --primary: var(--primary); */
 
-  --secondary: #ffe600;
+  /* --secondary: #ffe600; */
+  
+  --primary: #0e2342;
+
+  --secondary: #ddaa00;
 
   --success: #21b731;
 
@@ -704,7 +708,7 @@ sup {
 
 a {
 
-  color: #222fb9;
+  color: var(--primary);
 
   text-decoration: none;
 
@@ -4574,7 +4578,7 @@ tr:hover .menu-peserta:first-child path,
 
 .menu-peserta:first-child:hover path {
 
-  stroke: #222fb9;
+  stroke: var(--primary);
 
 }
 
@@ -5944,9 +5948,9 @@ fieldset:disabled a.btn {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -5984,9 +5988,9 @@ fieldset:disabled a.btn {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -6558,9 +6562,9 @@ fieldset:disabled a.btn {
 
 .btn-outline-primary {
 
-  color: #222fb9;
+  color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -6570,9 +6574,9 @@ fieldset:disabled a.btn {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -6592,7 +6596,7 @@ fieldset:disabled a.btn {
 
 .btn-outline-primary:disabled {
 
-  color: #222fb9;
+  color: var(--primary);
 
   background-color: transparent;
 
@@ -6608,9 +6612,9 @@ fieldset:disabled a.btn {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -7136,7 +7140,7 @@ fieldset:disabled a.btn {
 
   font-weight: 400;
 
-  color: #222fb9;
+  color: var(--primary);
 
   text-decoration: none;
 
@@ -7784,7 +7788,7 @@ input[type="button"].btn-block {
 
   text-decoration: none;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -8500,9 +8504,9 @@ input[type="button"].btn-block {
 
   color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -8630,9 +8634,9 @@ input[type="button"].btn-block {
 
 .custom-checkbox .custom-control-input:indeterminate~.custom-control-label::before {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -9076,7 +9080,7 @@ input[type="button"].btn-block {
 
   margin-top: -0.25rem;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   border: 0;
 
@@ -9136,7 +9140,7 @@ input[type="button"].btn-block {
 
   height: 1rem;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   border: 0;
 
@@ -9202,7 +9206,7 @@ input[type="button"].btn-block {
 
   margin-left: 0.2rem;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   border: 0;
 
@@ -9486,7 +9490,7 @@ input[type="button"].btn-block {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -10990,7 +10994,7 @@ input[type="button"].btn-block {
 
   line-height: 1.25;
 
-  color: #222fb9;
+  color: var(--primary);
 
   background-color: #fff;
 
@@ -11056,9 +11060,9 @@ input[type="button"].btn-block {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -11226,7 +11230,7 @@ a.badge:focus {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -11864,7 +11868,7 @@ a.badge-dark.focus {
 
   white-space: nowrap;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   transition: width 0.6s ease;
 
@@ -12044,9 +12048,9 @@ a.badge-dark.focus {
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -14356,7 +14360,7 @@ a.close.disabled {
 
 .bg-primary {
 
-  background-color: #222fb9 !important;
+  background-color: var(--primary) !important;
 
 }
 
@@ -14628,7 +14632,7 @@ button.bg-dark:focus {
 
 .border-primary {
 
-  border-color: #222fb9 !important;
+  border-color: var(--primary) !important;
 
 }
 
@@ -23052,7 +23056,7 @@ button.bg-dark:focus {
 
 .text-primary {
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
 }
 
@@ -25010,7 +25014,7 @@ a.active {
 
   height: 20px;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   border-radius: 100%;
 
@@ -25084,7 +25088,7 @@ a.active {
 
   height: 20px;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   border-radius: 100%;
 
@@ -25220,7 +25224,7 @@ a.active {
 
 .footer .copyright a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -25490,7 +25494,7 @@ a.active {
 
 .hamburger .line {
 
-  background: #222fb9;
+  background: var(--primary);
 
   display: block;
 
@@ -25850,7 +25854,7 @@ svg.pulse-svg .third-circle {
 
   animation: pulse-me 3s linear infinite;
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -26648,7 +26652,7 @@ svg.pulse-svg .third-circle {
 
   position: relative;
 
-  color: #222fb9;
+  color: var(--primary);
 
   background: #f4f4f4;
 
@@ -26696,7 +26700,7 @@ svg.pulse-svg .third-circle {
 
   background: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -26704,7 +26708,7 @@ svg.pulse-svg .third-circle {
 
 .header-right .notification_dropdown .nav-link.primary [fill] {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -26910,7 +26914,7 @@ svg.pulse-svg .third-circle {
 
   font-size: 16px;
 
-  color: #222fb9;
+  color: var(--primary);
 
   display: block;
 
@@ -26960,7 +26964,7 @@ svg.pulse-svg .third-circle {
 
 .header-right .header-profile .dropdown-menu a.active {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -27014,7 +27018,7 @@ svg.pulse-svg .third-circle {
 
 .header-right .header-profile .profile_title {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -27118,7 +27122,7 @@ svg.pulse-svg .third-circle {
 
 .notification_dropdown .dropdown-menu-right .notification_title {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -27200,7 +27204,7 @@ svg.pulse-svg .third-circle {
 
   background: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -34006,7 +34010,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
   margin-top: -3px;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -34024,7 +34028,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 .deznav .metismenu>li:focus>a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -34034,7 +34038,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 .deznav .metismenu>li:focus>a g [fill] {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -34042,7 +34046,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 .deznav .metismenu>li.mm-active>a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -34050,7 +34054,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 .deznav .metismenu>li.mm-active>a g [fill] {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -34132,7 +34136,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
   text-decoration: none;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -34980,7 +34984,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu>li.mm-active>a i {
 
-  color: #222fb9;
+  color: var(--secondary);
 
   background: #fff;
 
@@ -35020,7 +35024,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nav-header .nav-control .hamburger .line {
 
-  background-color: #222fb9 !important;
+  background-color: var(--primary) !important;
 
 }
 
@@ -35256,7 +35260,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu>li.mm-active>a {
 
-  background: #222fb9;
+  background: var(--primary);
 
   border-radius: 1.75rem;
 
@@ -35288,7 +35292,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   border-radius: 1.75rem;
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -35770,7 +35774,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   [data-sidebar-style="mini"][data-layout="vertical"] .deznav .metismenu>li.mm-active>a {
 
-    background: #222fb9;
+    background: var(--primary);
 
     color: #fff;
 
@@ -35790,7 +35794,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   [data-sidebar-style="mini"][data-layout="vertical"] .deznav .metismenu>li:hover>a {
 
-    background: #222fb9;
+    background: var(--primary);
 
     color: #fff;
 
@@ -37676,7 +37680,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sidebar-style="overlay"] .nav-header .hamburger.is-active .line {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -37826,7 +37830,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   background-color: #fff;
 
-  color: #222fb9;
+  color: var(--primary);
 
   display: inline-block;
 
@@ -37860,7 +37864,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .sidebar-right .sidebar-right-trigger:hover {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -38088,7 +38092,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .sidebar-right #primary_color_3+label {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -38346,7 +38350,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .nav-user {
 
-  background: #222fb9;
+  background: var(--primary);
 
   margin-bottom: 10px;
 
@@ -38622,7 +38626,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   padding: 1rem 1rem 0 1rem;
 
-  background: #222fb9;
+  background: var(--primary);
 
   border: 0;
 
@@ -38704,7 +38708,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   background: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -39088,7 +39092,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .chatbox .msg_cotainer {
 
-  background: #222fb9;
+  background: var(--primary);
 
   margin-left: 10px;
 
@@ -39128,7 +39132,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   left: -10px;
 
-  border-right: 10px solid #222fb9;
+  border-right: 10px solid var(--primary);
 
   border-bottom: 10px solid transparent;
 
@@ -39364,7 +39368,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-nav-headerbg="color_3"] .nav-header {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -40204,7 +40208,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-headerbg="color_3"] .header {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -42910,7 +42914,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sibebarbg="color_3"] .deznav {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -42920,7 +42924,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sibebarbg="color_3"] .deznav .menu-tabs li a.active {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -43116,7 +43120,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sibebarbg="color_3"][data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu>li:hover>a {
 
-  background-color: #3443da;
+  background-color: var(--secondary);
 
 }
 
@@ -45988,7 +45992,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-headerbg="color_1"] .nav-header .hamburger .line {
 
-  background: #222fb9 !important;
+  background: var(--primary) !important;
 
 }
 
@@ -47532,7 +47536,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] a.active {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47540,7 +47544,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] [data-class="bg-primary"]:before {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47556,7 +47560,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .email-left-box .intro-title i {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47564,7 +47568,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .widget-stat .media .media-body h4 {
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
 }
 
@@ -47580,7 +47584,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .mail-list .list-group-item.active i {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47588,7 +47592,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .single-mail.active {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47596,7 +47600,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .profile-info h4.text-primary {
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
 }
 
@@ -47606,9 +47610,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .profile-tab .nav-item .nav-link.active {
 
-  border-bottom: 0.2px solid #222fb9;
+  border-bottom: 0.2px solid var(--primary);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47618,7 +47622,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   border: 0;
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47628,7 +47632,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .amcharts-period-input-selected {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47636,7 +47640,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .morris-hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47644,7 +47648,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .select2-container--default .select2-results__option--highlighted[aria-selected] {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47652,9 +47656,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .custom-select:focus {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47662,7 +47666,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .daterangepicker td.active {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47670,7 +47674,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .daterangepicker td.active:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47678,9 +47682,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .daterangepicker button.applyBtn {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -47688,7 +47692,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .wizard>.steps li.current a {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47696,7 +47700,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .wizard .skip-email a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47704,7 +47708,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .wizard>.actions li:not(.disabled) a {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47712,7 +47716,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .step-form-horizontal .wizard .steps li.done a .number {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47720,9 +47724,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .step-form-horizontal .wizard .steps li.current a .number {
 
-  color: #222fb9;
+  color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -47730,7 +47734,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .step-form-horizontal .wizard .steps li.disabled a .number {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47738,7 +47742,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .step-form-horizontal .wizard .steps li:not(:last-child)::after {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47754,7 +47758,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .datamaps-hoverover {
 
-  color: #222fb9;
+  color: var(--primary);
 
   border: 1px solid rgba(34, 47, 185, 0.3);
 
@@ -47766,7 +47770,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .jqvmap-zoomout {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47774,7 +47778,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .table .thead-primary th {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47790,7 +47794,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .table.primary-table-bg-hover tbody tr {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47816,7 +47820,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] table.dataTable tr.selected {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -47824,7 +47828,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .dataTables_wrapper .dataTables_paginate .paginate_button.current {
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
   background: rgba(34, 47, 185, 0.1);
 
@@ -47834,7 +47838,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
   background: rgba(34, 47, 185, 0.1);
 
@@ -47844,7 +47848,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .clipboard-btn:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47852,7 +47856,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .cd-h-timeline__dates::before {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47860,7 +47864,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .cd-h-timeline__dates::after {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47868,7 +47872,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .cd-h-timeline__line {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47878,7 +47882,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   border-color: #2330bd;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47902,7 +47906,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .dd-handle {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47910,7 +47914,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .dd-handle:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47918,7 +47922,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .dd3-content:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -47926,7 +47930,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .noUi-connect {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47934,7 +47938,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .noUi-connect.c-3-color {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47944,7 +47948,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .noUi-vertical .noUi-handle {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47952,7 +47956,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] #slider-toggle.off .noUi-handle {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -47960,7 +47964,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .pignose-calendar {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -47968,7 +47972,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .pignose-calendar .pignose-calendar-top-date {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47976,7 +47980,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .pignose-calendar.pignose-calendar-blue .pignose-calendar-body .pignose-calendar-row .pignose-calendar-unit.pignose-calendar-unit-active a {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47984,7 +47988,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .bootstrap-tagsinput .tag {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -47992,7 +47996,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .toast-success {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48000,7 +48004,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .twitter-typeahead .tt-menu .tt-suggestion:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48008,7 +48012,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .accordion-header-bg .accordion__header--primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48020,7 +48024,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   border-color: #757fe6;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48028,7 +48032,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .alert-alt.alert-primary {
 
-  border-left: 4px solid #222fb9;
+  border-left: 4px solid var(--primary);
 
 }
 
@@ -48044,9 +48048,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .alert.alert-primary.solid {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48054,9 +48058,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .alert.alert-outline-primary {
 
-  color: #222fb9;
+  color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48064,9 +48068,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .badge-outline-primary {
 
-  border: 1px solid #222fb9;
+  border: 1px solid var(--primary);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48074,7 +48078,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .badge-primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48082,7 +48086,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .page-titles h4 {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48100,7 +48104,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   background: black;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48126,7 +48130,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .dropdown-outline {
 
-  border: 0.1rem solid #222fb9;
+  border: 0.1rem solid var(--primary);
 
 }
 
@@ -48134,7 +48138,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .custom-dropdown .dropdown-menu .dropdown-item:hover {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48154,7 +48158,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .card-action .custom-dropdown:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48162,7 +48166,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .label-primary {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48170,9 +48174,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .pagination .page-item .page-link:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48180,9 +48184,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .pagination .page-item.active .page-link {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48192,7 +48196,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .bootstrap-popover-wrapper .bootstrap-popover button:focus {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48200,7 +48204,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .progress-bar {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48208,7 +48212,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .progress-bar-primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48216,7 +48220,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .ribbon__four {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48234,7 +48238,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .ribbon__five {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48242,7 +48246,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .ribbon__five::before {
 
-  border-color: transparent transparent #222fb9 transparent;
+  border-color: transparent transparent var(--primary) transparent;
 
 }
 
@@ -48250,7 +48254,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .ribbon__six {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48258,7 +48262,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .multi-steps>li {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48266,7 +48270,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .multi-steps>li:after {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48274,7 +48278,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .multi-steps>li.is-active:before {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48282,7 +48286,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .timeline-badge.primary {
 
-  background-color: #222fb9 !important;
+  background-color: var(--primary) !important;
 
 }
 
@@ -48290,7 +48294,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .tooltip-wrapper button:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48298,9 +48302,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .chart_widget_tab_one .nav-link.active {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border: 1px solid #222fb9;
+  border: 1px solid var(--primary);
 
 }
 
@@ -48308,7 +48312,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .chart_widget_tab_one .nav-link.active:hover {
 
-  border: 1px solid #222fb9;
+  border: 1px solid var(--primary);
 
 }
 
@@ -48316,7 +48320,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .social-icon2 a {
 
-  border: 0.1rem solid #222fb9;
+  border: 0.1rem solid var(--primary);
 
 }
 
@@ -48324,7 +48328,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .social-icon2 i {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48332,7 +48336,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .social-icon3 ul li a:hover i {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48344,7 +48348,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   border-color: #8a93ea;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48352,7 +48356,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .tdl-holder input[type=checkbox]:checked+i {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48360,7 +48364,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .footer .copyright a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48368,7 +48372,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .hamburger .line {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48380,7 +48384,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] svg.pulse-svg .third-circle {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -48388,7 +48392,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .pulse-css {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48398,7 +48402,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .pulse-css:before {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48406,7 +48410,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .notification_dropdown .dropdown-menu-right .notification_title {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48418,7 +48422,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .header-right .header-profile .dropdown-menu a.active {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48426,7 +48430,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .header-right .header-profile .profile_title {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48434,7 +48438,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nav-header .nav-control .hamburger .line {
 
-  background-color: #222fb9 !important;
+  background-color: var(--primary) !important;
 
 }
 
@@ -48442,7 +48446,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .deznav .metismenu>li>a svg {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48452,7 +48456,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .deznav .metismenu>li:focus>a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48460,7 +48464,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .deznav .metismenu>li.mm-active>a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48472,7 +48476,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .deznav .metismenu ul a.mm-active {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48500,7 +48504,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-sidebar-style="overlay"] .nav-header .hamburger.is-active .line {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48508,7 +48512,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .nav-user {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48516,7 +48520,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .sidebar-right .sidebar-right .sidebar-right-trigger {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48524,7 +48528,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .sidebar-right .sidebar-right .sidebar-right-trigger:hover {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48532,9 +48536,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-theme-version="dark"] .pagination .page-item .page-link:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48542,9 +48546,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-theme-version="dark"] .pagination .page-item.active .page-link {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48552,7 +48556,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-theme-version="dark"] .header-left input:focus {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48560,7 +48564,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-theme-version="dark"] .loader__bar {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48568,7 +48572,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-theme-version="dark"] .loader__ball {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48576,7 +48580,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"][data-theme-version="transparent"] .header-left input:focus {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48584,7 +48588,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .new-arrival-content .price {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48592,7 +48596,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .chart-link a i.text-primary {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48600,9 +48604,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] #user-activity .nav-tabs .nav-link.active {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48610,7 +48614,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] span#counter {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -48618,7 +48622,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .welcome-content:after {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48626,7 +48630,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .timeline-badge {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48642,7 +48646,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .sk-three-bounce .sk-child {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48654,7 +48658,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   color: #fff;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -48662,7 +48666,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .overlay-box:after {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -48670,9 +48674,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .btn-primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48680,7 +48684,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .bg-primary {
 
-  background-color: #222fb9 !important;
+  background-color: var(--primary) !important;
 
 }
 
@@ -48688,7 +48692,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .text-primary {
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
 }
 
@@ -48706,9 +48710,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .btn-outline-primary {
 
-  color: #222fb9;
+  color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -48716,9 +48720,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-primary="color_3"] .btn-outline-primary:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -63632,7 +63636,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   box-shadow: none;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -64280,7 +64284,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -64292,9 +64296,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-theme-version="dark"] .list-group-item.active:focus {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -64334,7 +64338,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   box-shadow: none;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -64366,7 +64370,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-theme-version="dark"] .header-right .right-sidebar a {
 
-  color: #222fb9;
+  color: var(--primary);
 
   border-color: #333a54;
 
@@ -65098,7 +65102,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 #external-events [data-class="bg-primary"]::before {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -65346,7 +65350,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .email-left-box .intro-title i {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -65372,7 +65376,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   border-radius: 100%;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   bottom: 25px;
 
@@ -65432,7 +65436,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .ns-ragu{
 
-  background-color: #222fb9 !important;
+  background-color: var(--primary) !important;
 
   color: #fff !important;
 
@@ -66328,7 +66332,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .single-mail.active {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -66564,7 +66568,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .profile-info h4.text-primary {
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
 }
 
@@ -66694,9 +66698,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   background: transparent;
 
-  border-bottom: 0.2px solid #222fb9;
+  border-bottom: 0.2px solid var(--primary);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -67284,7 +67288,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .ct-chart .ct-series.ct-series-a .ct-slice-donut {
 
-  stroke: #222fb9;
+  stroke: var(--primary);
 
 }
 
@@ -67796,7 +67800,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   z-index: 1;
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -68138,7 +68142,7 @@ svg text {
 
   border: 0;
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -68170,7 +68174,7 @@ svg text {
 
   margin-left: 0.625rem;
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -68440,7 +68444,7 @@ svg text {
 
 [data-theme-version="dark"] .input-primary .form-control {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -68450,7 +68454,7 @@ svg text {
 
 [data-theme-version="dark"] .input-primary .input-group-text {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -68550,7 +68554,7 @@ svg text {
 
 [data-theme-version="dark"] .input-primary-o .form-control {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -68562,9 +68566,9 @@ svg text {
 
   background-color: transparent;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -68728,9 +68732,9 @@ svg text {
 
   box-shadow: none;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -68850,7 +68854,7 @@ input[type="checkbox"]:checked:after {
 
   border-radius: 3px;
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -69456,7 +69460,7 @@ input[type="checkbox"]:checked:after {
 
 .daterangepicker td.active {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -69464,7 +69468,7 @@ input[type="checkbox"]:checked:after {
 
 .daterangepicker td.active:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -69472,9 +69476,9 @@ input[type="checkbox"]:checked:after {
 
 .daterangepicker button.applyBtn {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -69808,7 +69812,7 @@ input[type="checkbox"]:checked:after {
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -70732,13 +70736,13 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   height: 3rem;
 
-  border: 2px solid #222fb9;
+  border: 2px solid var(--primary);
 
   display: block;
 
   line-height: 3rem;
 
-  color: #222fb9;
+  color: var(--primary);
 
   font-size: 18px;
 
@@ -70786,7 +70790,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .form-wizard .nav-wizard li .nav-link.done:after {
 
-  background: #222fb9 !important;
+  background: var(--primary) !important;
 
 }
 
@@ -70794,7 +70798,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .form-wizard .nav-wizard li .nav-link.done span {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -70812,7 +70816,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .form-wizard .toolbar-bottom .btn {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   border: 0;
 
@@ -71160,7 +71164,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   font-family: 'Roboto' !important;
 
-  color: #222fb9;
+  color: var(--primary);
 
   border: 1px solid rgba(34, 47, 185, 0.3);
 
@@ -71196,7 +71200,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   line-height: 14px;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -71406,7 +71410,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .clipboard-btn:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -71512,7 +71516,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .twitter-typeahead .tt-menu .tt-suggestion:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -71594,7 +71598,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .noUi-connect {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -71626,7 +71630,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .noUi-connect.c-3-color {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -71672,7 +71676,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
   border: none;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -71728,7 +71732,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 #slider-toggle.off .noUi-handle {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -71818,7 +71822,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   color: #fff;
 
-  background: #222fb9;
+  background: var(--primary);
 
   border-radius: 0;
 
@@ -71832,7 +71836,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   color: #fff;
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -71842,7 +71846,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   color: #fff;
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -71864,7 +71868,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   max-width: none;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -71872,7 +71876,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .pignose-calendar .pignose-calendar-top-date {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -71888,7 +71892,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .pignose-calendar.pignose-calendar-blue .pignose-calendar-body .pignose-calendar-row .pignose-calendar-unit.pignose-calendar-unit-active a {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   box-shadow: none;
 
@@ -71990,7 +71994,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   left: 0;
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -72000,7 +72004,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   right: 0;
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -72018,7 +72022,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   height: 2px;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   transition: transform 0.4s;
 
@@ -72100,7 +72104,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   border-color: #2330bd;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   transition: background-color 0.3s, border-color .3s;
 
@@ -72420,7 +72424,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .toast-success {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -72596,7 +72600,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .lg-outer .lg-thumb-item:hover {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -72796,9 +72800,9 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .accordion-primary .accordion__header {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -72836,9 +72840,9 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .accordion-primary-solid .accordion__header {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -72884,7 +72888,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .accordion-primary-solid .accordion__body {
 
-  border: 2px solid #222fb9;
+  border: 2px solid var(--primary);
 
   border-top: none;
 
@@ -73288,11 +73292,11 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .accordion-header-bg .accordion__header--primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -73300,7 +73304,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 [data-theme-version="dark"] .accordion-header-bg .accordion__header--primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -73602,7 +73606,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   border-color: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -73768,7 +73772,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .alert-alt.alert-primary {
 
-  border-left: 4px solid #222fb9;
+  border-left: 4px solid var(--primary);
 
 }
 
@@ -73906,11 +73910,11 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .alert.alert-primary.solid {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -74022,9 +74026,9 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   background: transparent;
 
-  color: #222fb9;
+  color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -74250,9 +74254,9 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .badge-outline-primary {
 
-  border: 1px solid #222fb9;
+  border: 1px solid var(--primary);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -74426,7 +74430,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .badge-primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -74512,7 +74516,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   background-color: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -74718,7 +74722,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
   margin-top: 0;
 
-  color: #222fb9;
+  color: var(--primary);
 
   font-size: 1.25rem;
 
@@ -74760,7 +74764,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .page-titles .breadcrumb li a {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -75082,7 +75086,7 @@ button:focus {
 
   border-color: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -75090,7 +75094,7 @@ button:focus {
 
 .light.btn-primary g [fill] {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -75108,9 +75112,9 @@ button:focus {
 
 .light.btn-primary:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -75422,7 +75426,7 @@ button:focus {
 
 .btn.tp-btn.btn-primary {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -75430,7 +75434,7 @@ button:focus {
 
 .btn.tp-btn.btn-primary g [fill] {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -75438,9 +75442,9 @@ button:focus {
 
 .btn.tp-btn.btn-primary:hover {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -75720,7 +75724,7 @@ button:focus {
 
 .btn.tp-btn-light.btn-primary {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -75728,7 +75732,7 @@ button:focus {
 
 .btn.tp-btn-light.btn-primary g [fill] {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -75740,7 +75744,7 @@ button:focus {
 
   border-color: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -75748,7 +75752,7 @@ button:focus {
 
 .btn.tp-btn-light.btn-primary:hover g [fill] {
 
-  fill: #222fb9;
+  fill: var(--primary);
 
 }
 
@@ -77232,7 +77236,7 @@ button:focus {
 
   background: black;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -77550,7 +77554,7 @@ button:focus {
 
 .dropdown-outline {
 
-  border: 0.1rem solid #222fb9;
+  border: 0.1rem solid var(--primary);
 
 }
 
@@ -77752,7 +77756,7 @@ button:focus {
 
 .card-action .custom-dropdown:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -77968,7 +77972,7 @@ button:focus {
 
 .label-primary {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -78532,9 +78536,9 @@ code {
 
 .pagination .page-item .page-link:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -78544,9 +78548,9 @@ code {
 
 .pagination .page-item.active .page-link {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -78632,11 +78636,11 @@ code {
 
 .pagination .page-item .page-link:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -78644,9 +78648,9 @@ code {
 
 .pagination .page-item.active .page-link {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -78706,9 +78710,9 @@ code {
 
 .pagination.no-bg.pagination-primary li:not(.page-indicator):not(.active):hover .page-link {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -78716,9 +78720,9 @@ code {
 
 [data-theme-version="dark"] .pagination.no-bg.pagination-primary li:not(.page-indicator):not(.active):hover .page-link {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -78790,7 +78794,7 @@ code {
 
   border-color: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -78802,7 +78806,7 @@ code {
 
   border-color: transparent;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -78812,9 +78816,9 @@ code {
 
 .pagination-primary .page-item.active .page-link {
 
-  background: #222fb9;
+  background: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   box-shadow: 0 10px 20px 0px rgba(34, 47, 185, 0.2);
 
@@ -79138,7 +79142,7 @@ code {
 
 .bootstrap-popover-wrapper .bootstrap-popover button:focus {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -79214,7 +79218,7 @@ code {
 
 .progress-bar {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -79222,7 +79226,7 @@ code {
 
 .progress-bar-primary {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -79514,7 +79518,7 @@ code {
 
   height: 50px;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   z-index: auto;
 
@@ -79582,7 +79586,7 @@ code {
 
   height: 1.875rem;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   transform: rotate(-45deg);
 
@@ -79618,7 +79622,7 @@ code {
 
   border-width: 0 50px 50px 50px;
 
-  border-color: transparent transparent #222fb9 transparent;
+  border-color: transparent transparent var(--primary) transparent;
 
   left: 0.25rem;
 
@@ -79638,7 +79642,7 @@ code {
 
   height: 2.375rem;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   -webkit-clip-path: polygon(0 0, 100% 0%, 100% 0, 85% 50%, 100% 100%, 100% 100%, 0 100%);
 
@@ -79774,7 +79778,7 @@ code {
 
   position: relative;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -79820,7 +79824,7 @@ code {
 
   border-style: solid;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   border-radius: 5px;
 
@@ -79852,7 +79856,7 @@ code {
 
   width: 100%;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   position: absolute;
 
@@ -79898,7 +79902,7 @@ code {
 
   background-color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -79950,7 +79954,7 @@ code {
 
   transform: scale(1.5);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -79970,7 +79974,7 @@ code {
 
   border-radius: 1.75rem 1.75rem 0 0;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -80012,7 +80016,7 @@ code {
 
   transform: scale(1.5);
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -80028,11 +80032,11 @@ code {
 
   background-color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   border-radius: 0;
 
-  color: #222fb9;
+  color: var(--primary);
 
   border-width: 0 0px 3px 0;
 
@@ -80058,7 +80062,7 @@ code {
 
   background: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
   box-shadow: none;
 
@@ -80096,7 +80100,7 @@ code {
 
 .tooltip-wrapper button:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -80430,7 +80434,7 @@ code {
 
 .widget-timeline .timeline-badge.primary:after {
 
-  background-color: #222fb9 !important;
+  background-color: var(--primary) !important;
 
   box-shadow: 0 5px 10px 0 rgba(34, 47, 185, 0.2);
 
@@ -80728,7 +80732,7 @@ code {
 
 .widget-timeline.style-1 .timeline .timeline-badge.primary+.timeline-panel {
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -80736,7 +80740,7 @@ code {
 
 .widget-timeline.style-1 .timeline .timeline-badge.primary+.timeline-panel:after {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -81012,9 +81016,9 @@ code {
 
 .chart_widget_tab_one .nav-link.active {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border: 1px solid #222fb9;
+  border: 1px solid var(--primary);
 
   color: #fff;
 
@@ -81024,7 +81028,7 @@ code {
 
 .chart_widget_tab_one .nav-link.active:hover {
 
-  border: 1px solid #222fb9;
+  border: 1px solid var(--primary);
 
 }
 
@@ -81106,7 +81110,7 @@ code {
 
 .social-icon2 a {
 
-  border: 0.1rem solid #222fb9;
+  border: 0.1rem solid var(--primary);
 
   display: block;
 
@@ -81128,7 +81132,7 @@ code {
 
   font-size: 12px;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -81164,7 +81168,7 @@ code {
 
 .social-icon3 ul li a:hover i {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -81604,7 +81608,7 @@ code {
 
   opacity: 0.85;
 
-  background: #222fb9;
+  background: var(--primary);
 
   z-index: -1;
 
@@ -81814,7 +81818,7 @@ code {
 
 .tdl-holder input[type=checkbox]:checked+i {
 
-  background: #222fb9;
+  background: var(--primary);
 
   border-color: transparent;
 
@@ -81918,7 +81922,7 @@ code {
 
 .picker .picker__frame .picker__box .picker__header .picker__year {
 
-  color: #222fb9;
+  color: var(--primary);
 
   font-style: inherit;
 
@@ -81978,7 +81982,7 @@ code {
 
   background-color: #8a93ea !important;
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
 }
 
@@ -82340,7 +82344,7 @@ code {
 
   background: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -82570,7 +82574,7 @@ code {
 
 .table .thead-primary th {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -82648,7 +82652,7 @@ code {
 
 .table.primary-table-bg-hover tbody tr {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   color: #fff;
 
@@ -82724,7 +82728,7 @@ code {
 
   background-color: #eeeffc;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -82930,7 +82934,7 @@ table#example {
 
   padding: 0;
 
-  border: 1px solid #222fb9;
+  border: 1px solid var(--primary);
 
   border-radius: 40px;
 
@@ -83054,7 +83058,7 @@ table.dataTable tbody td {
 
 table.dataTable tr.selected {
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -83280,7 +83284,7 @@ table.dataTable thead .sorting_desc {
 
 .dataTables_wrapper .dataTables_paginate span a {
 
-  color: #222fb9;
+  color: var(--primary);
 
   background: transparent !important;
 
@@ -83296,7 +83300,7 @@ table.dataTable thead .sorting_desc {
 
   border-radius: 30px;
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
   font-size: 16px;
 
@@ -83326,7 +83330,7 @@ table.dataTable thead .sorting_desc {
 
   color: #fff !important;
 
-  background: #222fb9 !important;
+  background: var(--primary) !important;
 
 }
 
@@ -83338,7 +83342,7 @@ table.dataTable thead .sorting_desc {
 
   background: transparent;
 
-  color: #222fb9 !important;
+  color: var(--primary) !important;
 
 }
 
@@ -83538,7 +83542,7 @@ a{
 
   bottom: 0;
 
-  background: #222fb9;
+  background: var(--primary);
 
   opacity: 0.75;
 
@@ -83940,7 +83944,7 @@ a{
 
   width: 0.9rem;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
 }
 
@@ -84628,7 +84632,7 @@ a{
 
   bottom: -12px;
 
-  background: #222fb9;
+  background: var(--primary);
 
   content: "";
 
@@ -84774,7 +84778,7 @@ a{
 
 .schedule-event-inner .btn svg [stroke] {
 
-  stroke: #222fb9;
+  stroke: var(--primary);
 
 }
 
@@ -84938,7 +84942,7 @@ a{
 
 .event-calender .bootstrap-datetimepicker-widget table td.second:hover {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -84950,7 +84954,7 @@ a{
 
 .event-calender .datepicker table tr td.today {
 
-  background: #222fb9 !important;
+  background: var(--primary) !important;
 
   color: #fff !important;
 
@@ -84988,7 +84992,7 @@ a{
 
   position: absolute;
 
-  background: #222fb9;
+  background: var(--primary);
 
   border-radius: 100%;
 
@@ -85008,7 +85012,7 @@ a{
 
   background: transparent;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -85016,7 +85020,7 @@ a{
 
 .event-list:hover .bgl-primary:after {
 
-  background: #222fb9;
+  background: var(--primary);
 
 }
 
@@ -85340,7 +85344,7 @@ a{
 
 .card-tabs .nav-tabs .nav-link.active {
 
-  background: #222fb9;
+  background: var(--primary);
 
   color: #fff;
 
@@ -85478,7 +85482,7 @@ span#counter {
 
   font-weight: 700;
 
-  color: #222fb9;
+  color: var(--primary);
 
 }
 
@@ -85802,7 +85806,7 @@ span#counter {
 
   border-radius: 100%;
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
   margin-right: 15px;
 
@@ -86298,7 +86302,7 @@ span#counter {
 
   font-weight: 600;
 
-  color: #222fb9;
+  color: var(--primary);
 
   font-size: 24px;
 
@@ -92664,7 +92668,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
   color: #fff;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -92676,9 +92680,9 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 [data-theme-version="dark"] .list-group-item.active:focus {
 
-  background-color: #222fb9;
+  background-color: var(--primary);
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
   color: #fff;
 
@@ -92718,7 +92722,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
   box-shadow: none;
 
-  border-color: #222fb9;
+  border-color: var(--primary);
 
 }
 
@@ -92750,7 +92754,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 [data-theme-version="dark"] .header-right .right-sidebar a {
 
-  color: #222fb9;
+  color: var(--primary);
 
   border-color: #333a54;
 

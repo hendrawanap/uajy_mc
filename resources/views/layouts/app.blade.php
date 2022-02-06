@@ -286,7 +286,7 @@
     let modalIsOpen = false;
     const modal = document.getElementById('modal-overlay');
     const modalContainer = document.getElementById('modal-content');
-    console.log(modalContainer.offsetWidth);
+    // console.log(modalContainer.offsetWidth);
 
     function toggleModal() {
         if (modalIsOpen) {

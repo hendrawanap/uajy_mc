@@ -995,7 +995,7 @@ class KuisController extends Controller
                 
                 foreach ($files as $file) {
                     
-                    $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.uniqid().'.'.$file->extension();
+                    $filename = strtoupper($setkuis->kuis->name).'_'.strtoupper(Auth::user()->name).'_'.uniqid().'.'.$file->extension();
     
                     $folder = $id.$setkuis->id.Auth::user()->id.'-'.uniqid().'-'.now()->timestamp;
     
@@ -1041,7 +1041,7 @@ class KuisController extends Controller
 
                 $extension = $request->input('fileExtension');
 
-                $filename = Auth::user()->name.'-'.$setkuis->kuis->name.'-'.explode('-', $folder)[1].'.'.$extension;
+                $filename = strtoupper($setkuis->kuis->name).'_'.strtoupper(Auth::user()->name).'_'.explode('-', $folder)[1].'.'.$extension;
 
                 foreach ($dir as $fileinfo) {
 
