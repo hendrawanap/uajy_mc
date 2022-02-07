@@ -219,7 +219,7 @@
 
         chunkUploads: true,
 
-        chunkSize: 10_000_000,
+        chunkSize: 41_943_040,
 
         chunkForce: true,
 
@@ -261,8 +261,8 @@
 
                 // }
 
-                const postUrl = '/event/{{$event->id}}/upload/'+inputElement.id;
-                const patchUrl = '/event/{{$event->id}}/patch/'+inputElement.id;
+                const postUrl = '/event/{{$event->id}}/upload';
+                const patchUrl = '/event/{{$event->id}}/patch';
 
                 const useChunk = file.size > options.chunkSize;
 
@@ -282,31 +282,39 @@
                         fd.append('fileSize', file.size);
                         fd.append('chunkSize', max_chunk_size);
                         fd.append('fileExtension', fileExtension);
-                        $.ajax(patchUrl, {
-                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                            type: "POST",
-                            contentType: false,
-                            data: fd,
-                            processData: false,
-                            success: function(r) {
+                        const request = new XMLHttpRequest();
+    
+                        request.open('POST', patchUrl);
+    
+                        request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    
+                        request.upload.onprogress = (e) => {
+    
+                            progress(e.lengthComputable, e.loaded + loaded, file.size);
+    
+                        };
+    
+                        request.onload = function () {
+    
+                            if (request.status >= 200 && request.status < 300) {
                                 loaded += max_chunk_size;
                                 part++;
                                 if (loaded < file.size) {
                                     blob = file.slice(loaded, loaded + max_chunk_size);
                                     reader.readAsArrayBuffer(blob);
-                                    progress(true, loaded, file.size);
                                 } else {
                                     loaded = file.size;
-                                    FILEUPLOADS.push(r);
-                                    load(r);
+                                    FILEUPLOADS.push(request.responseText);
+                                    load(request.responseText);
                                 }
-                            },
-                            error: function(e) {
+                            } else {
                                 const errorMessage = `Oh no ${e.statusText} (${e.status})`
                                 error(errorMessage);
-                                console.log(errorMessage);
                             }
-                        });
+
+                        };
+
+                        request.send(fd);
                     };
                 }
 
@@ -320,6 +328,7 @@
                         }
                     });
                 } else {
+                    console.log('not chunk');
                     const formData = new FormData();
     
                     formData.append(fieldName, file, file.name);

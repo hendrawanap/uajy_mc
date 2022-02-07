@@ -425,7 +425,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
 
             chunkUploads: true,
 
-            chunkSize: 10_000_000,
+            chunkSize: 41_943_040,
 
             chunkForce: true,
 
@@ -464,32 +464,42 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
                             fd.append('fileSize', file.size);
                             fd.append('chunkSize', max_chunk_size);
                             fd.append('fileExtension', fileExtension);
-                            $.ajax(patchUrl, {
-                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                                type: "POST",
-                                contentType: false,
-                                data: fd,
-                                processData: false,
-                                success: function(r) {
+
+                            const request = new XMLHttpRequest();
+    
+                            request.open('POST', patchUrl);
+        
+                            request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+        
+                            request.upload.onprogress = (e) => {
+        
+                                progress(e.lengthComputable, e.loaded + loaded, file.size);
+        
+                            };
+        
+                            request.onload = function () {
+        
+                                if (request.status >= 200 && request.status < 300) {
                                     loaded += max_chunk_size;
                                     part++;
                                     if (loaded < file.size) {
                                         blob = file.slice(loaded, loaded + max_chunk_size);
                                         reader.readAsArrayBuffer(blob);
-                                        progress(true, loaded, file.size);
                                     } else {
                                         loaded = file.size;
-                                        FILEUPLOADS[inputElement.id].push(r);
-                                        load(r);
+                                        FILEUPLOADS[inputElement.id].push(request.responseText);
+                                        load(request.responseText);
                                         load_no();
                                     }
-                                },
-                                error: function(e) {
+                                } else {
                                     const errorMessage = `Oh no ${e.statusText} (${e.status})`
                                     error(errorMessage);
-                                    // console.log(errorMessage);
                                 }
-                            });
+
+                            };
+        
+                            request.send(fd);
+
                         };
                     }
 
