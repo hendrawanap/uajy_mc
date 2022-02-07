@@ -342,7 +342,26 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
                         @endforeach
                       
         
-                        <button class="btn btn-success" type="submit">Kuis Selesai</button>
+                        <button class="btn btn-success" data-toggle="modal" type="button" data-target="#openConfirm" onclick="makeConfirmationMessage()">Kuis Selesai</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="openConfirm" tabindex="-1" aria-labelledby="openConfirmLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="openConfirmLabel"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+                                    <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="submitJawaban()">Kirim</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
         
                     </div>
         
@@ -629,9 +648,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
 
     });
 
-
-    const submitJawaban = function(instantSubmit = false) {
-
+    const makeConfirmationMessage = function() {
         let inputs = $('#form-submit').serializeArray();
 
         let isian = {};
@@ -666,8 +683,18 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
 
         }
 
-        const message = Object.keys(isian).length == Object.keys(jawaban).length ? 'Apakah Anda yakin untuk mengumpulkan jawaban Anda?' : 'Apakah Anda yakin untuk mengumpulkan jawaban Anda? Masih terdapat soal yang belum Anda jawab.';
-        
+        const modalTitle = document.querySelector('#openConfirm .modal-title');
+
+        const message = Object.keys(isian).length == Object.keys(jawaban).length ? modalTitle.innerText = 'Apakah Anda yakin untuk mengumpulkan jawaban Anda?' : modalTitle.innerText = 'Apakah Anda yakin untuk mengumpulkan jawaban Anda? Masih terdapat soal yang belum Anda jawab.';
+
+        return postData;
+    }
+
+
+    const submitJawaban = function(instantSubmit = false) {
+
+        const postData = makeConfirmationMessage();
+
         if (instantSubmit) {
 
             $.ajax({
@@ -693,9 +720,9 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
             });
 
         } else {
-            const confirm = window.confirm(message);
+            // const confirm = window.confirm(message);
 
-            if (confirm) {
+            // if (confirm) {
                 
                 $.ajax({
         
@@ -719,7 +746,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
         
                 });
 
-            }
+            // }
         }
     };
 
