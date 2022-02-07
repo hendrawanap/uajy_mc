@@ -414,6 +414,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   
   --primary: #0e2342;
 
+  --hover-primary: #202f46;
+
   --secondary: #ddaa00;
 
   --success: #21b731;
@@ -5962,7 +5964,7 @@ fieldset:disabled a.btn {
 
   color: #fff;
 
-  background-color: #1c2799;
+  background-color: var(--hover-primary);
 
   border-color: #1a248e;
 
