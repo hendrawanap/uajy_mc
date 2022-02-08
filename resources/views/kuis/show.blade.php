@@ -154,7 +154,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
     
                                                     @if($value->soal->getfotoKuis() == TRUE)
     
-                                                    <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4" style="height: auto; width: 100%; border-radius: 15px;">
+                                                    <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4" loading="lazy" style="height: auto; width: 100%; border-radius: 15px;">
     
                                                     @endif
     
@@ -277,7 +277,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
     
                                                     @if($value->soal->getfotoKuis() == TRUE)
     
-                                                    <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4" style="height: auto; width: 100%; border-radius: 15px;">
+                                                    <img src="{{$value->soal->getfotoKuis()}}" alt="" class="img-fluid mb-4" loading="lazy" style="height: auto; width: 100%; border-radius: 15px;">
     
                                                     @endif
     
