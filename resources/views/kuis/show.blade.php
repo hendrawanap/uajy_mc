@@ -346,8 +346,8 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
 
                         <!-- Modal -->
                         <div class="modal fade" id="openConfirm" tabindex="-1" aria-labelledby="openConfirmLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content py-4">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="openConfirmLabel"></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -355,8 +355,8 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
                                     </button>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
-                                    <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="submitJawaban()">Kirim</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Batalkan</button>
+                                    <button type="submit" class="btn btn-success" data-dismiss="modal" onclick="submitJawaban()">Kirim</button>
                                 </div>
                                 </div>
                             </div>
@@ -685,7 +685,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
 
         const modalTitle = document.querySelector('#openConfirm .modal-title');
 
-        const message = Object.keys(isian).length == Object.keys(jawaban).length ? modalTitle.innerText = 'Apakah Anda yakin untuk mengumpulkan jawaban Anda?' : modalTitle.innerText = 'Apakah Anda yakin untuk mengumpulkan jawaban Anda? Masih terdapat soal yang belum Anda jawab.';
+        const message = Object.keys(isian).length == Object.keys(jawaban).length ? modalTitle.innerHTML = `Apakah Anda yakin untuk mengumpulkan jawaban Anda?` : modalTitle.innerHTML = `Apakah Anda yakin untuk mengumpulkan jawaban Anda? <span class="text-warning">Masih terdapat soal yang belum Anda jawab.</span>`;
 
         return postData;
     }
