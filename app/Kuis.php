@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kuis extends Model
 {
     protected $fillable = [
-        'name','soal_value'
+        'name','soal_value','attachments'
     ];
 
     public function soal() {
@@ -21,6 +21,10 @@ class Kuis extends Model
     public function akses_kuis() {
         return $this->hasMany(AksesKuis::class);
     }
+
+    public function temporary_file() {
+        return $this->hasMany(TemporaryFile::class);
+    } 
 
     public function kuis_submit() {
         return $this->hasMany(KuisSubmit::class);

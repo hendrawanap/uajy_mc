@@ -13,12 +13,18 @@
     <link href="/template//vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <link href="/template/vendor/summernote/summernote.css" rel="stylesheet">
+    @yield('link')
     <style>
         .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
             color:#fff !important
         }
         .dataTables_wrapper .dataTables_paginate {
             padding:0 !important
+        }
+
+        .glassy-container {
+            background-color: rgba(0, 0, 0, .25) !important;
+            backdrop-filter: blur(5px) !important;
         }
     </style>
 </head>
@@ -198,7 +204,7 @@
 
                         @if (session('error'))
 
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -240,6 +246,23 @@
     ***********************************-->
     <!-- Required vendors -->
 
+    <div class="overflow-auto d-none modal-transition glassy-container" id="modal-overlay" style="inset: 0; position: fixed; z-index: 999;">
+        <div class="my-5 container" id="modal-content" style="background-color: transparent; position: relative; z-index: 1000">
+            @yield('modal-content')
+        </div>
+    </div>
+
+    <style>
+        .modal-transition.d-none {
+            background-color: rgba(0,0,0,0);
+        }
+
+        .modal-transition {
+            background-color: rgba(0,0,0,0.8);
+            transition: all;
+        }
+    </style>
+
     <script src="/template/vendor/global/global.min.js"></script>
     <script src="/template/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/template/vendor/chart.js/Chart.bundle.min.js"></script>
@@ -259,6 +282,28 @@
        $('textarea').ckeditor();
     
     });
+
+    let modalIsOpen = false;
+    const modal = document.getElementById('modal-overlay');
+    const modalContainer = document.getElementById('modal-content');
+    // console.log(modalContainer.offsetWidth);
+
+    function toggleModal() {
+        if (modalIsOpen) {
+            document.body.classList.remove('overflow-hidden');
+            modal.classList.add('d-none');
+        } else {
+            document.body.classList.add('overflow-hidden');
+            modal.classList.remove('d-none');
+        }
+        modalIsOpen = !modalIsOpen;
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            toggleModal()
+        }
+    } 
     </script>
     @yield('js')
 </body>

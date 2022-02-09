@@ -23,8 +23,8 @@
                                 <div class="auth-form">
                                     <div class="d-flex align-items-center justify-content-center">
                                         <img src="/logo/LOGO UAJY FBE.png" width="75" style="margin: 0px 5px"/>
-                                        <img src="/logo/LOGO HMPSM FBE.png" width="75" style="margin: 0px 5px"/>
-                                        <img src="/logo/LOGO MC.png" width="75" style="margin: 0px 5px"/>
+                                        <img src="/logo/LOGO MC.png" width="95" style="margin: 0px 5px"/>
+                                        <img src="/logo/LOGO HMPSM FBE.png" width="60" style="margin: 0px 5px"/>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center" style="margin: 10px 0;">
                                         <img src="/logo/cross.png" width="35" style="margin: 0px 5px"/>
@@ -39,12 +39,12 @@
                                         <div class="form-group">
                                             <label class="mb-1" style="color: #3d4465;">Username</label>
                                             <input type="text" name="username" class="form-control form-control-sm  @error('username') is-invalid @enderror" placeholder="Masukan Username..." required>
-                                            @error('username') <span class="text-danger">{{$message}}</span> @enderror
+                                            @error('username') <span class="text-danger fs-12">{{$message}}</span> @enderror
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1" style="color: #3d4465;">Password</label>
                                             <input type="password" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror "   placeholder="Masukan Password..." required>
-                                            @error('password') <span class="text-danger">{{$message}}</span> @enderror
+                                            @error('password') <span class="text-danger fs-12">{{$message}}</span> @enderror
                                         </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>

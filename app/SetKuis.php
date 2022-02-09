@@ -18,6 +18,10 @@ class SetKuis extends Model
         return $this->hasMany(AksesKuis::class);
     } 
 
+    public function temporary_file() {
+        return $this->hasMany(TemporaryFile::class);
+    } 
+
     public function getTanggalMulai() {
         return str_replace('T',' ',$this->tanggal_mulai);
     }
