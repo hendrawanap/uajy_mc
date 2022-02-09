@@ -116,7 +116,7 @@
 
                                                 @if($value[0]->soal->foto == TRUE)
 
-                                            <img src="{{$value[0]->soal->getFoto()}}" alt="" class="img-fluid mb-4"
+                                            <img src="{{$value[0]->soal->getFoto()}}" loading="lazy" alt="" class="img-fluid mb-4"
 
                                                     style="height: auto; width: 100%; border-radius: 15px;">
 
@@ -238,7 +238,7 @@
 
                                             @if($value[0]->soal->foto == TRUE)
 
-                                            <img src="{{$value[0]->soal->getFoto()}}" alt="" class="img-fluid mb-4"
+                                            <img src="{{$value[0]->soal->getFoto()}}" loading="lazy" alt="" class="img-fluid mb-4"
 
                                                     style="height: auto; width: 100%; border-radius: 15px;">
 
