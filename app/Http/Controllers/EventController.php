@@ -16,6 +16,8 @@ use Session;
 
 class EventController extends Controller
 {
+    static $BACKUP_FOLDER = '/file/backup/';
+    static $EVENT_SUBMIT_FOLDER = '/file/event/';
     /**
      * Display a listing of the resource.
      *
@@ -138,8 +140,15 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        if($event->event_submit()->exists()) $event->event_submit()->delete();
-        unlink(public_path($event->getSoalURL()));
+        if($event->event_submit()->exists()) {
+            $event_submits = $event->event_submit;
+            foreach ($event_submits as $event_submit) {
+                File::move(public_path(EventController::$EVENT_SUBMIT_FOLDER.$event_submit->file), public_path(EventController::$BACKUP_FOLDER.$event_submit->file));
+            }
+            $event->event_submit()->delete();
+        }
+        File::move(public_path($event->getSoalURL()), public_path(EventController::$BACKUP_FOLDER.$event->soal));
+
         $event->delete();
         return redirect()->route('event.index')->with('success','Berhasil !');
     }

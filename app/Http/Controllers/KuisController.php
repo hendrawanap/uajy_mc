@@ -39,7 +39,10 @@ use Exception;
 class KuisController extends Controller
 
 {
-    static $KUIS_ATTACHMENTS_FOLDER = '/file/kuis-attachments';
+    static $KUIS_ATTACHMENTS_FOLDER = '/file/kuis-attachments/';
+    static $KUIS_JAWABAN_FOLDER = '/file/jawaban/';
+    static $KUIS_GAMBAR_SOAL_FOLDER = '/file/img-soal/';
+    static $BACKUP_FOLDER = '/file/backup/';
 
     /**
 
@@ -313,11 +316,43 @@ class KuisController extends Controller
 
         try {
 
-            if($kuis->soal()->exists()) $kuis->soal()->delete();
+            if ($kuis->soal()->exists()) {
+
+                $soals = $kuis->soal;
+
+                foreach ($soals as $soal) {
+
+                    if ($soal->foto) {
+
+                        File::move(public_path(KuisController::$KUIS_GAMBAR_SOAL_FOLDER.$soal->foto), public_path(KuisController::$BACKUP_FOLDER.$soal->foto));
+
+                    }
+
+                }
+
+                $kuis->soal()->delete();
+
+            }
 
             if($kuis->set_kuis()->exists()) {
 
-                if($kuis->set_kuis->akses_kuis()->exists()) $kuis->set_kuis->akses_kuis()->delete();
+                if($kuis->set_kuis->akses_kuis()->exists()) {
+
+                    $akses_kuisses = $kuis->set_kuis->akses_kuis;
+
+                    foreach ($akses_kuisses as $akses_kuis) {
+
+                        if ($akses_kuis->type == 0) {
+
+                            File::move(public_path(KuisController::$KUIS_JAWABAN_FOLDER.$akses_kuis->jawaban), public_path(KuisController::$BACKUP_FOLDER.$akses_kuis->jawaban));
+
+                        }
+
+                    }
+
+                    $kuis->set_kuis->akses_kuis()->delete();
+
+                }
 
                 if($kuis->set_kuis->kuis_submit()->exists()) $kuis->set_kuis->kuis_submit()->delete();
 
@@ -332,7 +367,7 @@ class KuisController extends Controller
 
                 foreach (explode(',',$kuis->attachments) as $attachment) {
 
-                    unlink(public_path(KuisController::$KUIS_ATTACHMENTS_FOLDER.'/'.$attachment));
+                    File::move(public_path(KuisController::$KUIS_ATTACHMENTS_FOLDER.$attachment), public_path(KuisController::$BACKUP_FOLDER.$attachment));
 
                 }
 
