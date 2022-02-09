@@ -141,15 +141,27 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         if($event->event_submit()->exists()) {
+
             $event_submits = $event->event_submit;
+
             foreach ($event_submits as $event_submit) {
-                File::move(public_path(EventController::$EVENT_SUBMIT_FOLDER.$event_submit->file), public_path(EventController::$BACKUP_FOLDER.$event_submit->file));
+
+                if ($event_submit->file) {
+
+                    File::move(public_path(EventController::$EVENT_SUBMIT_FOLDER.$event_submit->file), public_path(EventController::$BACKUP_FOLDER.$event_submit->file));
+
+                }
+
             }
+
             $event->event_submit()->delete();
+
         }
+
         File::move(public_path($event->getSoalURL()), public_path(EventController::$BACKUP_FOLDER.$event->soal));
 
         $event->delete();
+
         return redirect()->route('event.index')->with('success','Berhasil !');
     }
 

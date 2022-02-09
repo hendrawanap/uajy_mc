@@ -344,7 +344,11 @@ class KuisController extends Controller
 
                         if ($akses_kuis->type == 0) {
 
-                            File::move(public_path(KuisController::$KUIS_JAWABAN_FOLDER.$akses_kuis->jawaban), public_path(KuisController::$BACKUP_FOLDER.$akses_kuis->jawaban));
+                            if ($akses_kuis->jawaban) {
+
+                                File::move(public_path(KuisController::$KUIS_JAWABAN_FOLDER.$akses_kuis->jawaban), public_path(KuisController::$BACKUP_FOLDER.$akses_kuis->jawaban));
+
+                            }
 
                         }
 
