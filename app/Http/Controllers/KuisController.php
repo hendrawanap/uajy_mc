@@ -661,6 +661,20 @@ class KuisController extends Controller
 
     public function setKuisDelete(SetKuis $setkuis) {
 
+        if ($setkuis->akses_kuis()->exists()) {
+
+            foreach ($setkuis->akses_kuis as $akses_kuis) {
+
+                if ($akses_kuis->type == 0 && $akses_kuis->jawaban) {
+
+                    File::move(public_path(KuisController::$KUIS_JAWABAN_FOLDER.$akses_kuis->jawaban), public_path(KuisController::$BACKUP_FOLDER.$akses_kuis->jawaban));
+
+                }
+
+            }
+
+        }
+
         $setkuis->delete();
 
         return redirect()->back()->with('success','Berhasil !');
