@@ -52,7 +52,7 @@
 					<div class="col-xl-12">
 						<div class="welcome-card rounded pl-5 pt-5 pb-4 mt-3 position-relative mb-5">
 							<h4 class="text-warning">Halo {{Auth::user()->name}},</h4>
-							<p>Selamat datang di website Management Competition, ini merupakan website tentang Kuis dan Case.</p>
+							<p>Selamat datang di website {{ env('APP_NAME' )}}, ini merupakan website tentang Kuis dan Case.</p>
 							<a class="btn btn-warning btn-rounded" href="{{route('kuis.jawab.list')}}">Lihat Kuis <i class="las la-long-arrow-alt-right ml-2"></i></a>
 							<img src="/template/images/svg/welcom-card.svg" alt="" class="position-absolute">
 						</div>
