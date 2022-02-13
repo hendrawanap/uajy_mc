@@ -26,14 +26,14 @@
                                         <img src="/logo/LOGO MC.png" width="95" style="margin: 0px 5px"/>
                                         <img src="/logo/LOGO HMPSM FBE.png" width="60" style="margin: 0px 5px"/>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center" style="margin: 10px 0;">
+                                    <!-- <div class="d-flex align-items-center justify-content-center" style="margin: 10px 0;">
                                         <img src="/logo/cross.png" width="35" style="margin: 0px 5px"/>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center mb-3">
                                         <img src="/logo/2-Logo G-New Year-Landscape-OK.jpg" width="75" style="margin: 0px 5px"/>
                                         <img src="/logo/LOGO Lokalate Kopi Berondong.png" width="75" style="margin: 0px 5px"/>
-                                    </div>
-                                    <h4 class="text-center mb-4"><span class="d-block mb-2">- Login -</span><strong>{{config('app.name')}}</strong></h4>
+                                    </div> -->
+                                    <h4 class="text-center mt-3 mb-4"><span class="d-block mb-2">- Login -</span><strong>{{config('app.name')}}</strong></h4>
                                     <form method="POST" class="needs-validation">
                                     @csrf
                                         <div class="form-group">
