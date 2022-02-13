@@ -334,37 +334,36 @@ class KuisController extends Controller
 
             }
 
-            if($kuis->set_kuis()->exists()) {
+            $set_kuisses = SetKuis::where('kuis_id', $kuis->id)->get();
 
-                if($kuis->set_kuis->akses_kuis()->exists()) {
+            if($set_kuisses->count() > 0) {
 
-                    $akses_kuisses = $kuis->set_kuis->akses_kuis;
+                foreach ($set_kuisses as $set_kuis) {
 
-                    foreach ($akses_kuisses as $akses_kuis) {
-
-                        if ($akses_kuis->type == 0) {
-
-                            if ($akses_kuis->jawaban) {
-
+                    if ($set_kuis->akses_kuis()->exists()) {
+    
+                        foreach ($set_kuis->akses_kuis as $akses_kuis) {
+    
+                            if ($akses_kuis->type == 0 && $akses_kuis->jawaban) {
+    
                                 File::move(public_path(KuisController::$KUIS_JAWABAN_FOLDER.$akses_kuis->jawaban), public_path(KuisController::$BACKUP_FOLDER.$akses_kuis->jawaban));
 
                             }
-
+    
                         }
+
+                        $set_kuis->akses_kuis()->delete();
+
+                        if ($set_kuis->kuis_submit()->exists()) $set_kuis->kuis_submit()->delete();
 
                     }
 
-                    $kuis->set_kuis->akses_kuis()->delete();
+                    $set_kuis->delete();
 
                 }
 
-                if($kuis->set_kuis->kuis_submit()->exists()) $kuis->set_kuis->kuis_submit()->delete();
-
-                $kuis->set_kuis()->delete();
-
             }
 
-            
             $kuis->delete();
 
             if (!empty($kuis->attachments)) {
@@ -387,7 +386,7 @@ class KuisController extends Controller
 
             // dd($e);
 
-            return redirect()->back()->with('error', 'Gagal !, kesalahan tidak terduga.');
+            return redirect()->back()->with('error', 'Gagal !, kesalahan tidak terduga.'.$e->getMessage());
 
         }
 
@@ -672,6 +671,14 @@ class KuisController extends Controller
                 }
 
             }
+
+            $setkuis->akses_kuis()->delete();
+
+        }
+
+        if ($setkuis->kuis_submit()->exists()) {
+
+            $setkuis->kuis_submit()->delete();
 
         }
 
