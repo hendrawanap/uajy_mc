@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-$attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
+$attachments = \App\Kuis::find($setkuis->kuis_id)->attachments;
 @endphp
 
 @section('link')
@@ -444,7 +444,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->get()[0]->attachments
 
             chunkUploads: true,
 
-            chunkSize: 41_943_040,
+            chunkSize: 40_943_040,
 
             chunkForce: true,
 
