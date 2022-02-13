@@ -7,12 +7,12 @@
     <style>
         #btn-open-large {
             width: fit-content;
-            background-color: rgba(255, 255, 255, .15);
-            backdrop-filter: blur(5px);
+            background-color: var(--primary);
+            /* backdrop-filter: blur(5px); */
             bottom: 6px;
             right: 24px;
             transition: all 0.3s ease-out;
-            color: #222;
+            color: #fff;
             font-weight: bold;
         }
 
@@ -24,6 +24,7 @@
             width: 50px;
             height: 50px;
             padding: 0;
+            color: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
         }
         
@@ -585,98 +586,6 @@
 
 </style>
 
-<script src="https://unpkg.com/pdfjs-dist@latest/build/pdf.min.js"></script>
-
-<script>
-const pdfjsLib = window['pdfjs-dist/build/pdf'];
-
-let pdfDoc = null;
-let currentRenderingPage = 1;
-const scale = 1;
-
-const url = document.getElementById('preview').dataset.url;
-
-const getDoc = (url, containerId, onLoaded) => {
-    pdfjsLib.getDocument(url).promise.then((doc) => {
-        pdfDoc = doc;
-        render(url, containerId, onLoaded);
-    });
-};
-
-const render = (url, containerId, onLoaded) => {
-    if (!pdfDoc) {
-        getDoc(url, containerId, onLoaded);
-    } else {
-        const checkFinish = (currentPage) => currentPage == pdfDoc.numPages;
-        const renderPromises = [];
-        for (let i = 0; i < pdfDoc.numPages; i++) {
-            renderPromises.push(pdfDoc.getPage(i + 1))
-        }
-        Promise.all(renderPromises).then(pages => {
-            const pagesHTML = `
-            <div style="width: 100%; position: relative; margin-bottom: 0.75rem;">
-                <div id="pdf-loader">
-                    <div class="sk-three-bounce">
-                        <div class="sk-child sk-bounce1"></div>
-                        <div class="sk-child sk-bounce2"></div>
-                        <div class="sk-child sk-bounce3"></div>
-                    </div>
-                </div>
-                <canvas style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;"></canvas>
-            </div>`.repeat(pages.length);
-            const container = document.getElementById(containerId);
-            container.innerHTML = pagesHTML;
-            pages.forEach(page => renderPage(page, container, checkFinish, onLoaded));
-        })
-    }
-};
-
-const renderPage = (page, _container, check, onLoaded) => {
-    let pdfViewport = page.getViewport({ scale: 1 });
-
-    const container = _container.children[page._pageIndex];
-    pdfViewport = page.getViewport({ scale: container.offsetWidth / pdfViewport.width });
-    const loader = container.children[0];
-    const canvas = container.children[1];
-    const context = canvas.getContext("2d");
-    canvas.height = pdfViewport.height;
-    canvas.width = pdfViewport.width;
-
-    canvas.addEventListener('contextmenu', (e) => e.preventDefault(), false);
-
-    page.render({
-      canvasContext: context,
-      viewport: pdfViewport
-    }).promise
-    .then(() => {
-        loader.style.display = 'none';
-        if (check(page._pageIndex + 1)) {
-            onLoaded ? onLoaded() : null;
-        }
-    })
-    .catch((e) => console.log(e));
-};
-
-let firstTimeOpen = true;
-
-const onPreviewLoaded = () => {
-    const btnOpen = document.getElementById('btn-open-large');
-    btnOpen.innerHTML = '<i class="fa fa-search-plus fs-24"></i>';
-    btnOpen.attributes.removeNamedItem('disabled');
-    btnOpen.classList.remove('cursor-default');
-    btnOpen.classList.add('btn-loaded');
-    btnOpen.addEventListener('click', () => {
-        if (firstTimeOpen) {
-            render(url, 'large-view')
-        }
-        firstTimeOpen = false;
-    });
-}
-
-render(url, 'preview', onPreviewLoaded);
-
-</script>
-
 <script>
 
     $(function () {
@@ -780,6 +689,106 @@ render(url, 'preview', onPreviewLoaded);
     }
 
     const timer = setInterval(makeTimer, 1000);
+
+</script>
+
+<script src="https://unpkg.com/pdfjs-dist@latest/build/pdf.min.js"></script>
+
+<script>
+const pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+let pdfDoc = null;
+let currentRenderingPage = 1;
+const scale = 1;
+
+const url = document.getElementById('preview').dataset.url;
+
+function getDoc(url, containerId, onLoaded) {
+    pdfjsLib.getDocument(url).promise.then(function(doc) {
+        pdfDoc = doc;
+        render(url, containerId, onLoaded);
+    });
+};
+
+function render(url, containerId, onLoaded) {
+    if (!pdfDoc) {
+        getDoc(url, containerId, onLoaded);
+    } else {
+        const checkFinish = function(currentPage) {
+            return currentPage == pdfDoc.numPages
+        };
+        const renderPromises = [];
+        for (let i = 0; i < pdfDoc.numPages; i++) {
+            renderPromises.push(pdfDoc.getPage(i + 1))
+        }
+        Promise.all(renderPromises).then(function(pages) {
+            const pagesHTML = `
+            <div style="width: 100%; position: relative; margin-bottom: 0.75rem;">
+                <div id="pdf-loader">
+                    <div class="sk-three-bounce">
+                        <div class="sk-child sk-bounce1"></div>
+                        <div class="sk-child sk-bounce2"></div>
+                        <div class="sk-child sk-bounce3"></div>
+                    </div>
+                </div>
+                <canvas style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;"></canvas>
+            </div>`.repeat(pages.length);
+            const container = document.getElementById(containerId);
+            container.innerHTML = pagesHTML;
+            renderPage(pages, container, checkFinish, onLoaded, 0);
+        });
+    }
+};
+
+function renderPage(pages, _container, check, onLoaded, pageIndex) {
+    const DELAY_AFTER_RENDER = 500;
+    const page = pages[pageIndex];
+    let pdfViewport = page.getViewport({ scale: 1 });
+
+    const container = _container.children[page._pageIndex];
+    const scale = container.offsetWidth ? (container.offsetWidth / pdfViewport.width) : (1110 / pdfViewport.width);
+    pdfViewport = page.getViewport({ scale });
+    const loader = container.children[0];
+    const canvas = container.children[1];
+    const context = canvas.getContext("2d");
+    canvas.height = pdfViewport.height;
+    canvas.width = pdfViewport.width;
+
+    page.render({
+      canvasContext: context,
+      viewport: pdfViewport
+    })
+    .promise
+    .then(function() {
+        loader.classList.add('d-none');
+        if (check(page.pageNumber)) {
+            onLoaded ? onLoaded() : null;
+        } else {
+            setTimeout(function() {
+                renderPage(pages, _container, check, onLoaded, (pageIndex + 1));
+            }, DELAY_AFTER_RENDER);
+        }
+    })
+    .catch(function(e){ console.log(e) });
+};
+
+let firstTimeOpen = true;
+
+function onPreviewLoaded() {
+    const btnOpen = document.getElementById('btn-open-large');
+    btnOpen.innerHTML = '<i class="fa fa-search-plus fs-24"></i>';
+    btnOpen.attributes.removeNamedItem('disabled');
+    btnOpen.classList.remove('cursor-default');
+    btnOpen.classList.add('btn-loaded');
+    btnOpen.addEventListener('click', function() {
+        if (firstTimeOpen) {
+            firstTimeOpen = false;
+            render(url, 'large-view');
+        }
+    });
+}
+
+render(url, 'preview', onPreviewLoaded);
 
 </script>
 
