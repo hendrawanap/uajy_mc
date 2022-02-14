@@ -415,6 +415,8 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->attachments;
 
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js" integrity="sha512-UNM1njAgOFUa74Z0bADwAq8gbTcqZC8Ej4xPSzpnh0l6KMevwvkBvbldF9uR++qKeJ+MOZHRjV1HZjoRvjDfNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
 
     $(document).ready(function() {
@@ -427,6 +429,8 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->attachments;
     });
 
     const FILEUPLOADS = {};
+
+    let chunkRequests = {};
 
     // Get a reference to the file input element
     const inputElements = document.querySelectorAll('input[class="file"]');
@@ -467,7 +471,7 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->attachments;
 
                     const useChunk = file.size > options.chunkSize;
 
-                    const startChunk = function(folderName) {
+                    const startChunk = function(folderName, postId) {
                         const max_chunk_size = options.chunkSize;
                         const fileExtension = file.name.split('.').pop();
                         let loaded = 0;
@@ -516,21 +520,85 @@ $attachments = \App\Kuis::find($setkuis->kuis_id)->attachments;
                                 }
 
                             };
-        
+
+                            chunkRequests[postId] = { request, folderName, loaded };
+
                             request.send(fd);
 
                         };
                     }
 
                     if (useChunk) {
-                        $.ajax(postUrl, {
-                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                            type: "POST",
-                            data: { useChunk: true },
-                            success: function(r) {
-                                startChunk(r);
+                        const formData = new FormData();
+
+                        formData.append('useChunk', true);
+
+                        const postId = uuid.v4();
+
+                        const request = new XMLHttpRequest();
+
+                        request.open('POST', postUrl);
+
+                        request.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+
+                        request.onload = function() {
+                            if (request.status >= 200 && request.status < 300) {
+
+                                startChunk(request.response, postId);
+
+                            } else {
+
+                                const errorMessage = `Oh no ${request.statusText} (${request.status})`;
+
+                                error(errorMessage);
+
+                                console.log(errorMessage);
+
                             }
-                        });
+                        }
+
+                        request.send(formData);
+
+                        return {
+
+                            abort: () => {
+
+                                if (chunkRequests[postId]) {
+
+                                    chunkRequests[postId].request.abort();
+
+                                    if (chunkRequests[postId].loaded > 0) {
+
+                                        $.ajax({
+
+                                            url: '/kuis/{{$setkuis->id}}/delete/'+inputElement.id,
+
+                                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+
+                                            type: 'DELETE',
+
+                                            data: { foldername: chunkRequests[postId].folderName },
+
+                                            error: function(error) {
+
+                                                console.log(error);
+
+                                            },
+
+                                        });
+
+                                    }
+
+                                }
+
+                                request.abort();
+
+                                abort();
+
+                            },
+
+                        };
+
                     } else {
 
                         const formData = new FormData();

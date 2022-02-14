@@ -206,7 +206,7 @@ class EventController extends Controller
 
                 $temporaryFile->delete();
 
-                array_map('unlink', glob(public_path('file/event/temp/' . $temporaryFile->folder . '/*.*')));
+                array_map('unlink', glob(public_path('file/event/temp/' . $temporaryFile->folder . '/*')));
 
                 rmdir(public_path('file/event/temp/' . $temporaryFile->folder));
 
@@ -399,7 +399,16 @@ class EventController extends Controller
                     }
 
                 }
-    
+
+                $tempFiles = CaseTemporaryFile::where('event_id', $event->id)
+                    ->where('user_id', Auth::user()->id)
+                    ->where('folder', $folder)
+                    ->get();
+
+                foreach ($tempFiles as $tempFile) {
+                    $tempFile->delete();
+                }
+
                 CaseTemporaryFile::create([
         
                     'user_id' => Auth::user()->id,
@@ -409,6 +418,20 @@ class EventController extends Controller
                     'folder' => $folder,
     
                     'filename' => $filename
+    
+                ]);
+
+            } else {
+
+                CaseTemporaryFile::create([
+        
+                    'user_id' => Auth::user()->id,
+    
+                    'event_id' => $event->id,
+    
+                    'folder' => $folder,
+    
+                    'filename' => $chunkName
     
                 ]);
 
@@ -432,7 +455,7 @@ class EventController extends Controller
 
         $foldername = $request->foldername;
 
-        array_map('unlink', glob(public_path('file/event/temp/' . $foldername . '/*.*')));
+        array_map('unlink', glob(public_path('file/event/temp/' . $foldername . '/*')));
 
         rmdir(public_path('file/event/temp/' . $foldername));     
         

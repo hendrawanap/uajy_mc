@@ -880,7 +880,7 @@ class KuisController extends Controller
 
                 $temporaryFile->delete();
 
-                array_map('unlink', glob(public_path('file/jawaban/temp/' . $temporaryFile->folder . '/*.*')));
+                array_map('unlink', glob(public_path('file/jawaban/temp/' . $temporaryFile->folder . '/*')));
 
                 rmdir(public_path('file/jawaban/temp/' . $temporaryFile->folder));
 
@@ -1129,7 +1129,36 @@ class KuisController extends Controller
 
                 }
 
+                $tempFiles = QuizTemporaryFile::where('set_kuis_id', $setkuis->id)
+                    ->where('user_id', Auth::user()->id)
+                    ->where('folder', $folder)
+                    ->get();
+
+                foreach ($tempFiles as $tempFile) {
+                    $tempFile->delete();
+                }
+
                 $this->isiJawabanSoalFile($setkuis, $folder, $filename, $id);
+
+            } else {
+
+                $akseskuis = AksesKuis::findOrFail($id);
+
+                QuizTemporaryFile::create([
+
+                    'user_id' => Auth::user()->id,
+        
+                    'kuis_id' => $akseskuis->soal->kuis_id,
+        
+                    'set_kuis_id' => $setkuis->id,
+        
+                    'soal_id' => $akseskuis->soal->id,
+        
+                    'folder' => $folder,
+        
+                    'filename' => $chunkName
+
+                ]);
 
             }
 
@@ -1150,7 +1179,7 @@ class KuisController extends Controller
 
         $foldername = $request->foldername;
 
-        array_map('unlink', glob(public_path('file/jawaban/temp/' . $foldername . '/*.*')));
+        array_map('unlink', glob(public_path('file/jawaban/temp/' . $foldername . '/*')));
 
         rmdir(public_path('file/jawaban/temp/' . $foldername));     
         
