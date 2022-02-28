@@ -246,7 +246,7 @@
     ***********************************-->
     <!-- Required vendors -->
 
-    <div class="overflow-auto d-none modal-transition glassy-container" id="modal-overlay" style="inset: 0; position: fixed; z-index: 999;">
+    <div class="overflow-auto d-none modal-transition" id="modal-overlay" style="top: 0; bottom: 0; left: 0; right: 0; position: fixed; z-index: 999;">
         <div class="my-5 container" id="modal-content" style="background-color: transparent; position: relative; z-index: 1000">
             @yield('modal-content')
         </div>

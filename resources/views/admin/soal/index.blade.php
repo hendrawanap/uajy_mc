@@ -270,8 +270,6 @@
 
         $("#pilihan").on('change', function () {
 
-            console.log('memekkkk');
-
             if ($('#pilihan').prop('checked')) {
 
                 $("#pilihan-view").fadeIn();

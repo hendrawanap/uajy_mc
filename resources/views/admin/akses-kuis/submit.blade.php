@@ -142,7 +142,7 @@
 
                                                                     style="cursor: pointer;">
 
-                                                                    <input type="radio" name="jawaban[{{$value[0]->id}}]"
+                                                                    <input disabled type="radio" name="jawaban[{{$value[0]->id}}]"
 
                                                                         class="mr-3 ml-2 ans" value="a" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'a','id' => $value[0]->id])}}');" @if($value[0]->jawaban == "a") checked @endif>
 
@@ -158,7 +158,7 @@
 
                                                                     style="cursor: pointer;">
 
-                                                                    <input type="radio"  name="jawaban[{{$value[0]->id}}]"
+                                                                    <input disabled type="radio"  name="jawaban[{{$value[0]->id}}]"
 
                                                                         class="mr-3 ml-2 ans" value="b" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'b','id' => $value[0]->id])}}');" @if($value[0]->jawaban == "b") checked @endif>
 
@@ -174,7 +174,7 @@
 
                                                                     style="cursor: pointer;">
 
-                                                                    <input type="radio" name="jawaban[{{$value[0]->id}}]"
+                                                                    <input disabled type="radio" name="jawaban[{{$value[0]->id}}]"
 
                                                                     value="c"class="mr-3 ml-2 ans" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'c','id' => $value[0]->id])}}');" @if($value[0]->jawaban == "c") checked @endif>
 
@@ -190,7 +190,7 @@
 
                                                                     style="cursor: pointer;">
 
-                                                                    <input type="radio" name="jawaban[{{$value[0]->id}}]"
+                                                                    <input disabled type="radio" name="jawaban[{{$value[0]->id}}]"
 
                                                                         class="mr-3 ml-2 ans" value="d" onclick="ahayyy('{{route('kuis.jawab.ajax',['type' => 'jawab','jawaban' =>'d','id' => $value[0]->id])}}')" @if($value[0]->jawaban == "d") checked @endif>
 
