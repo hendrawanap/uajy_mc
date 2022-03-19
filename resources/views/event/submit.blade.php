@@ -428,7 +428,7 @@
 
                             error(errorMessage);
 
-                            console.log(errorMessage);
+                            alert(errorMessage);
 
                         }
     
