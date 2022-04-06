@@ -229,4 +229,6 @@ return [
 
     ],
 
+    'use_sponsor' => env('APP_USE_SPONSOR', false),
+
 ];
