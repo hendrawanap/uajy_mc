@@ -229,6 +229,8 @@ return [
 
     ],
 
+    'icon_url' => env('APP_ICON'),
+
     'use_sponsor' => env('APP_USE_SPONSOR', false),
 
     'case_submissions_url' => env('APP_CASE_SUBMISSIONS_URL', '/file/cases/submissions'),

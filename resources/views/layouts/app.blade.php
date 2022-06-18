@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>{{env('APP_NAME')}}</title>
+    <title>{{config('app.name')}}</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{env('APP_ICON')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{config('app.icon_url')}}">
     <link href="/template/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/template/css/style.css" rel="stylesheet">
     <link href="/template//vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -55,7 +55,7 @@
 ***********************************-->
         <div class="nav-header">
             <a href="/" class="brand-logo d-flex align-content-center justify-content-center">
-                <img src="{{env('APP_ICON')}}" width="75" />
+                <img src="{{ config('app.icon_url') }}" width="75" />
             </a>
 
             <div class="nav-control">
