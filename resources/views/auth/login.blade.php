@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>{{config('app.name')}} - Login</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{env('APP_ICON')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ config('app.icon_url') }}">
     <link href="/template/css/style.css" rel="stylesheet">
     
 
@@ -23,7 +23,7 @@
                                 <div class="auth-form">
                                     <div class="d-flex align-items-center justify-content-center">
                                         <img src="/logo/LOGO UAJY FBE.png" width="75" style="margin: 0px 5px"/>
-                                        <img src="/logo/LOGO MC.png" width="95" style="margin: 0px 5px"/>
+                                        <img src="{{ config('app.icon_url') }}" width="95" style="margin: 0px 5px"/>
                                         <img src="/logo/LOGO HMPSM FBE.png" width="60" style="margin: 0px 5px"/>
                                     </div>
                                     @if (config('app.use_sponsor'))
