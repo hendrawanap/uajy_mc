@@ -88,7 +88,7 @@
 
                                 <div class="settings-form">
 
-                                    <form action="{{route('event.update',$event->id)}}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{route('admin.cases.update',$case->id)}}" method="POST" enctype="multipart/form-data">
 
                                         @csrf
 
@@ -100,7 +100,7 @@
 
                                                 <label>Nama :</label>
 
-                                                <input type="text" name="name" value="{{$event->name}}" class="form-control"
+                                                <input type="text" name="name" value="{{$case->name}}" class="form-control"
 
                                                     placeholder="Nama Event...">
 
@@ -112,9 +112,9 @@
 
                                                 <!-- <textarea name="soal" class="form-control"
 
-                                                    placeholder="Pertanyaan Event...">{{$event->soal}}</textarea> -->
+                                                    placeholder="Pertanyaan Event...">{{$case->soal}}</textarea> -->
                                                 <div class="position-relative">
-                                                    <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;">
+                                                    <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $case->getSoalURL() }}" style="height: 50vh;">
                                                         <div style="width: 100%; height:100%; position: relative;">
                                                             <div id="pdf-loader">
                                                                 <div class="sk-three-bounce">
@@ -146,7 +146,7 @@
 
                                                 <label>Tanggal :</label>
 
-                                                <input type="date" name="tanggal" value="{{explode(' ',$event->tanggal_mulai)[0]}}" class="form-control">
+                                                <input type="date" name="tanggal" value="{{explode(' ',$case->tanggal_mulai)[0]}}" class="form-control">
 
                                             </div>
 
@@ -154,7 +154,7 @@
 
                                                 <label>Jam :</label>    
 
-                                                <input type="time" name="jam" value="{{explode(' ',$event->tanggal_mulai)[1]}}" class="form-control">
+                                                <input type="time" name="jam" value="{{explode(' ',$case->tanggal_mulai)[1]}}" class="form-control">
 
                                             </div>
 
@@ -164,9 +164,9 @@
 
                                                 @php 
 
-                                                    $tanggal_awal = \Carbon\Carbon::parse($event->tanggal_mulai);
+                                                    $tanggal_awal = \Carbon\Carbon::parse($case->tanggal_mulai);
 
-                                                    $tanggal_selesai = \Carbon\Carbon::parse($event->tanggal_selesai);
+                                                    $tanggal_selesai = \Carbon\Carbon::parse($case->tanggal_selesai);
 
                                                 @endphp
 
@@ -202,7 +202,7 @@
 
 @section('modal-content')
 
-<div id="large-view" class="w-100" data-url="{{ $event->getSoalURL() }}">
+<div id="large-view" class="w-100" data-url="{{ $case->getSoalURL() }}">
     <h1 style="display: none" id="error-2">An error occurred</h1>
     <div id="loader-2">
         Loading...

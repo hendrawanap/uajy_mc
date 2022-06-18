@@ -19,9 +19,8 @@ class EventSubmit extends Model
     }
 
     public function getFile() {
-
-        return '/file/event/'.$this->file;
-
+        $CASE_SUBMISSIONS_URL = config('app.case_submissions_url');
+        return $CASE_SUBMISSIONS_URL.'/'.$this->file;
     }
 
 

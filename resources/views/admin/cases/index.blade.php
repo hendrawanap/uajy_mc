@@ -8,7 +8,7 @@
 
     <div class="col-lg-3 mb-4 mb-lg-0">
 
-        <a href="{{route('event.create')}}" class="btn btn-primary light btn-lg btn-block rounded shadow px-2">+ Buat
+        <a href="{{route('admin.cases.create')}}" class="btn btn-primary light btn-lg btn-block rounded shadow px-2">+ Buat
 
             Case</a>
 
@@ -116,11 +116,11 @@
 
                         <div class="d-flex justify-content-end">
 
-                            <a href="{{route('event.edit',$value->id)}}"><span class="badge badge-warning">Edit Case</span></a>
+                            <a href="{{route('admin.cases.edit',$value->id)}}"><span class="badge badge-warning">Edit Case</span></a>
 
-                            <a href="{{route('event.delete',$value->id)}}" onclick="return confirm('Apakah anda yakin ingin menghapus Case ini ?')"><span class="badge badge-danger">Hapus Case</span></a>
+                            <a href="{{route('admin.cases.delete',$value->id)}}" onclick="return confirm('Apakah anda yakin ingin menghapus Case ini ?')"><span class="badge badge-danger">Hapus Case</span></a>
 
-                            <a href="{{route('event.peserta',$value->id)}}" ><span class="badge badge-success">( {{$value->submitCounts()}} ) Lihat Submit</span></a>
+                            <a href="{{route('admin.cases.submissions.index',$value->id)}}" ><span class="badge badge-success">( {{$value->submitCounts()}} ) Lihat Submit</span></a>
 
                         </div>
 

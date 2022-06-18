@@ -27,6 +27,7 @@ class Event extends Model
     }
 
     public function getSoalURL() {
-        return '/file/case-soal/'.$this->soal;
+        $CASE_QUESTIONS_URL = config('app.case_questions_url');
+        return $CASE_QUESTIONS_URL.'/'.$this->soal;
     }
 }

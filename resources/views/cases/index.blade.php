@@ -142,7 +142,7 @@
 
                                         @if($value->tanggal_mulai <= date('Y-m-d H:i:s') AND $value->getTanggalSelesai() > date('Y-m-d H:i:s')) 
 
-                                            <a href="{{route('event.submit',$value->id)}}"><span
+                                            <a href="{{route('cases.submissions.index',$value->id)}}"><span
 
                                                     class="badge badge-success">Upload</span></a>
 

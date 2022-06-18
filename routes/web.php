@@ -12,7 +12,7 @@ Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::group(['middleware' => ['auth', 'check_admin']], function() {
+Route::middleware(['auth', 'check_admin'])->prefix('admin')->group(function() {
     Route::get('/setting', 'HomeController@setting')->name('setting');
 
     Route::get('/user-json','UserController@json')->name('user.json');
@@ -44,22 +44,16 @@ Route::group(['middleware' => ['auth', 'check_admin']], function() {
     Route::get('/kuis/{setkuis}/jadwal/edit','KuisController@setKuisEdit')->name('jadwal.edit');
     Route::get('/kuis/{kuis}/jadwal/json','KuisController@setKuisJson')->name('jadwal.json');
 
-    Route::get('/kuis/{setkuis}/peserta-kuis','KuisController@cek_akses_peserta_kuis')->name('kuis.akses_peserta_kuis');
-    Route::get('/kuis/{setkuis}/peserta-kuis/json','KuisController@cek_akses_peserta_kuis_json')->name('kuis.akses_peserta_kuis_json');
-    Route::get('/kuis/{kuis_submit}/jawaban-kuis','KuisController@cek_akses_jawaban_kuis')->name('kuis.cek_akses_jawaban_kuis');
-    Route::post('/kuis/{kuis_submit}/update/nilai/kuis','KuisController@update_nilai_kuis')->name('kuis.update_nilai_kuis');
+    Route::get('/cases','CaseAdminController@index')->name('admin.cases.index');
+    Route::get('/cases/create','CaseAdminController@create')->name('admin.cases.create');
+    Route::post('/cases','CaseAdminController@store')->name('admin.cases.store');
+    Route::get('/cases/{case}/edit','CaseAdminController@edit')->name('admin.cases.edit');
+    Route::put('/cases/{case}','CaseAdminController@update')->name('admin.cases.update');
+    Route::get('/cases/{case}/delete','CaseAdminController@destroy')->name('admin.cases.delete');
 
-    // Route::resource('event','EventController');
-    Route::get('/event','EventController@index')->name('event.index');
-    Route::get('/event/create','EventController@create')->name('event.create');
-    Route::post('/event','EventController@store')->name('event.store');
-    Route::get('/event/{event}/edit','EventController@edit')->name('event.edit');
-    Route::put('/event/{event}','EventController@update')->name('event.update');
-    Route::get('/event/{event}/delete','EventController@destroy')->name('event.delete');
-
-    Route::get('/event/{event}/peserta','EventController@event_peserta')->name('event.peserta');
-    Route::get('/event/{event}/peserta/json','EventController@event_peserta_json')->name('event.peserta.json');
-    Route::get('/event/{event}/peserta/show','EventController@event_peserta_show')->name('event.peserta.show');
+    Route::get('/cases/{case}/submissions','CaseAdminController@submissionIndex')->name('admin.cases.submissions.index');
+    Route::get('/cases/{case}/submissions/tables','CaseAdminController@submissionTables')->name('admin.cases.submissions.tables');
+    Route::get('/cases/{case}/users/{user}/submissions','CaseAdminController@submissionShow')->name('admin.cases.submissions.show');
 });
 
 Route::group(['middleware' => ['auth','check_peserta']], function () {
@@ -77,15 +71,16 @@ Route::group(['middleware' => ['auth','check_peserta']], function () {
     Route::get('/kuis/{kuis}/set-kuis','KuisController@cek_akses_set_kuis')->name('kuis.akses_set_kuis');
     Route::get('/kuis/{kuis}/set-kuis/json','KuisController@cek_akses_set_kuis_json')->name('kuis.akses_set_kuis_json');
 
-    Route::get('/event/list','EventController@list')->name('event.list');
-    Route::get('/event/{event}/submit','EventController@submit')->name('event.submit');
-    Route::get('/event/{event}/submit/delete','EventController@submit_delete')->name('event.submit.delete');
-    Route::get('/event/{event}/submit/json','EventController@submit_json')->name('event.submit.json');
-    Route::post('/event/{event}/upload', 'EventController@uploadEventFile')->name('event.upload');
-    Route::post('/event/{event}/patch', 'EventController@patchEventFile')->name('event.patch');
-    Route::delete('/event/{event}/delete', 'EventController@deleteEventFile')->name('event.delete');
-    Route::post('/event/{event}/submit/action','EventController@submit_action')->name('event.submit.action');
+    Route::get('/cases','CaseController@index')->name('cases.index');
+    Route::get('/cases/{case}/submissions','CaseController@submissionsIndex')->name('cases.submissions.index');
+    Route::post('/cases/{case}/submissions','CaseController@submissionsStore')->name('cases.submissions.store');
+    Route::get('/cases/{case}/submissions/{submission}/delete','CaseController@submissionsDelete')->name('cases.submissions.delete');
+    Route::get('/cases/{case}/submissions/tables','CaseController@submissionsTables')->name('cases.submissions.tables');
+    Route::post('/cases/{case}/submissions/upload', 'CaseController@submissionsUploadTemporary')->name('cases.submissions.upload_temp');
+    Route::post('/cases/{case}/submissions/patch', 'CaseController@submissionsPatchTemporary')->name('cases.submissions.patch_temp');
+    Route::delete('/cases/{case}/submissions/delete', 'CaseController@submissionsDeleteTemporary')->name('cases.submissions.delete_temp');
 });
+
 Route::get('logout',function() {
     Auth::logout();
     return redirect('login')->with('success','Berhasil Logout !');

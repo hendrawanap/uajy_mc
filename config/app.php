@@ -231,4 +231,21 @@ return [
 
     'use_sponsor' => env('APP_USE_SPONSOR', false),
 
+    'case_submissions_url' => env('APP_CASE_SUBMISSIONS_URL', '/file/cases/submissions'),
+
+    'case_temp_submissions_url' => env('APP_CASE_TEMP_SUBMISSIONS_URL', '/file/cases/temp'),
+
+    'case_questions_url' => env('APP_CASE_QUESTIONS_URL', '/file/cases/questions'),
+
+    'files_backup_url' => env('APP_FILES_BACKUP_URL', '/file/backup'),
+
+    'quiz_submissions_url' => env('APP_QUIZ_SUBMISSIONS_URL', '/file/quizzes/submissions'),
+
+    'quiz_temp_submissions_url' => env('APP_QUIZ_TEMP_SUBMISSIONS_URL', '/file/quizzes/temp'),
+
+    'quiz_questions_img_url' => env('APP_QUIZ_QUESTIONS_IMG_URL', '/file/quizzes/questions'),
+
+    'quiz_attachments_url' => env('APP_QUIZ_ATTACHMENTS_URL', '/file/quizzes/attachments'),
+
+    'file_pond_upload_chunk_size' => env('APP_UPLOAD_CHUNK_SIZE', 40943040), // In bytes
 ];

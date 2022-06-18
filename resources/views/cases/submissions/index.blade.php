@@ -52,7 +52,7 @@
 
         <!-- Form -->
 
-        <form action="{{route('event.submit.action',$event->id)}}" method="POST" enctype="multipart/form-data" id="form-submit" class="col-xl-12">
+        <form action="{{route('cases.submissions.store',$case->id)}}" method="POST" enctype="multipart/form-data" id="form-submit" class="col-xl-12">
 
         @csrf
 
@@ -98,10 +98,10 @@
 
                                     <div class="pt-0">
 
-                                        <!-- <div>{!! $event->soal !!}</div> -->
+                                        <!-- <div>{!! $case->soal !!}</div> -->
 
                                         <div class="position-relative">
-                                            <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $event->getSoalURL() }}" style="height: 50vh;">
+                                            <div id="preview" class="w-100 overflow-auto border rounded-lg" data-url="{{ $case->getSoalURL() }}" style="height: 50vh;">
                                                 <div style="width: 100%; height:100%; position: relative;">
                                                     <div id="pdf-loader">
                                                         <div class="sk-three-bounce">
@@ -119,7 +119,7 @@
 
                                             <i class="fa fa-clock-o"></i>
 
-                                            {{ \Carbon\Carbon::parse($event->tanggal_selesai)->diffInMinutes(\Carbon\Carbon::parse($event->tanggal_mulai))}} Menit
+                                            {{ \Carbon\Carbon::parse($case->tanggal_selesai)->diffInMinutes(\Carbon\Carbon::parse($case->tanggal_mulai))}} Menit
 
                                         </p>
 
@@ -232,42 +232,8 @@
 
             process: function(fieldName, file, metadata, load, error, progress, abort, transfer, options) {
 
-
-                // onload: function(response) {
-
-                //     FILEUPLOADS.push(response);
-                    
-                //     const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
-
-                //     for(let i = 0; i < filePondRevertButtons.length; i++) {
-                            
-                //         filePondRevertButtons[i].addEventListener('click', function(e) {
-                            
-                //             FILEUPLOADS.reverse();
-                            
-                //             foldername = FILEUPLOADS[i];
-
-                //             console.log(foldername);
-
-                //             FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
-                                    
-                //                 return folder != foldername; 
-
-                //             });
-
-                //             FILEUPLOADS.reverse();
-
-                //         });
-    
-
-                //     }
-                    
-                //     console.log(FILEUPLOADS);
-
-                // }
-
-                const postUrl = '/event/{{$event->id}}/upload';
-                const patchUrl = '/event/{{$event->id}}/patch';
+                const postUrl = "{{route('cases.submissions.upload_temp', $case->id)}}";
+                const patchUrl = "{{route('cases.submissions.patch_temp', $case->id)}}";
 
                 const useChunk = file.size > options.chunkSize;
 
@@ -368,7 +334,7 @@
 
                                     $.ajax({
 
-                                        url: '/event/{{$event->id}}/delete',
+                                        url: "{{route('cases.submissions.delete_temp', $case->id)}}",
 
                                         headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
 
@@ -432,33 +398,6 @@
 
                         }
     
-                        
-                        // shiftDown(file.name);
-    
-                        // const files = pond.getFiles();
-    
-                        // const fileIndex = getFileIndex(files, file.name);
-    
-                        // const filePondRevertButtons = document.querySelectorAll('.filepond--file-action-button.filepond--action-revert-item-processing');
-                                
-                        // filePondRevertButtons[fileIndex].addEventListener('click', function(e) {
-    
-                        //     FILEUPLOADS.reverse();
-                            
-                        //     foldername = FILEUPLOADS[getFileIndex(files, e.target.parentNode.previousSibling.innerText)];
-    
-                        //     console.log(foldername);
-    
-                        //     FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
-                                    
-                        //         return folder != foldername; 
-    
-                        //     });
-    
-                        //     FILEUPLOADS.reverse();
-    
-                        // });
-    
                     };
     
                     request.send(formData);
@@ -478,30 +417,12 @@
                 }
 
             },
-        
-            // revert: {
-
-            //     url: '/event/{{$event->id}}/delete',
-                
-            //     onload: function(response) {
-                    
-            //         FILEUPLOADS = FILEUPLOADS.filter(function(folder) {
-                                
-            //             return folder != response; 
-
-            //         });
-
-            //         console.log(FILEUPLOADS);
-
-            //     }
-
-            // },
 
             revert: (uniqueFileId, load, error) => {
 
                 $.ajax({
 
-                    url: '/event/{{$event->id}}/delete',
+                    url: "{{route('cases.submissions.delete_temp', $case->id)}}",
 
                     headers: {
                         
@@ -585,7 +506,7 @@
 
             if (input.name.includes('file')) {
 
-                file['{{$event->id}}'] = input.value;
+                file['{{$case->id}}'] = input.value;
 
             }
 
@@ -599,7 +520,7 @@
     
                 type: "POST",
     
-                url: "{{route('event.submit.action',$event->id)}}",
+                url: "{{route('cases.submissions.store',$case->id)}}",
                 
                 data: {postData:postData, fileUploads: FILEUPLOADS},
     
@@ -613,11 +534,11 @@
 
                     if (isTimeup) {
 
-                        window.location = "{{route('event.list')}}";
+                        window.location = "{{route('cases.index')}}";
 
                     } else {
 
-                        window.location = "{{route('event.submit',$event->id)}}"
+                        window.location = "{{route('cases.submissions.index',$case->id)}}"
 
                     }
                     
@@ -627,7 +548,7 @@
 
         } else {
 
-            window.location = "{{route('event.list')}}";
+            window.location = "{{route('cases.index')}}";
 
         }
 
@@ -668,7 +589,7 @@
 
             serverSide: true,
 
-            ajax: '{{ route('event.submit.json',$event->id) }}',
+            ajax: "{{ route('cases.submissions.tables', $case->id) }}",
 
             columns: [
 
@@ -706,7 +627,7 @@
 
     function makeTimer() {
 
-        var endTime = new Date("{{\Carbon\Carbon::parse($event->tanggal_selesai)->format('M d, Y H:i:s')}} UTC+07:00");
+        var endTime = new Date("{{\Carbon\Carbon::parse($case->tanggal_selesai)->format('M d, Y H:i:s')}} UTC+07:00");
 
         endTime = endTime.toLocaleString('en-US', {timeZone: 'Asia/Bangkok'});
 
@@ -868,7 +789,7 @@ render(url, 'preview', onPreviewLoaded);
 
 @section('modal-content')
 
-<div id="large-view" class="w-100" data-url="{{ $event->getSoalURL() }}">
+<div id="large-view" class="w-100" data-url="{{ $case->getSoalURL() }}">
     <h1 style="display: none" id="error-2">An error occurred</h1>
     <div id="loader-2">
         Loading...

@@ -134,28 +134,28 @@
                             <span class="nav-text">Peserta</span>
                         </a>
                     </li>
-                    <li><a href="{{route('kuis.index')}}" aria-expanded="false">
+                    <li><a href="{{route('admin.quizzes.index')}}" aria-expanded="false">
                             <i class="flaticon-381-controls-3"></i>
                             <span class="nav-text">Kuis</span>
                         </a>
                     </li>
-                    <li><a href="{{route('event.index')}}" aria-expanded="false">
+                    <li><a href="{{route('admin.cases.index')}}" aria-expanded="false">
                             <i class="fa fa-bookmark"></i>
                             <span class="nav-text">Case</span>
                         </a>
                     </li>
                     @else
-                    <li><a href="{{route('kuis.jawab.list.nilai')}}" aria-expanded="false">
+                    <li><a href="{{route('quizzes.submissions_index')}}" aria-expanded="false">
                             <i class="flaticon-381-internet"></i>
                             <span class="nav-text">Hasil Kuis</span>
                         </a>
                     </li>
-                    <li><a href="{{route('kuis.jawab.list')}}" aria-expanded="false">
+                    <li><a href="{{route('quizzes.index')}}" aria-expanded="false">
                             <i class="flaticon-381-heart"></i>
                             <span class="nav-text">Kuis</span>
                         </a>
                     </li>
-                    <li><a href="{{route('event.list')}}" aria-expanded="false">
+                    <li><a href="{{route('cases.index')}}" aria-expanded="false">
                             <i class="flaticon-381-settings-2"></i>
                             <span class="nav-text">Case</span>
                         </a>

@@ -58,7 +58,7 @@
 
                                 <div class="settings-form">
 
-                                    <form action="{{route('event.store')}}" method="POST" class="form-validation" enctype="multipart/form-data">
+                                    <form action="{{route('admin.cases.store')}}" method="POST" class="form-validation" enctype="multipart/form-data">
 
                                         @csrf
 

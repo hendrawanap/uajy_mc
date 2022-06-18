@@ -62,9 +62,9 @@
 
                                 <td><img class="rounded-circle" alt="image" width="50" src="/template/images/avatar/1.png"></td>
 
-                                <td>{{$event->user->name}}</td>
+                                <td>{{$user->name}}</td>
 
-                                <td>{{$event->created_at->format('Y-m-d H:i:s')}}</td>
+                                <td>{{$case->event_submit()->orderByDesc('created_at')->first()->created_at->format('Y-m-d H:i:s')}}</td>
 
                             </tr>
 
@@ -90,17 +90,16 @@
 
                                         <div class="w-cont">
 
-                                            <h3 class="judul">Submission {!! $event->event->name !!}</h3>
+                                            <h3 class="judul">Submissions {{ $case->name }}</h3>
 
                                             <div class="file-peserta">
 
-                                                @foreach ($event->getFiles() as $file)
+                                                @foreach ($case->event_submit()->where('user_id', $user->id)->orderByDesc('created_at')->get() as $submission)
 
-                                                    <a href="{{$file}}" download>
+                                                    <a href="{{ $submission->getFile() }}" download>
 
                                                         <i class="fa fa-paperclip"></i>
-
-                                                        {{ explode('/', $file)[3] }}
+                                                        {{ $submission->file }}
 
                                                     </a>
 

@@ -116,7 +116,7 @@
                                             </p>
                                         </div>
                                         <div class="d-flex justify-content-end">
-                                            <a href="{{route('event.list')}}"><span class="badge badge-success">Lihat Case</span></a>
+                                            <a href="{{route('cases.index')}}"><span class="badge badge-success">Lihat Case</span></a>
                                         </div>
                                     </div>
                                 </div>
