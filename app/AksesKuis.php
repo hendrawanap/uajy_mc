@@ -20,7 +20,8 @@ class AksesKuis extends Model
 
     public function getJawaban() {
         if($this->type == 0) {
-            return '/file/jawaban/'.$this->jawaban;
+            $SUBMISSIONS_URL = config('app.quiz_submissions_url');
+            return $SUBMISSIONS_URL.'/'.$this->jawaban;
         }
     }
 }

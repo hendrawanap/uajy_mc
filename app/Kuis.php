@@ -29,4 +29,9 @@ class Kuis extends Model
     public function kuis_submit() {
         return $this->hasMany(KuisSubmit::class);
     }
+
+    public function getAttachmentFileUrl($attachment) {
+        $ATTACHMENTS_URL = config('app.quiz_attachments_url');
+        return $ATTACHMENTS_URL . '/' . $attachment;
+    }
 }

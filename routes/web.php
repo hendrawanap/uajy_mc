@@ -20,29 +20,33 @@ Route::middleware(['auth', 'check_admin'])->prefix('admin')->group(function() {
     Route::get('/user/elimination/{user}','UserController@elimination')->name('user.elimination');
     Route::resource('user','UserController');
 
-    Route::get('/kuis/index','KuisController@index')->name('kuis.index');
-    Route::get('/kuis/create','KuisController@create')->name('kuis.create');
-    Route::post('/kuis/action','KuisController@store')->name('kuis.store');
-    Route::get('/kuis/{kuis}/edit','KuisController@edit')->name('kuis.edit');
-    Route::put('/kuis/{kuis}/update','KuisController@update')->name('kuis.update');
-    Route::get('/kuis-json','KuisController@json')->name('kuis.json');
-    Route::get('/kuis-delete/{kuis}','KuisController@destroy')->name('kuis.delete');
+    Route::get('/quizzes','QuizAdminController@index')->name('admin.quizzes.index');
+    Route::post('/quizzes','QuizAdminController@store')->name('admin.quizzes.store');
+    Route::get('/quizzes/create','QuizAdminController@create')->name('admin.quizzes.create');
+    Route::put('/quizzes/{quiz}','QuizAdminController@update')->name('admin.quizzes.update');
+    Route::get('/quizzes/{quiz}/edit','QuizAdminController@edit')->name('admin.quizzes.edit');
+    Route::get('/quizzes/{quiz}/delete','QuizAdminController@destroy')->name('admin.quizzes.delete');
 
-    Route::get('/kuis/{kuis}/soal','KuisController@kuisSoal')->name('kuis.soal');
-    Route::post('/kuis/{kuis}/soal/action','KuisController@kuisSoalAction')->name('kuis.soal_action');
-    Route::get('/kuis/{kuis}/soal/json','KuisController@soal_json')->name('kuis.soal_json');
+    Route::get('/quizzes/{quiz}/questions','QuizAdminController@questionsIndex')->name('admin.quizzes.questions_index');
+    Route::post('/quizzes/{quiz}/questions','QuizAdminController@questionsStore')->name('admin.quizzes.questions_store');
+    Route::get('/quizzes/{quiz}/questions/tables','QuizAdminController@questionsTables')->name('admin.quizzes.questions_tables');
+    Route::get('/quizzes/{quiz}/questions/{question}/edit','QuizAdminController@questionsEdit')->name('admin.quizzes.questions_edit');
+    Route::post('/quizzes/{quiz}/questions/{question}/update','QuizAdminController@questionsUpdate')->name('admin.quizzes.questions_update');
+    Route::get('/quizzes/{quiz}/questions/{question}/delete','QuizAdminController@questionsDestroy')->name('admin.quizzes.questions_delete');
 
-    Route::get('/kuis/soal/{soal}/view','KuisController@soalShow')->name('soal.show');
-    Route::get('/kuis/soal/{soal}/edit','KuisController@soalEdit')->name('soal.edit');
-    Route::post('/kuis/soal/{soal}/update','KuisController@soalUpdate')->name('soal.update');
-    Route::get('/kuis/soal/{soal}/delete','KuisController@soalDelete')->name('soal.delete');
+    Route::get('/quizzes/{quiz}/schedules','QuizAdminController@schedulesIndex')->name('admin.quizzes.schedules_index');
+    Route::post('/quizzes/{quiz}/schedules','QuizAdminController@schedulesStore')->name('admin.quizzes.schedules_store');
+    Route::get('/quizzes/{quiz}/schedules/{schedule}/edit','QuizAdminController@schedulesEdit')->name('admin.quizzes.schedules_edit');
+    Route::put('/quizzes/{quiz}/schedules/{schedule}','QuizAdminController@schedulesUpdate')->name('admin.quizzes.schedules_update');
+    Route::get('/quizzes/{quiz}/schedules/{schedule}/delete','QuizAdminController@schedulesDestroy')->name('admin.quizzes.schedules_delete');
+    Route::get('/quizzes/{quiz}/schedules/tables','QuizAdminController@schedulesTables')->name('admin.quizzes.schedules_tables');
 
-    Route::get('/kuis/{kuis}/jadwal','KuisController@setKuis')->name('jadwal.index');
-    Route::post('/kuis/{kuis}/jadwal/action','KuisController@setKuisAction')->name('jadwal.action');
-    Route::put('/kuis/{setkuis}/jadwal/update','KuisController@setKuisUpdate')->name('jadwal.update');
-    Route::get('/kuis/{setkuis}/jadwal/delete','KuisController@setKuisDelete')->name('jadwal.delete');
-    Route::get('/kuis/{setkuis}/jadwal/edit','KuisController@setKuisEdit')->name('jadwal.edit');
-    Route::get('/kuis/{kuis}/jadwal/json','KuisController@setKuisJson')->name('jadwal.json');
+    Route::get('/quizzes/{quiz}/schedules/submissions','QuizAdminController@submissionsIndex')->name('admin.quizzes.submissions_index');
+    Route::get('/quizzes/{quiz}/schedules/submissions/tables','QuizAdminController@submissionsTables')->name('admin.quizzes.submissions_tables');
+    Route::get('/quizzes/{quiz}/schedules/{schedule}/submissions/users','QuizAdminController@submissionsUsersIndex')->name('admin.quizzes.submissions_users_index');
+    Route::get('/quizzes/{quiz}/schedules/{schedule}/submissions/users/tables','QuizAdminController@submissionsUsersTables')->name('admin.quizzes.submissions_users_tables');
+    Route::get('/quizzes/{quiz}/schedules/{schedule}/users/{user}/submissions','QuizAdminController@submissionsUsersShow')->name('admin.quizzes.submissions_users_show');
+    Route::post('/quizzes/{quiz}/schedules/{schedule}/users/{user}/submissions/update','QuizAdminController@submissionsUsersUpdate')->name('admin.quizzes.submissions_users_update');
 
     Route::get('/cases','CaseAdminController@index')->name('admin.cases.index');
     Route::get('/cases/create','CaseAdminController@create')->name('admin.cases.create');
@@ -58,18 +62,16 @@ Route::middleware(['auth', 'check_admin'])->prefix('admin')->group(function() {
 
 Route::group(['middleware' => ['auth','check_peserta']], function () {
 
-    Route::get('/kuis/list','KuisController@aksesKuis')->name('kuis.jawab.list');
-    Route::get('/kuis/list/nilai','KuisController@history_nilai')->name('kuis.jawab.list.nilai');
-    Route::get('/kuis/list/nilai/json','KuisController@history_nilai_json')->name('kuis.jawab.list.nilai_json');
+    Route::get('/quizzes','QuizController@index')->name('quizzes.index');
+    Route::get('/quizzes/submissions','QuizController@submissionsIndex')->name('quizzes.submissions_index');
+    Route::get('/quizzes/submissions/tables','QuizController@submissionsTables')->name('quizzes.submissions_tables');
 
-    Route::get('/kuis/{setkuis}/show','KuisController@showAksesKuis')->name('kuis.jawab.show');
-    Route::get('/kuis/ajax/{type}','KuisController@ajaxAksesKuis')->name('kuis.jawab.ajax');
-    Route::post('/kuis/{setkuis}/upload/{id}', 'KuisController@uploadAksesKuisFile')->name('kuis.jawab.upload');
-    Route::post('/kuis/{setkuis}/patch/{id}', 'KuisController@patchAksesKuisFile')->name('kuis.jawab.patch');
-    Route::delete('/kuis/{setkuis}/delete/{id}', 'KuisController@deleteAksesKuisFile')->name('kuis.jawab.delete');
-    Route::post('/kuis/{setkuis}/jawab/action','KuisController@jawabAksesKuis')->name('kuis.jawab.action');
-    Route::get('/kuis/{kuis}/set-kuis','KuisController@cek_akses_set_kuis')->name('kuis.akses_set_kuis');
-    Route::get('/kuis/{kuis}/set-kuis/json','KuisController@cek_akses_set_kuis_json')->name('kuis.akses_set_kuis_json');
+    Route::get('/quizzes/{schedule}/show','QuizController@show')->name('kuis.jawab.show');
+    Route::get('/quizzes/ajax/{type}','QuizController@quizAjax')->name('kuis.jawab.ajax');
+    Route::post('/quizzes/{schedule}/upload', 'QuizController@quizTempUpload')->name('quizzes.upload_temp');
+    Route::post('/quizzes/{schedule}/patch', 'QuizController@quizTempPatch')->name('quizzes.patch_temp');
+    Route::delete('/quizzes/{schedule}/delete', 'QuizController@quizTempDelete')->name('quizzes.delete_temp');
+    Route::post('/quizzes/{schedule}/submit','QuizController@quizAnswer')->name('quizzes.submit');
 
     Route::get('/cases','CaseController@index')->name('cases.index');
     Route::get('/cases/{case}/submissions','CaseController@submissionsIndex')->name('cases.submissions.index');

@@ -7,8 +7,8 @@
         <div class="col-xl-12">
             <div class="welcome-card rounded pl-5 pt-5 pb-4 mt-3 position-relative mb-5">
                 <h4 class="text-warning">Halo Admin,</h4>
-                <p>Selamat datang di website {{ env('APP_NAME') }}.</p>
-                <a class="btn btn-warning btn-rounded" href="{{route('kuis.index')}}">Buat kuis <i
+                <p>Selamat datang di website {{ config('app.name') }}.</p>
+                <a class="btn btn-warning btn-rounded" href="{{route('quizzes.index')}}">Buat kuis <i
                         class="las la-long-arrow-alt-right ml-2"></i></a>
                 <img src="/template/images/svg/welcom-card.svg" alt="" class="position-absolute">
             </div>
@@ -48,17 +48,17 @@
 </div>
 @else 
 <div class="container-fluid">
-				<div class="row">
-					<div class="col-xl-12">
-						<div class="welcome-card rounded pl-5 pt-5 pb-4 mt-3 position-relative mb-5">
-							<h4 class="text-warning">Halo {{Auth::user()->name}},</h4>
-							<p>Selamat datang di website {{ env('APP_NAME' )}}, ini merupakan website tentang Kuis dan Case.</p>
-							<a class="btn btn-warning btn-rounded" href="{{route('kuis.jawab.list')}}">Lihat Kuis <i class="las la-long-arrow-alt-right ml-2"></i></a>
-							<img src="/template/images/svg/welcom-card.svg" alt="" class="position-absolute">
-						</div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="welcome-card rounded pl-5 pt-5 pb-4 mt-3 position-relative mb-5">
+                            <h4 class="text-warning">Halo {{Auth::user()->name}},</h4>
+                            <p>Selamat datang di website {{ config('app.name' )}}, ini merupakan website tentang Kuis dan Case.</p>
+                            <a class="btn btn-warning btn-rounded" href="{{route('quizzes.index')}}">Lihat Kuis <i class="las la-long-arrow-alt-right ml-2"></i></a>
+                            <img src="/template/images/svg/welcom-card.svg" alt="" class="position-absolute">
+                        </div>
                     </div>
                     <!-- Repeat -->
-					<div class="col-xl-12">
+                    <div class="col-xl-12">
                         <div class="widget-stat card">
                             <div class="card-body p-4">
                                 <div class="media ai-icon statss">
@@ -86,7 +86,7 @@
                                             </p>
                                         </div>
                                         <div class="d-flex justify-content-end">
-                                            <a href="{{route('kuis.jawab.list')}}"><span class="badge badge-success">Lihat Kuis</span></a>
+                                            <a href="{{route('quizzes.index')}}"><span class="badge badge-success">Lihat Kuis</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                         </div>
                     </div>
                     <!-- Repeat -->
-					<div class="col-xl-12">
+                    <div class="col-xl-12">
                         <div class="widget-stat card">
                             <div class="card-body p-4">
                                 <div class="media ai-icon statss">
@@ -122,8 +122,8 @@
                                 </div>
                             </div>
                         </div>
-					</div>
-				</div>
+                    </div>
+                </div>
             </div>
 @endif
 @endsection
